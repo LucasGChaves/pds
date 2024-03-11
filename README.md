@@ -24,3 +24,4 @@
 ### Back-end: Node.js, SQL, Express.js
 ### Front-end: React Native
 ### CI/CD: Github Actions
+### Prototipação: Figma
