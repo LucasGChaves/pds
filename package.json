@@ -1,0 +1,28 @@
+{
+  "name": "pockpet",
+  "version": "1.0.0",
+  "description": "<ol>\r   <li>Cadastrar pets</li>\r   <li>Cadastrar perfil como tutor de pet</li>\r   <li>Cadastrar perfil como veterinário/clínica veterinária</li>\r   <li>Cadastrar pets</li>\r   <li>Adicionar vacinas tomadas</li>\r   <li>Checar vacinas a serem tomadas</li>\r   <li>Consultar veterinários cadastrados no sistema</li>\r   <li>Consultar patologias de acordo com sintomatologia</li>\r </ol>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasGChaves/pds.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasGChaves/pds/issues"
+  },
+  "homepage": "https://github.com/LucasGChaves/pds#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.1",
+    "knex": "^3.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.2",
+    "nodemon": "^3.1.0",
+    "objection": "^3.1.4"
+  }
+}
