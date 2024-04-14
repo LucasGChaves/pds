@@ -2,7 +2,6 @@
 ## Membros
 ### Caio Simões
 ### Lucas Chaves
-### Gabriel Silva
 ## Escopo
 ### Nome do sistema: PockPet
 ### Objetivo do sistema: aplicativo para acompanhamento e monitoramento da saúde de pets registrados.
@@ -24,3 +23,6 @@
 ### Front-end: React Native
 ### CI/CD: Github Actions
 ### Prototipação: Figma
+
+## Backlogs
+### <a href = "https://trello.com/w/tppdspockpet"> Link do Trello </a>
