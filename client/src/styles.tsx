@@ -1,4 +1,4 @@
-const AppStyles = {
+export const AppStyles = {
   colors: {
     primary: "#F59245",
     primary20: "#FCDBC1",
@@ -11,6 +11,7 @@ const AppStyles = {
     buttonPrimary: "#FFAB6A",
     blue: "#849FD3",
     lightGreen: "#77CCC6",
+    lightText: "#808080",
   },
 };
 
