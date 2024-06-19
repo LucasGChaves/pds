@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
+
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { ScreenTitle } from "./src/shared/components/Title";
 import TextField from "./src/shared/components/TextField";
@@ -10,8 +10,26 @@ import {
 import { theme } from "./src/customTheme";
 import Select from "./src/shared/components/Select";
 import { useState } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import CustomChip from "./src/shared/components/CustomChip";
+import { MaterialIcons } from "@expo/vector-icons";
+import PatientCard from "./src/shared/components/PatientCard";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <PaperProvider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={TesteScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  );
+}
+
+const TesteScreen = ({ navigation }) => {
   const [value, setValue] = useState(null);
 
   const handleChangeValue = (value: string) => {
@@ -28,27 +46,28 @@ export default function App() {
     { label: "Item 7", value: "7" },
     { label: "Item 8", value: "8" },
   ];
-
   return (
-    <NavigationContainer>
-      <PaperProvider theme={theme}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <ScreenTitle>Cadastro</ScreenTitle>
-          <TextField
-            placeholder="Email"
-            handleChangeText={() => {}}
-            label="Email"
-            maskType="phone"
-          />
-          <Select
-            data={data}
-            handleChangeValue={handleChangeValue}
-            label="Labelaa"
-            placeholder="Placeholder"
-            value="value"
-          />
-        </SafeAreaView>
-      </PaperProvider>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1, rowGap: 20 }}>
+      <ScreenTitle>Cadastro</ScreenTitle>
+      <TextField
+        placeholder="Email"
+        handleChangeText={() => {}}
+        label="Email"
+        maskType="phone"
+      />
+      <Select
+        data={data}
+        handleChangeValue={handleChangeValue}
+        label="Labelaa"
+        placeholder="Placeholder"
+        value={value}
+      />
+      <PatientCard
+        age="10"
+        name="Dudu"
+        ownerName="Caio Simões"
+        species="Cachorro"
+      />
+    </SafeAreaView>
   );
-}
+};

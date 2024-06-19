@@ -5,17 +5,6 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import styled from "styled-components/native";
 import AppStyles from "../../../styles";
 
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
-
 interface ItemProps {
   label: string;
   value: string;
@@ -62,24 +51,24 @@ const Select = ({
           handleChangeValue(item.value);
           setIsFocus(false);
         }}
-        renderInputSearch={() => (
-          <TextInput
-            style={{
-              borderWidth: 0.5,
-              borderColor: "#DDDDDD",
-              paddingHorizontal: 8,
-              marginBottom: 5,
-              margin: 6,
-              height: 45,
-              borderRadius: 8,
-            }}
-            value={value}
-            onChangeText={(e) => {
-              handleChangeValue(e);
-            }}
-            // placeholderTextColor="rgba(0,0,0,.5)"
-          />
-        )}
+        // renderInputSearch={() => (
+        //   <TextInput
+        //     style={{
+        //       borderWidth: 0.5,
+        //       borderColor: "#DDDDDD",
+        //       paddingHorizontal: 8,
+        //       marginBottom: 5,
+        //       margin: 6,
+        //       height: 45,
+        //       borderRadius: 8,
+        //     }}
+        //     value={value}
+        //     onChangeText={(e) => {
+        //       handleChangeValue(e);
+        //     }}
+        //     // placeholderTextColor="rgba(0,0,0,.5)"
+        //   />
+        // )}
       />
     </Container>
   );
