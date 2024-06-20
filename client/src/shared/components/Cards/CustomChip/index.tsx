@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
-import AppStyles from "../../../styles";
 import { View } from "react-native";
+import AppStyles from "../../../../styles";
 interface Props {
   color: "green" | "orange" | "blue";
   icon?: React.ReactNode;
@@ -41,7 +41,7 @@ const Container = styled.View<ContainerProps>`
   align-items: center;
   column-gap: 4px;
   background-color: ${(props) => props.color};
-  padding: 4px 16px;
+  padding: 3px 16px;
 `;
 
 const Content = styled.Text`

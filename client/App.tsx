@@ -11,9 +11,11 @@ import { theme } from "./src/customTheme";
 import Select from "./src/shared/components/Select";
 import { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CustomChip from "./src/shared/components/CustomChip";
 import { MaterialIcons } from "@expo/vector-icons";
-import PatientCard from "./src/shared/components/PatientCard";
+import VetCard from "./src/shared/components/Cards/VetCard";
+import AppointmentCard from "./src/shared/components/Cards/AppointmentCard";
+import MyPetCard from "./src/shared/components/Cards/MyPetCard";
+import PatientCard from "./src/shared/components/Cards/PatientCard";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -62,10 +64,19 @@ const TesteScreen = ({ navigation }) => {
         placeholder="Placeholder"
         value={value}
       />
+      <MyPetCard
+        handleClick={() => {}}
+        photo=""
+        age="12"
+        name="Dudu"
+        breed="Cachorro"
+      />
       <PatientCard
-        age="10"
+        age="12"
+        handleClick={() => {}}
         name="Dudu"
         ownerName="Caio Simões"
+        photo=""
         species="Cachorro"
       />
     </SafeAreaView>
