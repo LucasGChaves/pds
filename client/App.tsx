@@ -16,6 +16,7 @@ import VetCard from "./src/shared/components/Cards/VetCard";
 import AppointmentCard from "./src/shared/components/Cards/AppointmentCard";
 import MyPetCard from "./src/shared/components/Cards/MyPetCard";
 import PatientCard from "./src/shared/components/Cards/PatientCard";
+import VaccineCard from "./src/shared/components/Cards/VaccineCard";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -51,33 +52,12 @@ const TesteScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, rowGap: 20 }}>
       <ScreenTitle>Cadastro</ScreenTitle>
-      <TextField
-        placeholder="Email"
-        handleChangeText={() => {}}
-        label="Email"
-        maskType="phone"
-      />
-      <Select
-        data={data}
-        handleChangeValue={handleChangeValue}
-        label="Labelaa"
-        placeholder="Placeholder"
-        value={value}
-      />
-      <MyPetCard
+      <VaccineCard
+        batch="234323"
+        doctorName="Ana Júlia Lima"
+        manufacturer="Pfizer"
+        vaccineName="Antirrábica"
         handleClick={() => {}}
-        photo=""
-        age="12"
-        name="Dudu"
-        breed="Cachorro"
-      />
-      <PatientCard
-        age="12"
-        handleClick={() => {}}
-        name="Dudu"
-        ownerName="Caio Simões"
-        photo=""
-        species="Cachorro"
       />
     </SafeAreaView>
   );
