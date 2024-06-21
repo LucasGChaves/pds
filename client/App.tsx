@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { ScreenTitle } from "./src/shared/components/Title";
 import TextField from "./src/shared/components/TextField";
 import {
@@ -17,6 +17,8 @@ import AppointmentCard from "./src/shared/components/Cards/AppointmentCard";
 import MyPetCard from "./src/shared/components/Cards/MyPetCard";
 import PatientCard from "./src/shared/components/Cards/PatientCard";
 import VaccineCard from "./src/shared/components/Cards/VaccineCard";
+import AppointmentDetailCard from "./src/shared/components/Cards/AppointmentDetailCard";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -25,7 +27,13 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={TesteScreen} />
+          <Stack.Screen
+            name="Home"
+            component={TesteScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
@@ -52,12 +60,12 @@ const TesteScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, rowGap: 20 }}>
       <ScreenTitle>Cadastro</ScreenTitle>
-      <VaccineCard
-        batch="234323"
-        doctorName="Ana Júlia Lima"
-        manufacturer="Pfizer"
-        vaccineName="Antirrábica"
-        handleClick={() => {}}
+      <AppointmentDetailCard
+        date="20/10/2010"
+        handleChipClick={() => {}}
+        ownerName="Caio Simões"
+        pacientName="Dudu"
+        photo=""
       />
     </SafeAreaView>
   );

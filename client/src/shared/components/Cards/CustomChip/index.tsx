@@ -1,12 +1,13 @@
 import styled from "styled-components/native";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import AppStyles from "../../../../styles";
 interface Props {
   color: "green" | "orange" | "blue";
   icon?: React.ReactNode;
   text: string;
+  handleClick?: () => void;
 }
-const CustomChip = ({ color, text, icon }: Props) => {
+const CustomChip = ({ color, text, icon, handleClick }: Props) => {
   const getContainerColor = () => {
     switch (color) {
       case "green":
@@ -17,6 +18,18 @@ const CustomChip = ({ color, text, icon }: Props) => {
         return AppStyles.colors.primary30;
     }
   };
+  if (handleClick)
+    return (
+      <TouchableOpacity
+        style={{ alignItems: "baseline" }}
+        onPress={handleClick}
+      >
+        <Container color={getContainerColor()}>
+          {icon && icon}
+          <Content bold={Boolean(handleClick)}>{text}</Content>
+        </Container>
+      </TouchableOpacity>
+    );
 
   return (
     <View style={{ alignItems: "baseline" }}>
@@ -44,6 +57,10 @@ const Container = styled.View<ContainerProps>`
   padding: 3px 16px;
 `;
 
-const Content = styled.Text`
+interface ContentProps {
+  bold?: boolean;
+}
+const Content = styled.Text<ContentProps>`
   color: white;
+  font-weight: ${(props) => (props.bold ? "bold" : "normal")};
 `;

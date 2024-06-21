@@ -6,7 +6,7 @@ import AppStyles from "../../../../styles";
 interface Props {
   children: ReactNode;
   photo: string;
-  handleClick: () => void;
+  handleClick?: () => void;
 }
 const OrangeBorderCardSkeleton = ({ children, handleClick, photo }: Props) => {
   return (
