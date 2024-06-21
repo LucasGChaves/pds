@@ -34,7 +34,7 @@ const AppointmentDetailCard = ({
         />
         <CustomChip
           text={ownerName}
-          color="blue"
+          color="green"
           icon={<MaterialIcons name="account-circle" size={24} color="white" />}
         />
       </Content>
