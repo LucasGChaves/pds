@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { TouchableOpacity, View } from "react-native";
 import AppStyles from "../../../../styles";
 interface Props {
-  color: "green" | "orange" | "blue";
+  color: "green" | "orange" | "blue" | "darkOrange";
   icon?: React.ReactNode;
   text: string;
   handleClick?: () => void;
@@ -16,6 +16,8 @@ const CustomChip = ({ color, text, icon, handleClick }: Props) => {
         return AppStyles.colors.blue;
       case "orange":
         return AppStyles.colors.primary30;
+      case "darkOrange":
+        return AppStyles.colors.buttonPrimary;
     }
   };
   if (handleClick)

@@ -28,7 +28,7 @@ const AppointmentDetailCard = ({
         </DateText>
         <CustomChip
           text="Ver detalhes do pet"
-          color="orange"
+          color="darkOrange"
           handleClick={handleChipClick}
           icon={<MaterialIcons name="pets" size={24} color="white" />}
         />
