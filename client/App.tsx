@@ -20,6 +20,7 @@ import VaccineCard from "./src/shared/components/Cards/VaccineCard";
 import AppointmentDetailCard from "./src/shared/components/Cards/AppointmentDetailCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CircularAddButton from "./src/shared/components/CircularAddButton";
+import BackButton from "./src/shared/BackButton";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -69,6 +70,7 @@ const TesteScreen = ({ navigation }) => {
         photo=""
       />
       <CircularAddButton handleClick={() => {}} />
+      <BackButton handleClick={() => {}} />
     </SafeAreaView>
   );
 };
