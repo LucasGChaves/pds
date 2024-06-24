@@ -1,14 +1,18 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 
-import { ScreenTitle } from "./src/shared/components/Title";
-import {
-  MD3LightTheme as DefaultTheme,
-  PaperProvider,
-} from "react-native-paper";
+import { PaperProvider } from "react-native-paper";
 import { theme } from "./src/customTheme";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Login from "./src/pages/Login";
+
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "transparent",
+  },
+};
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -17,11 +21,11 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
+        <NavigationContainer theme={navTheme}>
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen
               name="Home"
-              component={TesteScreen}
+              component={Login}
               options={{
                 headerShown: false,
               }}
@@ -32,11 +36,3 @@ export default function App() {
     </PaperProvider>
   );
 }
-
-const TesteScreen = ({ navigation }) => {
-  return (
-    <SafeAreaView style={{ flex: 1, rowGap: 20 }}>
-      <ScreenTitle>Cadastro</ScreenTitle>
-    </SafeAreaView>
-  );
-};

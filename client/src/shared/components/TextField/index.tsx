@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MaskedTextInput } from "react-native-mask-text";
 import styled from "styled-components/native";
-import { TextInput } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 import { useCustomTheme } from "../../../customTheme";
 import AppStyles from "../../../styles";
 
@@ -11,6 +11,8 @@ interface Props {
   type?: "text" | "password";
   handleChangeText: (e: string) => void;
   placeholder: string;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 const TextField = ({
@@ -19,6 +21,8 @@ const TextField = ({
   maskType,
   type,
   placeholder,
+  error,
+  errorMessage,
 }: Props) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -79,11 +83,17 @@ const TextField = ({
           placeholderTextColor={theme.colors.lightText}
           right={
             type === "password" && (
-              <TextInput.Icon icon="eye" onPress={handlePasswordVisibility} />
+              <TextInput.Icon
+                icon={passwordVisibility ? "eye-off" : "eye"}
+                onPress={handlePasswordVisibility}
+              />
             )
           }
         />
       )}
+      <HelperText type="error" visible={error}>
+        {errorMessage}
+      </HelperText>
     </Container>
   );
 };
@@ -92,6 +102,7 @@ export default TextField;
 
 const Container = styled.View`
   padding: 0px 20px;
+  height: 70px;
 `;
 
 const Label = styled.Text`
