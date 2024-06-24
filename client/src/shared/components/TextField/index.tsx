@@ -66,7 +66,7 @@ const TextField = ({
         <TextInput
           mode="outlined"
           onChangeText={(text) => handleChangeText(text)}
-          secureTextEntry={passwordVisibility}
+          secureTextEntry={!passwordVisibility && type === "password"}
           autoCapitalize="none"
           returnKeyType="next"
           placeholder={placeholder}
@@ -84,7 +84,7 @@ const TextField = ({
           right={
             type === "password" && (
               <TextInput.Icon
-                icon={passwordVisibility ? "eye-off" : "eye"}
+                icon={passwordVisibility ? "eye" : "eye-off"}
                 onPress={handlePasswordVisibility}
               />
             )
@@ -101,7 +101,6 @@ const TextField = ({
 export default TextField;
 
 const Container = styled.View`
-  padding: 0px 20px;
   height: 70px;
 `;
 

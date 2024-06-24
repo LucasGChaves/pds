@@ -11,14 +11,14 @@ import OrangeBorderCardSkeleton, {
 interface Props {
   viewer: "vet" | "owner";
   pacientName: string;
-  doctorName: string;
+  vetName: string;
   ownerName: string;
   date: string;
   photo: string;
   handleClick: () => void;
 }
 const AppointmentCard = ({
-  doctorName,
+  vetName,
   pacientName,
   date,
   handleClick,
@@ -31,7 +31,7 @@ const AppointmentCard = ({
       <OrangeBorderCardContent>
         <OrangeBorderCardTitle>{pacientName}</OrangeBorderCardTitle>
         <CustomChip
-          text={viewer === "owner" ? `Dr. ${doctorName}` : ownerName}
+          text={viewer === "owner" ? `Dr. ${vetName}` : ownerName}
           color={viewer === "owner" ? "blue" : "green"}
           icon={<MaterialIcons name="account-circle" size={24} color="white" />}
         />

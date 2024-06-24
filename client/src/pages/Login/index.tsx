@@ -22,40 +22,43 @@ const Login = ({ navigation }) => {
     });
   };
 
+  const handleLogin = () => {};
+  const handleSignUp = () => {
+    navigation.navigate("SignUp");
+  };
+
   return (
-    <SafeAreaView>
-      <Container>
-        <ScreenTitle orange>Login</ScreenTitle>
-        <Image
-          source={require("../../../assets/Logo.png")}
-          style={{ alignSelf: "center" }}
+    <Container>
+      <ScreenTitle orange>Login</ScreenTitle>
+      <Image
+        source={require("../../../assets/Logo.png")}
+        style={{ alignSelf: "center" }}
+      />
+      <InputsContainer>
+        <TextField
+          label="Email"
+          placeholder="Insira seu email"
+          handleChangeText={(text) => handleChangeformData("email", text)}
         />
-        <InputsContainer>
-          <TextField
-            label="Email"
-            placeholder="Insira seu email"
-            handleChangeText={(text) => handleChangeformData("email", text)}
-          />
-          <TextField
-            label="Senha"
-            type="password"
-            placeholder="Insira sua senha"
-            handleChangeText={(password) =>
-              handleChangeformData("password", password)
-            }
-          />
-        </InputsContainer>
-        <ButtonsContainer>
-          <Button mode="contained" style={{ width: 200 }}>
-            Login
-          </Button>
-          <Divider />
-          <Button mode="contained" style={{ width: 200 }}>
-            Cadastro
-          </Button>
-        </ButtonsContainer>
-      </Container>
-    </SafeAreaView>
+        <TextField
+          label="Senha"
+          type="password"
+          placeholder="Insira sua senha"
+          handleChangeText={(password) =>
+            handleChangeformData("password", password)
+          }
+        />
+      </InputsContainer>
+      <ButtonsContainer>
+        <Button mode="contained" style={{ width: 200 }} onPress={handleLogin}>
+          Login
+        </Button>
+        <Divider />
+        <Button mode="contained" style={{ width: 200 }} onPress={handleSignUp}>
+          Cadastro
+        </Button>
+      </ButtonsContainer>
+    </Container>
   );
 };
 
@@ -64,11 +67,11 @@ export default Login;
 const Container = styled.View`
   background-color: white;
   row-gap: 60px;
-  margin-top: 16px;
 `;
 
 const InputsContainer = styled.View`
   row-gap: 6px;
+  padding: 0px 20px;
 `;
 
 const ButtonsContainer = styled.View`

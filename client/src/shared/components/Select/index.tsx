@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import styled from "styled-components/native";
 import AppStyles from "../../../styles";
 
@@ -106,9 +105,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Container = styled.View`
-  padding: 0px 20px;
-`;
+const Container = styled.View``;
 
 const Label = styled.Text`
   margin-bottom: 5px;

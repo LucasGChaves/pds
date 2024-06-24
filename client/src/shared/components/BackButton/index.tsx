@@ -27,7 +27,7 @@ const Container = styled.TouchableOpacity`
   flex-direction: row;
   position: absolute;
   column-gap: 2px;
-  top: 50px;
+  top: 10px;
   left: 10px;
 `;
 

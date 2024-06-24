@@ -5,7 +5,7 @@ import { Text } from "react-native";
 
 interface Props {
   vaccineName: string;
-  doctorName: string;
+  vetName: string;
   manufacturer: string;
   batch: string;
   handleClick: () => void;
@@ -13,7 +13,7 @@ interface Props {
 
 const VaccineCard = ({
   batch,
-  doctorName,
+  vetName,
   manufacturer,
   vaccineName,
   handleClick,
@@ -22,7 +22,7 @@ const VaccineCard = ({
     <VaccineCardContainer onPress={handleClick}>
       <Content>
         <Title>{vaccineName}</Title>
-        <SubTitle>Aplicada por Dr. {doctorName}</SubTitle>
+        <SubTitle>Aplicada por Dr. {vetName}</SubTitle>
         <VaccineInfoContainer>
           <VaccineInfo>Fabricante: {manufacturer}</VaccineInfo>
           <VaccineInfo>Lote: {batch}</VaccineInfo>

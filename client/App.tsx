@@ -5,6 +5,8 @@ import { theme } from "./src/customTheme";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Login from "./src/pages/Login";
+import SignUp from "./src/pages/SignUp";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const navTheme = {
   ...DefaultTheme,
@@ -22,15 +24,24 @@ export default function App() {
     <PaperProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <NavigationContainer theme={navTheme}>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen
-              name="Home"
-              component={Login}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </Stack.Navigator>
+          <SafeAreaView style={{ flex: 1, paddingTop: 8 }}>
+            <Stack.Navigator initialRouteName="Home">
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </Stack.Navigator>
+          </SafeAreaView>
         </NavigationContainer>
       </QueryClientProvider>
     </PaperProvider>
