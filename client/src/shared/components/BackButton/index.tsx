@@ -29,6 +29,7 @@ const Container = styled.TouchableOpacity`
   column-gap: 2px;
   top: 10px;
   left: 10px;
+  z-index: 999;
 `;
 
 interface TextProps {

@@ -10,7 +10,7 @@ interface Props {
   maskType?: "phone" | "data";
   type?: "text" | "password";
   handleChangeText: (e: string) => void;
-  placeholder: string;
+  placeholder?: string;
   error?: boolean;
   errorMessage?: string;
 }
@@ -86,6 +86,7 @@ const TextField = ({
               <TextInput.Icon
                 icon={passwordVisibility ? "eye" : "eye-off"}
                 onPress={handlePasswordVisibility}
+                color={AppStyles.colors.primary}
               />
             )
           }

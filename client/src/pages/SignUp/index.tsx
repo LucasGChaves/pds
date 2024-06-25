@@ -1,5 +1,7 @@
 import { useState } from "react";
 import UserTypeSelectionPage from "./UserTypeSelectionPage";
+import OwnerRegister from "./OwnerRegister";
+import VetRegister from "./VetRegister";
 
 const SignUp = ({ navigation }) => {
   const [page, setPage] = useState<"typeSelection" | "owner" | "vet">(
@@ -20,6 +22,12 @@ const SignUp = ({ navigation }) => {
       setPage(selectedUserType === "owner" ? "owner" : "vet");
   };
 
+  const handleRegister = () => {};
+
+  const handleBackToUserTypeSelection = () => {
+    setPage("typeSelection");
+  };
+
   switch (page) {
     case "typeSelection":
       return (
@@ -31,9 +39,9 @@ const SignUp = ({ navigation }) => {
         />
       );
     case "owner":
-      return <></>;
+      return <OwnerRegister handleBack={handleBackToUserTypeSelection} />;
     case "vet":
-      return <></>;
+      return <VetRegister handleBack={handleBackToUserTypeSelection} />;
   }
 
   return <></>;

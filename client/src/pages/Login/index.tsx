@@ -23,6 +23,7 @@ const Login = ({ navigation }) => {
   };
 
   const handleLogin = () => {};
+
   const handleSignUp = () => {
     navigation.navigate("SignUp");
   };
