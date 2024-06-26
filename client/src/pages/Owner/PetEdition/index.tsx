@@ -1,3 +1,5 @@
-const PetEdition = ({ navigation }) => {};
+const PetEdition = ({ navigation }) => {
+  return <></>;
+};
 
 export default PetEdition;

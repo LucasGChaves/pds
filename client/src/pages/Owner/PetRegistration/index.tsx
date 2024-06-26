@@ -1,3 +1,5 @@
-const PetRegistration = ({ navigation }) => {};
+const PetRegistration = ({ navigation }) => {
+  return <></>;
+};
 
 export default PetRegistration;

@@ -1,3 +1,5 @@
-const Vaccines = ({ navigation }) => {};
+const Vaccines = ({ navigation }) => {
+  return <></>;
+};
 
 export default Vaccines;

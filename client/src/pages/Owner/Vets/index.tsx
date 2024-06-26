@@ -1,3 +1,5 @@
-const Vets = ({ navigation }) => {};
+const Vets = ({ navigation }) => {
+  return <></>;
+};
 
 export default Vets;

@@ -1,3 +1,5 @@
-const ProfileEdition = ({ navigation }) => {};
+const ProfileEdition = ({ navigation }) => {
+  return <></>;
+};
 
 export default ProfileEdition;

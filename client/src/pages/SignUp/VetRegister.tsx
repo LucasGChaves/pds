@@ -11,7 +11,7 @@ interface Props {
 
 interface FormData {
   name: string;
-  username: string;
+  lastName: string;
   cpf: string;
   cnpj: string;
   crmv: string;
@@ -51,10 +51,10 @@ const VetRegister = ({ handleBack }: Props) => {
         cpf,
         email,
         name,
+        lastName,
         password,
         passwordRepetition,
         phone,
-        username,
         cnpj,
         crmv,
       } = formData;
@@ -87,15 +87,15 @@ const VetRegister = ({ handleBack }: Props) => {
         {!isSecondPart ? (
           <>
             <TextField
-              label="Nome e sobrenome"
-              placeholder="Insira seu nome e sobrenome"
+              label="Nome"
+              placeholder="Insira seu nome"
               handleChangeText={(text) => handleChangeformData("name", text)}
             />
             <TextField
-              label="Username"
-              placeholder="Insira seu username"
+              label="Último nome"
+              placeholder="Insira seu último nome"
               handleChangeText={(text) =>
-                handleChangeformData("username", text)
+                handleChangeformData("lastName", text)
               }
             />
             <TextField

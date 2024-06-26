@@ -4,6 +4,11 @@ import styled from "styled-components/native";
 import TextField from "../../shared/components/TextField";
 import { ScreenTitle } from "../../shared/components/Title";
 import BackButton from "../../shared/components/BackButton";
+import {
+  useNavigation,
+  ParamListBase,
+  NavigationProp,
+} from "@react-navigation/native";
 
 interface Props {
   handleBack(): void;
@@ -11,7 +16,7 @@ interface Props {
 
 interface FormData {
   name: string;
-  username: string;
+  lastName: string;
   cpf: string;
   phone: string;
   email: string;
@@ -22,6 +27,7 @@ interface FormData {
 const OwnerRegister = ({ handleBack }: Props) => {
   const [formData, setFormData] = useState<FormData>();
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   const handleChangeformData = (prop: string, value: string) => {
     setFormData({
@@ -48,12 +54,14 @@ const OwnerRegister = ({ handleBack }: Props) => {
         cpf,
         email,
         name,
+        lastName,
         password,
         passwordRepetition,
         phone,
-        username,
       } = formData;
     }
+
+    navigation.navigate("OwnerTabNavigator");
   };
 
   return (
@@ -62,14 +70,14 @@ const OwnerRegister = ({ handleBack }: Props) => {
       <ScreenTitle orange>Cadastro</ScreenTitle>
       <InputsContainer>
         <TextField
-          label="Nome e sobrenome"
-          placeholder="Insira seu nome e sobrenome"
+          label="Nome"
+          placeholder="Insira seu nome"
           handleChangeText={(text) => handleChangeformData("name", text)}
         />
         <TextField
-          label="Username"
-          placeholder="Insira seu username"
-          handleChangeText={(text) => handleChangeformData("username", text)}
+          label="Último nome"
+          placeholder="Insira seu último nome"
+          handleChangeText={(text) => handleChangeformData("lastName", text)}
         />
         <TextField
           label="CPF"

@@ -1,3 +1,5 @@
-const MyProfile = ({ navigation }) => {};
+const MyProfile = ({ navigation }) => {
+  return <></>;
+};
 
 export default MyProfile;

@@ -1,3 +1,5 @@
-const NewAppointment = ({ navigation }) => {};
+const NewAppointment = ({ navigation }) => {
+  return <></>;
+};
 
 export default NewAppointment;
