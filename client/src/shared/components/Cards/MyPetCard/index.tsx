@@ -11,7 +11,7 @@ import CustomChip from "../CustomChip";
 interface Props {
   name: string;
   breed: string;
-  age: string;
+  age: number;
   photo: string;
   handleClick: () => void;
 }
@@ -21,7 +21,7 @@ const MyPetCard = ({ age, breed, handleClick, name, photo }: Props) => {
       <OrangeBorderCardContent>
         <OrangeBorderCardTitle>{name}</OrangeBorderCardTitle>
         <CustomChip text={breed} color="green" />
-        <AgeText>{age} anos</AgeText>
+        <AgeText>{age === 1 ? `${age} ano` : `${age} anos`}</AgeText>
       </OrangeBorderCardContent>
     </OrangeBorderCardSkeleton>
   );

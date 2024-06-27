@@ -1,6 +1,7 @@
 export const AppStyles = {
   colors: {
     primary: "#F59245",
+    primary10: "#fde7d5",
     primary20: "#FCDBC1",
     primary30: "#FAC8A2",
     primary40: "#F8B683",

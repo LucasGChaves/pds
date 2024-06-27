@@ -1,5 +1,4 @@
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-
 import { PaperProvider } from "react-native-paper";
 import { theme } from "./src/customTheme";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -12,17 +11,18 @@ import MyProfile from "./src/pages/MyProfile";
 import MyPets from "./src/pages/Owner/MyPets";
 import MyAppointments from "./src/pages/Owner/MyAppointments";
 import PetRegistration from "./src/pages/Owner/PetRegistration";
-import PetEdition from "./src/pages/Owner/PetEdition";
 import PetDetails from "./src/pages/Owner/PetDetails";
 import Vaccines from "./src/pages/Vaccines";
 import Vets from "./src/pages/Owner/Vets";
 import NewAppointment from "./src/pages/Owner/NewAppointment";
 import ProfileEdition from "./src/pages/ProfileEdition";
-import PawIcon from "./src/assets/icons/pawIcon";
-import ProfileIcon from "./src/assets/icons/profileIcon";
-import AppointmentIcon from "./src/assets/icons/appointmentIcon";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { MyContextProvider } from "./src/shared/context/MyContext";
+import { pt, registerTranslation } from "react-native-paper-dates";
+
+registerTranslation("pt", pt);
+
 const navTheme = {
   ...DefaultTheme,
   colors: {
@@ -37,37 +37,39 @@ export default function App() {
   const queryClient = new QueryClient();
 
   return (
-    <PaperProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer theme={navTheme}>
-          <SafeAreaView style={{ flex: 1, paddingTop: 8 }}>
-            <Stack.Navigator initialRouteName="Home">
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="SignUp"
-                component={SignUp}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="OwnerTabNavigator"
-                component={OwnerTabNavigator}
-                options={{
-                  headerShown: false,
-                }}
-              />
-            </Stack.Navigator>
-          </SafeAreaView>
-        </NavigationContainer>
-      </QueryClientProvider>
-    </PaperProvider>
+    <MyContextProvider>
+      <PaperProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer theme={navTheme}>
+            <SafeAreaView style={{ flex: 1, paddingTop: 8 }}>
+              <Stack.Navigator initialRouteName="Home">
+                <Stack.Screen
+                  name="Login"
+                  component={Login}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="SignUp"
+                  component={SignUp}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="OwnerTabNavigator"
+                  component={OwnerTabNavigator}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+              </Stack.Navigator>
+            </SafeAreaView>
+          </NavigationContainer>
+        </QueryClientProvider>
+      </PaperProvider>
+    </MyContextProvider>
   );
 }
 
@@ -81,6 +83,7 @@ const OwnerTabNavigator = () => {
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "gray",
         tabBarLabelStyle: { paddingBottom: 5 },
+        headerShown: false,
       }}
     >
       <Tab.Screen
@@ -101,7 +104,7 @@ const OwnerTabNavigator = () => {
         name="Appointments"
         component={AppointmentScreens}
         options={{
-          tabBarLabel: "Consultas",
+          tabBarLabel: "Conusltas",
           tabBarIcon: ({ focused }) => (
             <FontAwesome6
               name="user-doctor"
@@ -116,7 +119,6 @@ const OwnerTabNavigator = () => {
         component={ProfileScreens}
         options={{
           tabBarLabel: "Perfil",
-
           tabBarIcon: ({ focused }) => (
             <FontAwesome
               name="user"
@@ -134,42 +136,16 @@ const PetsScreens = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="MyPets">
-      <Stack.Screen
-        name="MyPets"
-        component={MyPets}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="PetRegistration"
-        component={PetRegistration}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="PetEdition"
-        component={PetEdition}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="PetDetails"
-        component={PetDetails}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Vaccines"
-        component={Vaccines}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="MyPets" component={MyPets} />
+      <Stack.Screen name="PetRegistration" component={PetRegistration} />
+      {/* <Stack.Screen name="PetEdition" component={PetEdition} /> */}
+      <Stack.Screen name="PetDetails" component={PetDetails} />
+      <Stack.Screen name="Vaccines" component={Vaccines} />
     </Stack.Navigator>
   );
 };
@@ -178,28 +154,15 @@ const AppointmentScreens = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="MyAppointments">
-      <Stack.Screen
-        name="MyAppointments"
-        component={MyAppointments}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Vets"
-        component={Vets}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="NewAppointment"
-        component={NewAppointment}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator
+      initialRouteName="MyAppointments"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="MyAppointments" component={MyAppointments} />
+      <Stack.Screen name="Vets" component={Vets} />
+      <Stack.Screen name="NewAppointment" component={NewAppointment} />
     </Stack.Navigator>
   );
 };
@@ -208,7 +171,12 @@ const ProfileScreens = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator
+      initialRouteName="MyProfile"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="MyProfile"
         component={MyProfile}
