@@ -78,7 +78,6 @@ const PetDetails = ({ navigation }) => {
             mode="outlined"
             onPress={handleShowOwnerInfo}
             labelStyle={{ color: "black" }}
-            s
             style={{
               borderColor: AppStyles.colors.primary20,
             }}
