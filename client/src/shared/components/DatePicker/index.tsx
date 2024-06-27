@@ -1,17 +1,25 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components/native";
 import AppStyles from "../../../styles";
 import { DatePickerModal } from "react-native-paper-dates";
 import { Text } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 
 interface Props {
-  label: string;
+  label?: string;
   handleChange: (e: Date) => void;
-  placeholder?: string;
+  placeholder: string;
   value: Date;
+  mode: "outlined" | "round";
 }
 
-const DatePicker = ({ handleChange, label, placeholder, value }: Props) => {
+const DatePicker = ({
+  handleChange,
+  label,
+  placeholder,
+  value,
+  mode,
+}: Props) => {
   const [open, setOpen] = React.useState(false);
 
   const onDismissSingle = React.useCallback(() => {
@@ -29,27 +37,18 @@ const DatePicker = ({ handleChange, label, placeholder, value }: Props) => {
   return (
     <Container>
       <Label>{label}</Label>
-      <Field
-        onPress={() => setOpen(true)}
-        style={{
-          height: 45,
-          paddingLeft: 15,
-          backgroundColor: "white",
-          borderRadius: 8,
-          borderColor: AppStyles.colors.primary30,
-          borderWidth: 2,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            color: value ? "black" : AppStyles.colors.lightText,
-          }}
-        >
-          {value?.toLocaleDateString() ?? "Selecione a data"}
-        </Text>
+      <Field onPress={() => setOpen(true)} mode={mode}>
+        <Content>
+          <Text
+            style={{
+              fontSize: 16,
+              color: value ? "black" : AppStyles.colors.lightText,
+            }}
+          >
+            {value?.toLocaleDateString() ?? placeholder}
+          </Text>
+          <Entypo name="calendar" size={24} color={AppStyles.colors.primary} />
+        </Content>
       </Field>
       <DatePickerModal
         locale="pt"
@@ -65,6 +64,39 @@ const DatePicker = ({ handleChange, label, placeholder, value }: Props) => {
 
 export default DatePicker;
 
+interface FieldProps {
+  mode: "outlined" | "round";
+  children: ReactNode;
+  onPress: () => void;
+}
+
+const Field = ({ mode, children, onPress }: FieldProps) => {
+  if (mode == "outlined")
+    return (
+      <OutlinedField
+        onPress={onPress}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {children}
+      </OutlinedField>
+    );
+
+  return (
+    <RoundField
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+      onPress={onPress}
+    >
+      {children}
+    </RoundField>
+  );
+};
+
 const Container = styled.View`
   height: 70px;
 `;
@@ -74,13 +106,29 @@ const Label = styled.Text`
   color: ${AppStyles.colors.lightText};
 `;
 
-const Field = styled.TouchableHighlight`
+const OutlinedField = styled.TouchableHighlight`
   height: 45px;
-  padding-left: 15px;
   background-color: white;
   border-radius: 8px;
   border-color: ${AppStyles.colors.primary30};
   border-width: 2px;
   display: "flex";
   justify-content: "center";
+`;
+
+const RoundField = styled.TouchableHighlight`
+  height: 45px;
+  padding-left: 15px;
+  background-color: white;
+  border-radius: 25px;
+  display: "flex";
+  justify-content: "center";
+`;
+
+const Content = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 15px;
+  align-items: center;
 `;

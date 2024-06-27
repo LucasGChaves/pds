@@ -68,6 +68,8 @@ const PetRegistration = ({ navigation }) => {
             handleChange={(d) => handleChangeformData("birthDate", d)}
             label="Data de nascimento"
             value={formData?.birthDate}
+            placeholder="Selecione a data"
+            mode="outlined"
           />
         </InputsContainer>
         <ButtonContainer>
