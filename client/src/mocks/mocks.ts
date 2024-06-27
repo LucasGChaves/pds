@@ -20,7 +20,7 @@ export const MOCKED_USERS: IUserGet[] = [
     email: "john.doe@example.com",
     phone: "(11) 99999-9999",
     photoFileName: "john.jpg",
-    roleId: MOCKED_ROLES[1], // Veterinarian
+    role: MOCKED_ROLES[1], // Veterinarian
     availableTime: new Date("2024-03-10T09:00:00"),
   },
   {
@@ -33,7 +33,7 @@ export const MOCKED_USERS: IUserGet[] = [
     email: "jane.smith@example.com",
     phone: "(11) 88888-8888",
     photoFileName: "jane.jpg",
-    roleId: MOCKED_ROLES[1], // Veterinarian
+    role: MOCKED_ROLES[1], // Veterinarian
     availableTime: new Date("2024-03-10T14:00:00"),
   },
   {
@@ -46,7 +46,7 @@ export const MOCKED_USERS: IUserGet[] = [
     email: "alice.johnson@example.com",
     phone: "(11) 77777-7777",
     photoFileName: "alice.jpg",
-    roleId: MOCKED_ROLES[2], // Pet Owner
+    role: MOCKED_ROLES[2], // Pet Owner
     availableTime: new Date(),
   },
   {
@@ -59,7 +59,7 @@ export const MOCKED_USERS: IUserGet[] = [
     email: "bob.williams@example.com",
     phone: "(11) 66666-6666",
     photoFileName: "bob.jpg",
-    roleId: MOCKED_ROLES[2], // Pet Owner
+    role: MOCKED_ROLES[2], // Pet Owner
     availableTime: new Date(),
   },
 ];
@@ -199,6 +199,22 @@ export const MOCKED_VACCINES: IVaccine[] = [
   },
   {
     id: 4,
+    vaccineName: "Canine Parvovirus",
+    manufacturer: "DogHealth",
+    batch: "CP-202402",
+    pet: MOCKED_PETS[2], // Rex
+    vet: MOCKED_USERS[0], // John Doe (Vet)
+  },
+  {
+    id: 5,
+    vaccineName: "Canine Parvovirus",
+    manufacturer: "DogHealth",
+    batch: "CP-202402",
+    pet: MOCKED_PETS[2], // Rex
+    vet: MOCKED_USERS[0], // John Doe (Vet)
+  },
+  {
+    id: 6,
     vaccineName: "Canine Parvovirus",
     manufacturer: "DogHealth",
     batch: "CP-202402",

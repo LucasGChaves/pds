@@ -25,6 +25,6 @@ export interface IUserGet {
   email: string;
   phone: string;
   photoFileName: string;
-  roleId: IRole;
+  role: IRole;
   availableTime: Date;
 }

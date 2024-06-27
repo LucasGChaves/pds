@@ -1,18 +1,12 @@
-import {
-  useNavigation,
-  ParamListBase,
-  NavigationProp,
-  useRoute,
-} from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import LoggedAreaContainer from "../../../shared/components/LoggedAreaContainer";
-import { Button, Icon } from "react-native-paper";
-import { ScreenTitle } from "../../../shared/components/Title";
-import TextField from "../../../shared/components/TextField";
+import LoggedAreaContainer from "../../shared/components/LoggedAreaContainer";
+import { Button } from "react-native-paper";
+import { ScreenTitle } from "../../shared/components/Title";
+import TextField from "../../shared/components/TextField";
 import styled from "styled-components/native";
-import { DatePickerInput } from "react-native-paper-dates";
-import DatePicker from "../../../shared/components/DatePicker";
-import UploadButton from "../../../shared/components/UploadButton";
+import DatePicker from "../../shared/components/DatePicker";
+import UploadButton from "../../shared/components/UploadButton";
 interface FormData {
   name: string;
   species: string;
@@ -39,7 +33,7 @@ const PetRegistration = ({ navigation }) => {
       const { birthDate, breed, name, photo, species } = formData;
     }
 
-    navigation.navigate("MyPets");
+    navigation.navigate("Pets");
   };
 
   const handleUploadPhoto = () => {};
@@ -86,6 +80,7 @@ const PetRegistration = ({ navigation }) => {
 export default PetRegistration;
 
 const Container = styled.View`
+  margin-top: 8px;
   row-gap: 32px;
 `;
 

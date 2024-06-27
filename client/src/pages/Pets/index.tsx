@@ -1,14 +1,14 @@
 import { Button, Searchbar, Text } from "react-native-paper";
-import LoggedAreaContainer from "../../../shared/components/LoggedAreaContainer";
-import { ScreenTitle } from "../../../shared/components/Title";
+import LoggedAreaContainer from "../../shared/components/LoggedAreaContainer";
+import { ScreenTitle } from "../../shared/components/Title";
 import styled from "styled-components/native";
 import { FlatList, ScrollView } from "react-native";
 import { useState } from "react";
-import { MOCKED_PETS } from "../../../mocks/mocks";
-import MyPetCard from "../../../shared/components/Cards/MyPetCard";
-import CircularAddButton from "../../../shared/components/CircularAddButton";
+import { MOCKED_PETS } from "../../mocks/mocks";
+import MyPetCard from "../../shared/components/Cards/MyPetCard";
+import CircularAddButton from "../../shared/components/CircularAddButton";
 
-const MyPets = ({ navigation }) => {
+const Pets = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleAdd = () => {
@@ -53,7 +53,7 @@ const MyPets = ({ navigation }) => {
   );
 };
 
-export default MyPets;
+export default Pets;
 
 const Container = styled.View`
   row-gap: 32px;

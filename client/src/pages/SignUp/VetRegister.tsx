@@ -170,6 +170,7 @@ const VetRegister = ({ handleBack }: Props) => {
 export default VetRegister;
 
 const Container = styled.View`
+  margin-top: 8px;
   padding: 0 20px;
   row-gap: 16px;
 `;

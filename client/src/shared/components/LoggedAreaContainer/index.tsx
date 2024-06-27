@@ -3,13 +3,21 @@ import AppStyles from "../../../styles";
 import React from "react";
 import BackButton from "../BackButton";
 import { useNavigation } from "@react-navigation/native";
+import DeleteButton from "../DeleteButton";
 
 interface Props {
   children: React.ReactNode;
   hideBackButton?: boolean;
+  showDeleteButton?: boolean;
+  handleDelete?: () => void;
 }
 
-const LoggedAreaContainer = ({ children, hideBackButton }: Props) => {
+const LoggedAreaContainer = ({
+  children,
+  hideBackButton,
+  showDeleteButton,
+  handleDelete,
+}: Props) => {
   const navigate = useNavigation();
 
   const handleBack = () => {
@@ -19,6 +27,7 @@ const LoggedAreaContainer = ({ children, hideBackButton }: Props) => {
   return (
     <Container>
       {!hideBackButton && <BackButton handleClick={handleBack} />}
+      {showDeleteButton && <DeleteButton handleDelete={handleDelete} />}
       <Content>{children}</Content>
     </Container>
   );

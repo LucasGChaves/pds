@@ -8,18 +8,20 @@ import SignUp from "./src/pages/SignUp";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyProfile from "./src/pages/MyProfile";
-import MyPets from "./src/pages/Owner/MyPets";
-import MyAppointments from "./src/pages/Owner/MyAppointments";
-import PetRegistration from "./src/pages/Owner/PetRegistration";
-import PetDetails from "./src/pages/Owner/PetDetails";
+import Pets from "./src/pages/Pets";
+import MyAppointments from "./src/pages/MyAppointments";
+import PetRegistration from "./src/pages/PetRegistration";
+import PetDetails from "./src/pages/PetDetails";
 import Vaccines from "./src/pages/Vaccines";
-import Vets from "./src/pages/Owner/Vets";
-import NewAppointment from "./src/pages/Owner/NewAppointment";
+import Vets from "./src/pages/Vets";
+import NewAppointment from "./src/pages/NewAppointment";
 import ProfileEdition from "./src/pages/ProfileEdition";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MyContextProvider } from "./src/shared/context/MyContext";
 import { pt, registerTranslation } from "react-native-paper-dates";
+import VaccineRegistration from "./src/pages/VaccineRegistration";
+import OwnerInfo from "./src/pages/OwnerInfo";
 
 registerTranslation("pt", pt);
 
@@ -41,7 +43,7 @@ export default function App() {
       <PaperProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <NavigationContainer theme={navTheme}>
-            <SafeAreaView style={{ flex: 1, paddingTop: 8 }}>
+            <SafeAreaView style={{ flex: 1 }}>
               <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen
                   name="Login"
@@ -58,8 +60,8 @@ export default function App() {
                   }}
                 />
                 <Stack.Screen
-                  name="OwnerTabNavigator"
-                  component={OwnerTabNavigator}
+                  name="TabNavigator"
+                  component={TabNavigator}
                   options={{
                     headerShown: false,
                   }}
@@ -73,7 +75,7 @@ export default function App() {
   );
 }
 
-const OwnerTabNavigator = () => {
+const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -84,6 +86,7 @@ const OwnerTabNavigator = () => {
         tabBarInactiveTintColor: "gray",
         tabBarLabelStyle: { paddingBottom: 5 },
         headerShown: false,
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tab.Screen
@@ -141,11 +144,15 @@ const PetsScreens = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="MyPets" component={MyPets} />
+      <Stack.Screen name="Pets" component={Pets} />
       <Stack.Screen name="PetRegistration" component={PetRegistration} />
-      {/* <Stack.Screen name="PetEdition" component={PetEdition} /> */}
       <Stack.Screen name="PetDetails" component={PetDetails} />
+      <Stack.Screen name="OwnerInfo" component={OwnerInfo} />
       <Stack.Screen name="Vaccines" component={Vaccines} />
+      <Stack.Screen
+        name="VaccineRegistration"
+        component={VaccineRegistration}
+      />
     </Stack.Navigator>
   );
 };

@@ -2,13 +2,15 @@ import styled from "styled-components/native";
 import AppStyles from "../../../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text } from "react-native";
+import { Card } from "react-native-paper";
+import VaccineIcon from "../../../../assets/icons/VaccineIcon";
 
 interface Props {
   vaccineName: string;
   vetName: string;
   manufacturer: string;
   batch: string;
-  handleClick: () => void;
+  handleClick(): void;
 }
 
 const VaccineCard = ({
@@ -19,26 +21,25 @@ const VaccineCard = ({
   handleClick,
 }: Props) => {
   return (
-    <VaccineCardContainer onPress={handleClick}>
-      <Content>
-        <Title>{vaccineName}</Title>
-        <SubTitle>Aplicada por Dr. {vetName}</SubTitle>
-        <VaccineInfoContainer>
-          <VaccineInfo>Fabricante: {manufacturer}</VaccineInfo>
-          <VaccineInfo>Lote: {batch}</VaccineInfo>
-        </VaccineInfoContainer>
-      </Content>
-      <MaterialIcons name="vaccines" size={24} color="black" />
-    </VaccineCardContainer>
+    <Card style={{ backgroundColor: "#fcf7f5" }}>
+      <VaccineCardContainer onPress={handleClick}>
+        <Content>
+          <Title>{vaccineName}</Title>
+          <SubTitle>Aplicada por Dr. {vetName}</SubTitle>
+          <VaccineInfoContainer>
+            <VaccineInfo>Fabricante: {manufacturer}</VaccineInfo>
+            <VaccineInfo>Lote: {batch}</VaccineInfo>
+          </VaccineInfoContainer>
+        </Content>
+        <VaccineIcon fill="black" />
+      </VaccineCardContainer>
+    </Card>
   );
 };
 
 export default VaccineCard;
 
 const VaccineCardContainer = styled.TouchableOpacity`
-  border-radius: 15px;
-  border-color: ${AppStyles.colors.superLightText};
-  border-width: 1px;
   padding: 6px 12px;
   display: flex;
   flex-direction: row;
@@ -48,6 +49,7 @@ const VaccineCardContainer = styled.TouchableOpacity`
 `;
 
 const Content = styled.View``;
+
 const Title = styled.Text`
   font-size: 18px;
   font-weight: bold;
