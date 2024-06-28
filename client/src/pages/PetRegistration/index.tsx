@@ -44,16 +44,19 @@ const PetRegistration = ({ navigation }) => {
         <ScreenTitle orange>Cadastro de pet</ScreenTitle>
         <InputsContainer>
           <TextField
+            value={formData?.name}
             label="Nome"
             placeholder="Insira o nome do pet"
             handleChangeText={(text) => handleChangeformData("name", text)}
           />
           <TextField
+            value={formData?.species}
             label="Espécie"
             placeholder="Insira a espécie do pet"
             handleChangeText={(text) => handleChangeformData("species", text)}
           />
           <TextField
+            value={formData?.breed}
             label="Raça"
             placeholder="Insira a raça do pet"
             handleChangeText={(text) => handleChangeformData("breed", text)}

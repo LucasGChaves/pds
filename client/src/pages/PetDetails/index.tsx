@@ -10,8 +10,11 @@ import AppStyles from "../../styles";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { Ionicons } from "@expo/vector-icons";
+import { useMyContext } from "../../shared/context/MyContext";
 
 const PetDetails = ({ navigation }) => {
+  const { user } = useMyContext();
+
   const data: DataListValueType[] = [
     {
       leftValue: "Espécie",
@@ -27,6 +30,15 @@ const PetDetails = ({ navigation }) => {
     },
   ];
 
+  const ownerValues: DataListValueType = {
+    leftValue: "Tutor",
+    rightValue: "Fulanoildo da Silva",
+  };
+
+  if (user.role.roleName === userTypeEnum.VET) {
+    data.push(ownerValues);
+  }
+
   const handleVaccines = () => {
     navigation.navigate("Vaccines");
   };
@@ -40,7 +52,7 @@ const PetDetails = ({ navigation }) => {
   };
 
   return (
-    <LoggedAreaContainer showDeleteButton handleDelete={handleDelete}>
+    <LoggedAreaContainer handleDelete={handleDelete}>
       <Container>
         <PhotoContainer>
           <Photo />

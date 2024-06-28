@@ -90,7 +90,7 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Pets"
+        name="PetsScreens"
         component={PetsScreens}
         options={{
           tabBarLabel: "Pets",
@@ -107,7 +107,7 @@ const TabNavigator = () => {
         name="Appointments"
         component={AppointmentScreens}
         options={{
-          tabBarLabel: "Conusltas",
+          tabBarLabel: "Consultas",
           tabBarIcon: ({ focused }) => (
             <FontAwesome6
               name="user-doctor"

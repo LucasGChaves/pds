@@ -13,6 +13,7 @@ interface Props {
   placeholder?: string;
   error?: boolean;
   errorMessage?: string;
+  value: string;
 }
 
 const TextField = ({
@@ -23,6 +24,7 @@ const TextField = ({
   placeholder,
   error,
   errorMessage,
+  value,
 }: Props) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -52,6 +54,7 @@ const TextField = ({
           mask={obterMascara()}
           placeholder={placeholder}
           placeholderTextColor={theme.colors.lightText}
+          value={value}
           style={{
             height: 45,
             paddingLeft: 15,
@@ -70,6 +73,7 @@ const TextField = ({
           autoCapitalize="none"
           returnKeyType="next"
           placeholder={placeholder}
+          value={value}
           autoCorrect={false}
           style={{
             height: 45,

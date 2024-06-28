@@ -4,18 +4,18 @@ import React from "react";
 import BackButton from "../BackButton";
 import { useNavigation } from "@react-navigation/native";
 import DeleteButton from "../DeleteButton";
+import ShowComponentByRole from "../ShowComponentByRole";
+import { userTypeEnum } from "../../../enums/userTypeEnum";
 
 interface Props {
   children: React.ReactNode;
   hideBackButton?: boolean;
-  showDeleteButton?: boolean;
   handleDelete?: () => void;
 }
 
 const LoggedAreaContainer = ({
   children,
   hideBackButton,
-  showDeleteButton,
   handleDelete,
 }: Props) => {
   const navigate = useNavigation();
@@ -27,7 +27,9 @@ const LoggedAreaContainer = ({
   return (
     <Container>
       {!hideBackButton && <BackButton handleClick={handleBack} />}
-      {showDeleteButton && <DeleteButton handleDelete={handleDelete} />}
+      <ShowComponentByRole role={userTypeEnum.OWNER}>
+        {handleDelete && <DeleteButton handleDelete={handleDelete} />}
+      </ShowComponentByRole>
       <Content>{children}</Content>
     </Container>
   );
