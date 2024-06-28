@@ -7,9 +7,14 @@ import { useState } from "react";
 import { MOCKED_PETS } from "../../mocks/mocks";
 import MyPetCard from "../../shared/components/Cards/MyPetCard";
 import CircularAddButton from "../../shared/components/CircularAddButton";
+import PatientCard from "../../shared/components/Cards/PatientCard";
+import { useMyContext } from "../../shared/context/MyContext";
+import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
+import { userTypeEnum } from "../../enums/userTypeEnum";
 
 const Pets = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { isUserOwner } = useMyContext();
 
   const handleAdd = () => {
     navigation.navigate("PetRegistration");
@@ -22,7 +27,9 @@ const Pets = ({ navigation }) => {
   return (
     <LoggedAreaContainer hideBackButton>
       <Container>
-        <ScreenTitle>Meus pets</ScreenTitle>
+        <ScreenTitle>
+          {isUserOwner ? "Meus pets" : "Meus pacientes"}
+        </ScreenTitle>
         <Searchbar
           placeholder="Busque pelo nome do pet"
           onChangeText={setSearchQuery}
@@ -30,25 +37,39 @@ const Pets = ({ navigation }) => {
         />
         <FlatList
           nestedScrollEnabled
-          // style={{ height: "56%" }}
-          style={{ maxHeight: 425, height: "58%" }}
+          style={
+            isUserOwner ? { maxHeight: 425, height: "58%" } : { height: "62%" }
+          }
           data={MOCKED_PETS}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ gap: 12 }}
-          renderItem={({ item }) => (
-            <MyPetCard
-              age={item.age}
-              breed={item.breed}
-              handleClick={() => handleCardClick(item.id.toString())}
-              name={item.name}
-              photo={item.photo}
-            />
-          )}
+          renderItem={({ item }) => {
+            return isUserOwner ? (
+              <MyPetCard
+                age={item.age}
+                breed={item.breed}
+                handleClick={() => handleCardClick(item.id.toString())}
+                name={item.name}
+                photo={item.photo}
+              />
+            ) : (
+              <PatientCard
+                age={item.age}
+                species={item.species}
+                ownerName={item.owner.name}
+                handleClick={() => handleCardClick(item.id.toString())}
+                name={item.name}
+                photo={item.photo}
+              />
+            );
+          }}
         />
       </Container>
-      <AddButtonContainer>
-        <CircularAddButton handleClick={handleAdd} />
-      </AddButtonContainer>
+      <ShowComponentByRole role={userTypeEnum.OWNER}>
+        <AddButtonContainer>
+          <CircularAddButton handleClick={handleAdd} />
+        </AddButtonContainer>
+      </ShowComponentByRole>
     </LoggedAreaContainer>
   );
 };
@@ -63,4 +84,5 @@ const AddButtonContainer = styled.View`
   position: absolute;
   bottom: 12px;
   right: 12px;
+  z-index: 999;
 `;

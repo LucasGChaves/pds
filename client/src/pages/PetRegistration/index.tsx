@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoggedAreaContainer from "../../shared/components/LoggedAreaContainer";
 import { Button } from "react-native-paper";
 import { ScreenTitle } from "../../shared/components/Title";
@@ -18,9 +18,6 @@ interface FormData {
 const PetRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
 
-  const route = useRoute();
-  // route.params.dado
-
   const handleChangeformData = (prop: string, value: string | Date) => {
     setFormData({
       ...formData,
@@ -37,6 +34,20 @@ const PetRegistration = ({ navigation }) => {
   };
 
   const handleUploadPhoto = () => {};
+
+  const route = useRoute();
+  const pet = route.params?.pet;
+
+  useEffect(() => {
+    if (pet)
+      setFormData({
+        birthDate: new Date(pet.birthDate),
+        breed: pet.breed,
+        name: pet.name,
+        photo: pet.photo,
+        species: pet.species,
+      });
+  }, []);
 
   return (
     <LoggedAreaContainer>
@@ -61,6 +72,7 @@ const PetRegistration = ({ navigation }) => {
             placeholder="Insira a raça do pet"
             handleChangeText={(text) => handleChangeformData("breed", text)}
           />
+
           <DatePicker
             handleChange={(d) => handleChangeformData("birthDate", d)}
             label="Data de nascimento"

@@ -4,7 +4,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import styled from "styled-components/native";
 import AppStyles from "../../../styles";
 
-interface ItemProps {
+export interface ItemProps {
   label: string;
   value: string;
 }

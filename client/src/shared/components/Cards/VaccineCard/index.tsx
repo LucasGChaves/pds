@@ -11,6 +11,7 @@ interface Props {
   manufacturer: string;
   batch: string;
   handleClick(): void;
+  date: Date;
 }
 
 const VaccineCard = ({
@@ -19,13 +20,16 @@ const VaccineCard = ({
   manufacturer,
   vaccineName,
   handleClick,
+  date,
 }: Props) => {
   return (
     <Card style={{ backgroundColor: "#fcf7f5" }}>
       <VaccineCardContainer onPress={handleClick}>
         <Content>
           <Title>{vaccineName}</Title>
-          <SubTitle>Aplicada por Dr. {vetName}</SubTitle>
+          <SubTitle>
+            Aplicada por Dr. {vetName} - {date.toLocaleDateString()}
+          </SubTitle>
           <VaccineInfoContainer>
             <VaccineInfo>Fabricante: {manufacturer}</VaccineInfo>
             <VaccineInfo>Lote: {batch}</VaccineInfo>

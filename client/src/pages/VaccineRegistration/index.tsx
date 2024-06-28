@@ -4,11 +4,13 @@ import { Button } from "react-native-paper";
 import { ScreenTitle } from "../../shared/components/Title";
 import TextField from "../../shared/components/TextField";
 import styled from "styled-components/native";
+import DatePicker from "../../shared/components/DatePicker";
 
 interface FormData {
   vaccineName: string;
   manufacturer: string;
   batch: string;
+  date: Date;
 }
 
 const VaccineRegistration = ({ navigation }) => {
@@ -23,7 +25,7 @@ const VaccineRegistration = ({ navigation }) => {
 
   const onSubmit = () => {
     if (formData) {
-      const { batch, manufacturer, vaccineName } = formData;
+      const { batch, manufacturer, vaccineName, date } = formData;
     }
 
     navigation.navigate("Vaccines");
@@ -35,6 +37,7 @@ const VaccineRegistration = ({ navigation }) => {
         <ScreenTitle>Cadastro de vacina</ScreenTitle>
         <InputsContainer>
           <TextField
+            value={formData?.vaccineName}
             label="Nome da vacina"
             placeholder="Insira o nome da vacina"
             handleChangeText={(text) =>
@@ -42,6 +45,7 @@ const VaccineRegistration = ({ navigation }) => {
             }
           />
           <TextField
+            value={formData?.manufacturer}
             label="Fabricante"
             placeholder="Insira o nome da empresa fabricante"
             handleChangeText={(text) =>
@@ -49,9 +53,17 @@ const VaccineRegistration = ({ navigation }) => {
             }
           />
           <TextField
+            value={formData?.batch}
             label="Lote"
             placeholder="Insira o número do lote"
             handleChangeText={(text) => handleChangeformData("batch", text)}
+          />
+          <DatePicker
+            handleChange={(d) => handleChangeformData("date", d)}
+            label="Data da aplicação"
+            value={formData?.date}
+            placeholder="Selecione a data"
+            mode="outlined"
           />
         </InputsContainer>
         <ButtonContainer>

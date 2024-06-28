@@ -9,7 +9,7 @@ import CustomChip from "../CustomChip";
 interface Props {
   name: string;
   species: string;
-  age: string;
+  age: number;
   ownerName: string;
   photo: string;
   handleClick: () => void;
@@ -33,7 +33,7 @@ const PatientCard = ({
             text={ownerName}
             color="orange"
             icon={
-              <MaterialIcons name="account-circle" size={24} color="white" />
+              <MaterialIcons name="account-circle" size={16} color="white" />
             }
           />
         </ChipsWrapper>

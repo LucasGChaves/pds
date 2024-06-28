@@ -49,15 +49,14 @@ const Vaccines = ({ navigation }) => {
                 vaccineName={item.vaccineName}
                 vetName={item.vet.name}
                 handleClick={() => {}}
+                date={new Date()}
               />
             )}
           />
         </ListContainer>
-        <ShowComponentByRole role={userTypeEnum.VET}>
-          <AddButtonContainer>
-            <CircularAddButton handleClick={handleAdd} />
-          </AddButtonContainer>
-        </ShowComponentByRole>
+        <AddButtonContainer>
+          <CircularAddButton handleClick={handleAdd} />
+        </AddButtonContainer>
       </WhiteContainer>
     </OrangeContainer>
   );

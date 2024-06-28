@@ -13,9 +13,10 @@ interface Props {
   pacientName: string;
   vetName: string;
   ownerName: string;
-  date: string;
+  date: Date;
   photo: string;
   handleClick: () => void;
+  isFinished: boolean;
 }
 const AppointmentCard = ({
   vetName,
@@ -25,6 +26,7 @@ const AppointmentCard = ({
   ownerName,
   viewer,
   photo,
+  isFinished,
 }: Props) => {
   return (
     <OrangeBorderCardSkeleton handleClick={handleClick} photo={photo}>
@@ -35,8 +37,8 @@ const AppointmentCard = ({
           color={viewer === "owner" ? "blue" : "green"}
           icon={<MaterialIcons name="account-circle" size={24} color="white" />}
         />
-        <DateText isFinished={date.toLowerCase() === "finalizada"}>
-          {date}
+        <DateText isFinished={isFinished}>
+          {isFinished ? "Finalizada" : date.toLocaleDateString()}
         </DateText>
       </OrangeBorderCardContent>
     </OrangeBorderCardSkeleton>

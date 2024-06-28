@@ -12,6 +12,29 @@ import { userTypeEnum } from "../../enums/userTypeEnum";
 import { Ionicons } from "@expo/vector-icons";
 import { useMyContext } from "../../shared/context/MyContext";
 
+const petToBeEdited = {
+  id: 1,
+  name: "Buddy",
+  owner: {
+    id: 4,
+    name: "Bob",
+    lastName: "Williams",
+    cpf: "789.123.456-00",
+    crmv: "",
+    cnpj: "67.467.532/0001-04",
+    email: "bob.williams@example.com",
+    phone: "(11) 66666-6666",
+    photoFileName: "bob.jpg",
+    role: { id: 1, name: "owner" }, // Pet Owner
+    availableTime: new Date(),
+  }, // Alice
+  birthDate: new Date("2020-05-15"),
+  species: "Dog",
+  breed: "Golden Retriever",
+  photo: "buddy.jpg",
+  age: 3,
+};
+
 const PetDetails = ({ navigation }) => {
   const { user } = useMyContext();
 
@@ -43,7 +66,16 @@ const PetDetails = ({ navigation }) => {
     navigation.navigate("Vaccines");
   };
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    navigation.navigate("PetRegistration", {
+      pet: {
+        name: petToBeEdited.name,
+        species: petToBeEdited.species,
+        breed: petToBeEdited.breed,
+        birthDate: petToBeEdited.birthDate.toUTCString(),
+      },
+    });
+  };
 
   const handleDelete = () => {};
 

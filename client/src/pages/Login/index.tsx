@@ -22,7 +22,9 @@ const Login = ({ navigation }) => {
     });
   };
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    navigation.navigate("TabNavigator");
+  };
 
   const handleSignUp = () => {
     navigation.navigate("SignUp");
@@ -37,11 +39,13 @@ const Login = ({ navigation }) => {
       />
       <InputsContainer>
         <TextField
+          value={formData?.email}
           label="Email"
           placeholder="Insira seu email"
           handleChangeText={(text) => handleChangeformData("email", text)}
         />
         <TextField
+          value={formData?.password}
           label="Senha"
           type="password"
           placeholder="Insira sua senha"

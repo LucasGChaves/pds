@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyProfile from "./src/pages/MyProfile";
 import Pets from "./src/pages/Pets";
-import MyAppointments from "./src/pages/MyAppointments";
+import Appointments from "./src/pages/Appointments";
 import PetRegistration from "./src/pages/PetRegistration";
 import PetDetails from "./src/pages/PetDetails";
 import Vaccines from "./src/pages/Vaccines";
@@ -22,6 +22,7 @@ import { MyContextProvider } from "./src/shared/context/MyContext";
 import { pt, registerTranslation } from "react-native-paper-dates";
 import VaccineRegistration from "./src/pages/VaccineRegistration";
 import OwnerInfo from "./src/pages/OwnerInfo";
+import NewAppointmentTime from "./src/pages/NewAppointmentTime";
 
 registerTranslation("pt", pt);
 
@@ -104,7 +105,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Appointments"
+        name="AppointmentScreens"
         component={AppointmentScreens}
         options={{
           tabBarLabel: "Consultas",
@@ -162,14 +163,15 @@ const AppointmentScreens = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="MyAppointments"
+      initialRouteName="Appointments"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="MyAppointments" component={MyAppointments} />
+      <Stack.Screen name="Appointments" component={Appointments} />
       <Stack.Screen name="Vets" component={Vets} />
       <Stack.Screen name="NewAppointment" component={NewAppointment} />
+      <Stack.Screen name="NewAppointmentTime" component={NewAppointmentTime} />
     </Stack.Navigator>
   );
 };

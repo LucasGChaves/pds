@@ -170,6 +170,14 @@ export const MOCKED_APPOINTMENTS: IAppointment[] = [
     description: "Annual Checkup - General health check",
     examRequest: "Complete blood test, Urine",
   },
+  {
+    id: 5,
+    appointmentDate: new Date("2024-02-05T15:45:00"),
+    pet: MOCKED_PETS[0], // Buddy
+    vet: MOCKED_USERS[1], // Jane Smith (Vet)
+    description: "Annual Checkup - General health check",
+    examRequest: "Complete blood test, Urine",
+  },
 ];
 
 export const MOCKED_VACCINES: IVaccine[] = [
