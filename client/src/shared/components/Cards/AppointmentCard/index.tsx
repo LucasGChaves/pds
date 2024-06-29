@@ -33,7 +33,7 @@ const AppointmentCard = ({
       <OrangeBorderCardContent>
         <OrangeBorderCardTitle>{pacientName}</OrangeBorderCardTitle>
         <CustomChip
-          text={viewer === "owner" ? `Dr. ${vetName}` : ownerName}
+          text={viewer === "owner" ? `Dr(a). ${vetName}` : ownerName}
           color={viewer === "owner" ? "blue" : "green"}
           icon={<MaterialIcons name="account-circle" size={24} color="white" />}
         />

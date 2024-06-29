@@ -11,6 +11,8 @@ import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { Ionicons } from "@expo/vector-icons";
 import { useMyContext } from "../../shared/context/MyContext";
+import { PetsScreensStackParamList } from "../../../App";
+import { RouteProp, useRoute } from "@react-navigation/native";
 
 const petToBeEdited = {
   id: 1,
@@ -37,6 +39,9 @@ const petToBeEdited = {
 
 const PetDetails = ({ navigation }) => {
   const { user } = useMyContext();
+
+  const route = useRoute<RouteProp<PetsScreensStackParamList, "PetDetails">>();
+  const id = route.params.petId;
 
   const data: DataListValueType[] = [
     {
@@ -101,9 +106,12 @@ const PetDetails = ({ navigation }) => {
         <DataListWithDivider data={data} />
         <ShowComponentByRole role={userTypeEnum.OWNER}>
           <Button
-            labelStyle={{ color: "black" }}
             icon={({}) => (
-              <MaterialCommunityIcons name="pencil" size={24} color="black" />
+              <MaterialCommunityIcons
+                name="pencil"
+                size={24}
+                color={AppStyles.colors.primary}
+              />
             )}
             mode="outlined"
             style={{

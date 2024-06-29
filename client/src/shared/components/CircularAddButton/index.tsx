@@ -3,12 +3,27 @@ import AppStyles from "../../../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 interface Props {
-  handleClick: () => void;
+  handleClick?: () => void;
   isCalendarIcon?: boolean;
 }
 const CircularAddButton = ({ handleClick, isCalendarIcon }: Props) => {
+  if (handleClick)
+    return (
+      <TouchableContainer onPress={handleClick}>
+        {!isCalendarIcon ? (
+          <Ionicons name="add" size={40} color={AppStyles.colors.primary70} />
+        ) : (
+          <FontAwesome5
+            name="calendar-plus"
+            size={30}
+            color={AppStyles.colors.primary70}
+          />
+        )}
+      </TouchableContainer>
+    );
+
   return (
-    <Container onPress={handleClick}>
+    <Container>
       {!isCalendarIcon ? (
         <Ionicons name="add" size={40} color={AppStyles.colors.primary70} />
       ) : (
@@ -24,7 +39,16 @@ const CircularAddButton = ({ handleClick, isCalendarIcon }: Props) => {
 
 export default CircularAddButton;
 
-const Container = styled.TouchableOpacity`
+const TouchableContainer = styled.TouchableOpacity`
+  background-color: ${AppStyles.colors.primary20};
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Container = styled.View`
   background-color: ${AppStyles.colors.primary20};
   width: 60px;
   height: 60px;

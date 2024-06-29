@@ -175,7 +175,6 @@ export const MOCKED_APPOINTMENTS: IAppointment[] = [
     appointmentDate: new Date("2023-12-25T14:30:00"),
     pet: MOCKED_PETS[1], // Mia
     vet: MOCKED_USERS[1], // Jane Smith (Vet)
-    description: "Vomiting and Diarrhea - Suspected food poisoning",
     examRequest: "Blood test, X-ray",
   },
   {

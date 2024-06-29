@@ -21,7 +21,7 @@ const VetCard = ({ address, name, photo, handleClick }: Props) => {
   return (
     <OrangeBorderCardSkeleton handleClick={handleClick} photo={photo}>
       <OrangeBorderCardContent>
-        <OrangeBorderCardTitle>{`Dr. ${name}`}</OrangeBorderCardTitle>
+        <OrangeBorderCardTitle>{`Dr(a). ${name}`}</OrangeBorderCardTitle>
         <AddressChipContainer>
           <Entypo name="location-pin" size={24} color="black" />
           <AddressTextContainer>

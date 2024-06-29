@@ -24,6 +24,7 @@ import VaccineRegistration from "./src/pages/VaccineRegistration";
 import OwnerInfo from "./src/pages/OwnerInfo";
 import NewAppointmentTime from "./src/pages/NewAppointmentTime";
 import VetInfo from "./src/pages/VetInfo";
+import AppointmentDetails from "./src/pages/AppointmentDetails";
 
 registerTranslation("pt", pt);
 
@@ -146,8 +147,8 @@ export type PetsScreensStackParamList = {
       birthDate: string;
     };
   };
+  PetDetails: { petId: string };
   Pets: undefined;
-  PetDetails: undefined;
   OwnerInfo: undefined;
   name: undefined;
   VaccineRegistration: undefined;
@@ -181,6 +182,7 @@ export type AppointmentScreensStackParamList = {
     vetId: string;
   };
   Appointments: undefined;
+  AppointmentDetails: { appointmentId: string };
   Vets: undefined;
   NewAppointment: undefined;
   NewAppointmentTime: undefined;
@@ -198,6 +200,7 @@ const AppointmentScreens = () => {
     >
       <Stack.Screen name="Appointments" component={Appointments} />
       <Stack.Screen name="Vets" component={Vets} />
+      <Stack.Screen name="AppointmentDetails" component={AppointmentDetails} />
       <Stack.Screen name="NewAppointment" component={NewAppointment} />
       <Stack.Screen name="NewAppointmentTime" component={NewAppointmentTime} />
       <Stack.Screen name="VetInfo" component={VetInfo} />

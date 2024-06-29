@@ -22,7 +22,9 @@ const Appointments = ({ navigation }) => {
     navigation.navigate("Vets");
   };
 
-  const handleCardClick = (id: string) => {};
+  const handleCardClick = (id: string) => {
+    navigation.navigate("AppointmentDetails", { appointmentId: id });
+  };
 
   return (
     <LoggedAreaContainer hideBackButton>

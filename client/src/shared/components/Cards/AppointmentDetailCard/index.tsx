@@ -3,26 +3,30 @@ import AppStyles from "../../../../styles";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomChip from "../CustomChip";
-
+import { FontAwesome6 } from "@expo/vector-icons";
 interface Props {
-  pacientName: string;
+  petName: string;
   ownerName: string;
+  vetName: string;
   date: string;
   photo: string;
   handleChipClick: () => void;
+  viewerType: "vet" | "owner";
 }
-const AppointmentDetailCard = ({
-  pacientName,
+const AppointmentDetailsCard = ({
+  petName,
   date,
   handleChipClick,
   ownerName,
+  vetName,
   photo,
+  viewerType,
 }: Props) => {
   return (
     <Container>
       <Photo />
       <Content>
-        <Title>{pacientName}</Title>
+        <Title>{petName}</Title>
         <DateText isFinished={date.toLowerCase() === "finalizada"}>
           {date}
         </DateText>
@@ -33,16 +37,22 @@ const AppointmentDetailCard = ({
           icon={<MaterialIcons name="pets" size={24} color="white" />}
         />
         <CustomChip
-          text={ownerName}
+          text={viewerType === "owner" ? `Dr(a). ${vetName}` : ownerName}
           color="green"
-          icon={<MaterialIcons name="account-circle" size={24} color="white" />}
+          icon={
+            viewerType === "owner" ? (
+              <FontAwesome6 name="user-doctor" size={20} color="white" />
+            ) : (
+              <MaterialIcons name="account-circle" size={24} color="white" />
+            )
+          }
         />
       </Content>
     </Container>
   );
 };
 
-export default AppointmentDetailCard;
+export default AppointmentDetailsCard;
 
 const Container = styled.View`
   border-radius: 15px;
@@ -56,8 +66,8 @@ const Container = styled.View`
 `;
 
 const Photo = styled.View`
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   border-radius: 8px;
   background-color: gray;
 `;

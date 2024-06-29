@@ -34,4 +34,5 @@ const ButtonContainer = styled.TouchableOpacity`
 `;
 const Text = styled.Text`
   color: ${AppStyles.colors.red};
+  font-size: 16px;
 `;

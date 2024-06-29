@@ -6,6 +6,6 @@ export interface IAppointment {
   appointmentDate: Date;
   pet: IPet;
   vet: IUserGet;
-  description: string;
+  description?: string;
   examRequest: string;
 }

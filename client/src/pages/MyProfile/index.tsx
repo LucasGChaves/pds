@@ -4,10 +4,10 @@ import styled from "styled-components/native";
 import DataListWithDivider, {
   DataListValueType,
 } from "../../shared/components/DataListWithDivider";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppStyles from "../../styles";
 import { useMyContext } from "../../shared/context/MyContext";
 import { userTypeEnum } from "../../enums/userTypeEnum";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const MyProfile = ({ navigation }) => {
   const { user } = useMyContext();
@@ -34,7 +34,7 @@ const MyProfile = ({ navigation }) => {
   const ownerData: DataListValueType[] = [
     {
       leftValue: "Email",
-      rightValue: "Cachorro",
+      rightValue: "email@email.com",
     },
     {
       leftValue: "CPF",
@@ -47,7 +47,7 @@ const MyProfile = ({ navigation }) => {
   ];
 
   const handleLogout = () => {
-    // TODO: login de fato
+    // TODO: logout de fato
     navigation.navigate("Login");
   };
 
@@ -56,7 +56,7 @@ const MyProfile = ({ navigation }) => {
   };
 
   return (
-    <LoggedAreaContainer hideBackButton>
+    <LoggedAreaContainer hideBackButton handleLogout={handleLogout}>
       <Container>
         <PhotoContainer>
           <Photo />
@@ -67,9 +67,12 @@ const MyProfile = ({ navigation }) => {
         />
         <ButtonsContainer>
           <Button
-            labelStyle={{ color: "black" }}
             icon={({}) => (
-              <MaterialCommunityIcons name="pencil" size={24} color="black" />
+              <MaterialCommunityIcons
+                name="pencil"
+                size={24}
+                color={AppStyles.colors.primary}
+              />
             )}
             mode="outlined"
             style={{
@@ -80,25 +83,6 @@ const MyProfile = ({ navigation }) => {
             onPress={handleEdit}
           >
             Editar
-          </Button>
-          <Button
-            icon={({}) => (
-              <MaterialCommunityIcons
-                name="logout"
-                size={24}
-                color={AppStyles.colors.red}
-              />
-            )}
-            mode="outlined"
-            onPress={handleLogout}
-            labelStyle={{ color: "black" }}
-            style={{
-              width: 150,
-
-              borderColor: AppStyles.colors.red,
-            }}
-          >
-            Sair
           </Button>
         </ButtonsContainer>
       </Container>
