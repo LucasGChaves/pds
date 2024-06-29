@@ -16,12 +16,18 @@ export const MOCKED_USERS: IUserGet[] = [
     lastName: "Doe",
     cpf: "123.456.789-00",
     crmv: "12345",
-    cnpj: "67.467.532/0001-04",
     email: "john.doe@example.com",
     phone: "(11) 99999-9999",
     photoFileName: "john.jpg",
     role: MOCKED_ROLES[1], // Veterinarian
     availableTime: new Date("2024-03-10T09:00:00"),
+    address: {
+      city: "Belo Horizonte",
+      district: "Bandeirantes",
+      number: "1",
+      state: "MG",
+      street: "Rua Margarida",
+    },
   },
   {
     id: 2,
@@ -29,12 +35,18 @@ export const MOCKED_USERS: IUserGet[] = [
     lastName: "Smith",
     cpf: "987.654.321-00",
     crmv: "54321",
-    cnpj: "67.467.532/0001-04",
     email: "jane.smith@example.com",
     phone: "(11) 88888-8888",
     photoFileName: "jane.jpg",
     role: MOCKED_ROLES[1], // Veterinarian
     availableTime: new Date("2024-03-10T14:00:00"),
+    address: {
+      city: "Belo Horizonte",
+      district: "Bandeirantes",
+      number: "1",
+      state: "MG",
+      street: "Rua Margarida",
+    },
   },
   {
     id: 3,
@@ -42,12 +54,18 @@ export const MOCKED_USERS: IUserGet[] = [
     lastName: "Johnson",
     cpf: "456.789.123-00",
     crmv: "",
-    cnpj: "67.467.532/0001-04",
     email: "alice.johnson@example.com",
     phone: "(11) 77777-7777",
     photoFileName: "alice.jpg",
     role: MOCKED_ROLES[2], // Pet Owner
     availableTime: new Date(),
+    address: {
+      city: "Belo Horizonte",
+      district: "Bandeirantes",
+      number: "1",
+      state: "MG",
+      street: "Rua Margarida",
+    },
   },
   {
     id: 4,
@@ -55,12 +73,18 @@ export const MOCKED_USERS: IUserGet[] = [
     lastName: "Williams",
     cpf: "789.123.456-00",
     crmv: "",
-    cnpj: "67.467.532/0001-04",
     email: "bob.williams@example.com",
     phone: "(11) 66666-6666",
     photoFileName: "bob.jpg",
     role: MOCKED_ROLES[2], // Pet Owner
     availableTime: new Date(),
+    address: {
+      city: "Belo Horizonte",
+      district: "Bandeirantes",
+      number: "1",
+      state: "MG",
+      street: "Rua Margarida",
+    },
   },
 ];
 
@@ -188,6 +212,7 @@ export const MOCKED_VACCINES: IVaccine[] = [
     batch: "VX10-202303",
     pet: MOCKED_PETS[0], // Buddy
     vet: MOCKED_USERS[0], // John Doe (Vet)
+    applicationDate: new Date("2020-05-05"),
   },
   {
     id: 2,
@@ -196,6 +221,7 @@ export const MOCKED_VACCINES: IVaccine[] = [
     batch: "RB-202312",
     pet: MOCKED_PETS[1], // Mia
     vet: MOCKED_USERS[1], // Jane Smith (Vet)
+    applicationDate: new Date("2020-05-05"),
   },
   {
     id: 3,
@@ -204,6 +230,7 @@ export const MOCKED_VACCINES: IVaccine[] = [
     batch: "FL-202401",
     pet: MOCKED_PETS[1], // Mia
     vet: MOCKED_USERS[1], // Jane Smith (Vet)
+    applicationDate: new Date("2020-05-05"),
   },
   {
     id: 4,
@@ -212,6 +239,7 @@ export const MOCKED_VACCINES: IVaccine[] = [
     batch: "CP-202402",
     pet: MOCKED_PETS[2], // Rex
     vet: MOCKED_USERS[0], // John Doe (Vet)
+    applicationDate: new Date("2020-05-05"),
   },
   {
     id: 5,
@@ -220,6 +248,7 @@ export const MOCKED_VACCINES: IVaccine[] = [
     batch: "CP-202402",
     pet: MOCKED_PETS[2], // Rex
     vet: MOCKED_USERS[0], // John Doe (Vet)
+    applicationDate: new Date("2020-05-05"),
   },
   {
     id: 6,
@@ -228,5 +257,6 @@ export const MOCKED_VACCINES: IVaccine[] = [
     batch: "CP-202402",
     pet: MOCKED_PETS[2], // Rex
     vet: MOCKED_USERS[0], // John Doe (Vet)
+    applicationDate: new Date("2020-05-05"),
   },
 ];

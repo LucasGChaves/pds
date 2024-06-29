@@ -4,6 +4,8 @@ import styled from "styled-components/native";
 import TextField from "../../shared/components/TextField";
 import { ScreenTitle } from "../../shared/components/Title";
 import BackButton from "../../shared/components/BackButton";
+import Select from "../../shared/components/Select";
+import { BRASILIAN_STATES } from "../../utils/constants";
 
 interface Props {
   handleBack(): void;
@@ -13,12 +15,16 @@ interface FormData {
   name: string;
   lastName: string;
   cpf: string;
-  cnpj: string;
   crmv: string;
   phone: string;
   email: string;
   password: string;
   passwordRepetition: string;
+  state: string;
+  city: string;
+  district: string;
+  street: string;
+  number: string;
 }
 
 const VetRegister = ({ handleBack }: Props) => {
@@ -55,7 +61,6 @@ const VetRegister = ({ handleBack }: Props) => {
         password,
         passwordRepetition,
         phone,
-        cnpj,
         crmv,
       } = formData;
     }
@@ -87,9 +92,54 @@ const VetRegister = ({ handleBack }: Props) => {
         {!isSecondPart ? (
           <>
             <TextField
+              label="CRMV"
+              placeholder="Insira seu CRMV"
+              handleChangeText={(text) => handleChangeformData("crmv", text)}
+              value={formData?.crmv}
+            />
+            <Select
+              data={BRASILIAN_STATES}
+              label="Estado"
+              placeholder="Selecione o estado"
+              handleChangeValue={(value) =>
+                handleChangeformData("state", value)
+              }
+              value={formData?.state}
+            />
+            <TextField
+              label="Cidade"
+              placeholder="Insira sua cidade"
+              handleChangeText={(text) => handleChangeformData("city", text)}
+              value={formData?.city}
+            />
+            <TextField
+              label="Bairro"
+              placeholder="Insira seu bairro"
+              handleChangeText={(text) =>
+                handleChangeformData("district", text)
+              }
+              value={formData?.district}
+            />
+            <TextField
+              label="Logradouro"
+              placeholder="Insira seu logradouro"
+              handleChangeText={(text) => handleChangeformData("street", text)}
+              value={formData?.district}
+            />
+            <TextField
+              label="Número"
+              placeholder="Insira seu número"
+              handleChangeText={(text) => handleChangeformData("number", text)}
+              value={formData?.number}
+            />
+          </>
+        ) : (
+          <>
+            <TextField
               label="Nome"
               placeholder="Insira seu nome"
               handleChangeText={(text) => handleChangeformData("name", text)}
+              value={formData?.name}
             />
             <TextField
               label="Último nome"
@@ -97,35 +147,27 @@ const VetRegister = ({ handleBack }: Props) => {
               handleChangeText={(text) =>
                 handleChangeformData("lastName", text)
               }
+              value={formData?.name}
             />
             <TextField
               label="CPF"
               placeholder="Insira seu CPF"
               handleChangeText={(text) => handleChangeformData("cpf", text)}
+              value={formData?.cpf}
             />
-            <TextField
-              label="CNPJ"
-              placeholder="Insira seu CNPJ"
-              handleChangeText={(text) => handleChangeformData("cnpj", text)}
-            />
-            <TextField
-              label="CRMV"
-              placeholder="Insira seu CRMV"
-              handleChangeText={(text) => handleChangeformData("crmv", text)}
-            />
-          </>
-        ) : (
-          <>
             <TextField
               label="Email"
               placeholder="Insira seu email"
               handleChangeText={(text) => handleChangeformData("email", text)}
+              value={formData?.email}
             />
+
             <TextField
               label="Celular"
               maskType="phone"
               placeholder="Insira seu celular"
               handleChangeText={(text) => handleChangeformData("phone", text)}
+              value={formData?.phone}
             />
             <TextField
               label="Senha"
@@ -134,6 +176,7 @@ const VetRegister = ({ handleBack }: Props) => {
               handleChangeText={(text) =>
                 handleChangeformData("password", text)
               }
+              value={formData?.password}
             />
             <TextField
               label="Confirmação da senha"
@@ -142,6 +185,7 @@ const VetRegister = ({ handleBack }: Props) => {
               handleChangeText={(text) =>
                 handleChangeformData("passwordRepetition", text)
               }
+              value={formData?.passwordRepetition}
             />
           </>
         )}

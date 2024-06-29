@@ -11,7 +11,7 @@ interface Props {
   photo: string;
   address: {
     city: string;
-    neightborhood: string;
+    district: string;
     street: string;
     number: string;
   };
@@ -25,7 +25,7 @@ const VetCard = ({ address, name, photo, handleClick }: Props) => {
         <AddressChipContainer>
           <Entypo name="location-pin" size={24} color="black" />
           <AddressTextContainer>
-            <AddressText>{`${address.city}, ${address.neightborhood}`}</AddressText>
+            <AddressText>{`${address.city}, ${address.district}`}</AddressText>
             <AddressText>{`${address.street}, ${address.number}`}</AddressText>
           </AddressTextContainer>
         </AddressChipContainer>

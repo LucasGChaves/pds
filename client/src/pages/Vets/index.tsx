@@ -1,30 +1,45 @@
-import { Searchbar, Text } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import LoggedAreaContainer from "../../shared/components/LoggedAreaContainer";
 import { ScreenTitle } from "../../shared/components/Title";
 import styled from "styled-components/native";
 import { FlatList } from "react-native";
 import { useState } from "react";
-import { MOCKED_APPOINTMENTS, MOCKED_USERS } from "../../mocks/mocks";
-import CircularAddButton from "../../shared/components/CircularAddButton";
-import AppointmentCard from "../../shared/components/Cards/AppointmentCard";
+import { MOCKED_USERS } from "../../mocks/mocks";
 import { useMyContext } from "../../shared/context/MyContext";
 import VetCard from "../../shared/components/Cards/VetCard";
+import { handleChangeformData } from "../../utils/functions";
+
+interface FormData {
+  city: string;
+  district: string;
+}
 
 const Vets = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [formData, setFormData] = useState<FormData>();
 
   const { isUserVet } = useMyContext();
 
-  const handleCardClick = (id: string) => {};
+  const handleCardClick = (id: string) => {
+    navigation.navigate("VetInfo", { vetId: id });
+  };
 
   return (
-    <LoggedAreaContainer hideBackButton>
+    <LoggedAreaContainer>
       <Container>
         <ScreenTitle>Veterinários</ScreenTitle>
         <Searchbar
-          placeholder={"Busque por cidade ou bairro"}
-          onChangeText={setSearchQuery}
-          value={searchQuery}
+          placeholder={"Filtre por cidade"}
+          onChangeText={(text) =>
+            handleChangeformData("city", text, formData, setFormData)
+          }
+          value={formData?.city}
+        />
+        <Searchbar
+          placeholder={"Filtre por bairro"}
+          onChangeText={(text) =>
+            handleChangeformData("district", text, formData, setFormData)
+          }
+          value={formData?.district}
         />
         <FlatList
           nestedScrollEnabled
@@ -38,7 +53,7 @@ const Vets = ({ navigation }) => {
               photo=""
               address={{
                 city: "Belo Horizonte",
-                neightborhood: "Cidade Nova",
+                district: "Cidade Nova",
                 street: "Rua Fulana",
                 number: "22",
               }}
@@ -54,5 +69,5 @@ const Vets = ({ navigation }) => {
 export default Vets;
 
 const Container = styled.View`
-  row-gap: 32px;
+  row-gap: 28px;
 `;

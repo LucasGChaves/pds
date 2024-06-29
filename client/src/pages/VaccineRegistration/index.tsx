@@ -5,6 +5,7 @@ import { ScreenTitle } from "../../shared/components/Title";
 import TextField from "../../shared/components/TextField";
 import styled from "styled-components/native";
 import DatePicker from "../../shared/components/DatePicker";
+import { handleChangeformData } from "../../utils/functions";
 
 interface FormData {
   vaccineName: string;
@@ -15,13 +16,6 @@ interface FormData {
 
 const VaccineRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
-
-  const handleChangeformData = (prop: string, value: string | Date) => {
-    setFormData({
-      ...formData,
-      [prop]: value,
-    });
-  };
 
   const onSubmit = () => {
     if (formData) {
@@ -41,7 +35,7 @@ const VaccineRegistration = ({ navigation }) => {
             label="Nome da vacina"
             placeholder="Insira o nome da vacina"
             handleChangeText={(text) =>
-              handleChangeformData("vaccineName", text)
+              handleChangeformData("vaccineName", text, formData, setFormData)
             }
           />
           <TextField
@@ -49,17 +43,21 @@ const VaccineRegistration = ({ navigation }) => {
             label="Fabricante"
             placeholder="Insira o nome da empresa fabricante"
             handleChangeText={(text) =>
-              handleChangeformData("manufacturer", text)
+              handleChangeformData("manufacturer", text, formData, setFormData)
             }
           />
           <TextField
             value={formData?.batch}
             label="Lote"
             placeholder="Insira o número do lote"
-            handleChangeText={(text) => handleChangeformData("batch", text)}
+            handleChangeText={(text) =>
+              handleChangeformData("batch", text, formData, setFormData)
+            }
           />
           <DatePicker
-            handleChange={(d) => handleChangeformData("date", d)}
+            handleChange={(d) =>
+              handleChangeformData("date", d, formData, setFormData)
+            }
             label="Data da aplicação"
             value={formData?.date}
             placeholder="Selecione a data"

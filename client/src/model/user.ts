@@ -1,5 +1,12 @@
 import { IRole } from "./role";
 
+export interface IAddress {
+  state: string;
+  city: string;
+  district: string;
+  street: string;
+  number: string;
+}
 export interface IUser {
   id: number;
   name: string;
@@ -7,7 +14,7 @@ export interface IUser {
   password: string;
   cpf: string;
   crmv: string;
-  cnpj: string;
+  address: IAddress;
   email: string;
   phone: string;
   photoFileName: string;
@@ -21,10 +28,10 @@ export interface IUserGet {
   lastName: string;
   cpf: string;
   crmv: string;
-  cnpj: string;
   email: string;
   phone: string;
   photoFileName: string;
   role: IRole;
   availableTime: Date;
+  address: IAddress;
 }

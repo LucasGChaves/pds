@@ -1,12 +1,9 @@
-import { useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import LoggedAreaContainer from "../../shared/components/LoggedAreaContainer";
 import { Button } from "react-native-paper";
 import { ScreenTitle } from "../../shared/components/Title";
 import TextField from "../../shared/components/TextField";
 import styled from "styled-components/native";
-import DatePicker from "../../shared/components/DatePicker";
-import UploadButton from "../../shared/components/UploadButton";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { useMyContext } from "../../shared/context/MyContext";
@@ -17,7 +14,6 @@ interface FormData {
   email: string;
   phone: string;
   crmv: string;
-  cnpj: string;
 }
 
 const ProfileEdition = ({ navigation }) => {
@@ -33,7 +29,7 @@ const ProfileEdition = ({ navigation }) => {
 
   const onSubmit = () => {
     if (formData) {
-      const { cnpj, cpf, crmv, email, lastName, name, phone } = formData;
+      const { cpf, crmv, email, lastName, name, phone } = formData;
     }
 
     navigation.navigate("Pets");
@@ -45,7 +41,6 @@ const ProfileEdition = ({ navigation }) => {
     setFormData({
       name: user.name,
       lastName: user.lastName,
-      cnpj: user.cnpj,
       cpf: user.cpf,
       crmv: user.crmv,
       email: user.email,
@@ -89,12 +84,6 @@ const ProfileEdition = ({ navigation }) => {
             handleChangeText={(text) => handleChangeformData("phone", text)}
           />
           <ShowComponentByRole role={userTypeEnum.VET}>
-            <TextField
-              value={formData?.cnpj}
-              label="CNPJ"
-              placeholder="Insira seu CNPJ"
-              handleChangeText={(text) => handleChangeformData("cnpj", text)}
-            />
             <TextField
               value={formData?.crmv}
               label="CRMV"

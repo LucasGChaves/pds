@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "react-native-paper";
 import { ScreenTitle } from "../../shared/components/Title";
 import AppStyles from "../../styles";
+import { handleChangeformData } from "../../utils/functions";
 
 interface FormData {
   email: string;
@@ -14,13 +15,6 @@ interface FormData {
 
 const Login = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
-
-  const handleChangeformData = (prop: "email" | "password", value: string) => {
-    setFormData({
-      ...formData,
-      [prop]: value,
-    });
-  };
 
   const handleLogin = () => {
     navigation.navigate("TabNavigator");
@@ -42,7 +36,9 @@ const Login = ({ navigation }) => {
           value={formData?.email}
           label="Email"
           placeholder="Insira seu email"
-          handleChangeText={(text) => handleChangeformData("email", text)}
+          handleChangeText={(text) =>
+            handleChangeformData("email", text, formData, setFormData)
+          }
         />
         <TextField
           value={formData?.password}
@@ -50,7 +46,7 @@ const Login = ({ navigation }) => {
           type="password"
           placeholder="Insira sua senha"
           handleChangeText={(password) =>
-            handleChangeformData("password", password)
+            handleChangeformData("password", password, formData, setFormData)
           }
         />
       </InputsContainer>

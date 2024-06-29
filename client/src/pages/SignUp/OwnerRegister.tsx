@@ -73,33 +73,39 @@ const OwnerRegister = ({ handleBack }: Props) => {
           label="Nome"
           placeholder="Insira seu nome"
           handleChangeText={(text) => handleChangeformData("name", text)}
+          value={formData?.name}
         />
         <TextField
           label="Último nome"
           placeholder="Insira seu último nome"
           handleChangeText={(text) => handleChangeformData("lastName", text)}
+          value={formData?.lastName}
         />
         <TextField
           label="CPF"
           placeholder="Insira seu CPF"
           handleChangeText={(text) => handleChangeformData("cpf", text)}
+          value={formData?.cpf}
         />
         <TextField
           label="Celular"
           maskType="phone"
           placeholder="Insira seu celular"
           handleChangeText={(text) => handleChangeformData("phone", text)}
+          value={formData?.phone}
         />
         <TextField
           label="Email"
           placeholder="Insira seu email"
           handleChangeText={(text) => handleChangeformData("email", text)}
+          value={formData?.email}
         />
         <TextField
           label="Senha"
           placeholder="Insira a senha"
           type="password"
           handleChangeText={(text) => handleChangeformData("password", text)}
+          value={formData?.password}
         />
         <TextField
           label="Confirmação da senha"
@@ -108,6 +114,7 @@ const OwnerRegister = ({ handleBack }: Props) => {
           handleChangeText={(text) =>
             handleChangeformData("passwordRepetition", text)
           }
+          value={formData?.passwordRepetition}
         />
         <HelperText
           type="error"

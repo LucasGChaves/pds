@@ -5,7 +5,8 @@ import { ScreenTitle } from "../../shared/components/Title";
 import styled from "styled-components/native";
 import DatePicker from "../../shared/components/DatePicker";
 import Select from "../../shared/components/Select";
-import { times } from "../../utils/horarios";
+import { TIMES } from "../../utils/constants";
+import { handleChangeformData } from "../../utils/functions";
 
 interface FormData {
   date: Date;
@@ -14,13 +15,6 @@ interface FormData {
 
 const NewAppointmentTime = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
-
-  const handleChangeformData = (prop: string, value: string | Date) => {
-    setFormData({
-      ...formData,
-      [prop]: value,
-    });
-  };
 
   const onSubmit = () => {
     if (formData) {
@@ -36,15 +30,19 @@ const NewAppointmentTime = ({ navigation }) => {
         <ScreenTitle orange>Novo horário</ScreenTitle>
         <InputsContainer>
           <DatePicker
-            handleChange={(date) => handleChangeformData("date", date)}
+            handleChange={(date) =>
+              handleChangeformData("date", date, formData, setFormData)
+            }
             label="Data da consulta"
             value={formData?.date}
             placeholder="Selecione a data"
             mode="outlined"
           />
           <Select
-            data={times}
-            handleChangeValue={(time) => handleChangeformData("time", time)}
+            data={TIMES}
+            handleChangeValue={(time) =>
+              handleChangeformData("time", time, formData, setFormData)
+            }
             label="Horário"
             placeholder="Selecione o horário"
             value={formData?.time}

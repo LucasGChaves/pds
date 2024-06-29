@@ -1,4 +1,4 @@
-import { Button, Text } from "react-native-paper";
+import { Button } from "react-native-paper";
 import LoggedAreaContainer from "../../shared/components/LoggedAreaContainer";
 import styled from "styled-components/native";
 import DataListWithDivider, {
@@ -6,7 +6,6 @@ import DataListWithDivider, {
 } from "../../shared/components/DataListWithDivider";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppStyles from "../../styles";
-import { Ionicons } from "@expo/vector-icons";
 import { useMyContext } from "../../shared/context/MyContext";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 
@@ -25,10 +24,6 @@ const MyProfile = ({ navigation }) => {
     {
       leftValue: "Telefone",
       rightValue: "(31)99999-9999",
-    },
-    {
-      leftValue: "CNPJ",
-      rightValue: "52.054.830/000",
     },
     {
       leftValue: "CRMV",

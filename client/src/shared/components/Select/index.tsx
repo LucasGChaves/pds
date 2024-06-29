@@ -12,7 +12,7 @@ export interface ItemProps {
 interface Props {
   data: ItemProps[];
   placeholder: string;
-  label: string;
+  label?: string;
   value: string;
   handleChangeValue: (value: string) => void;
 }
@@ -28,7 +28,7 @@ const Select = ({
 
   return (
     <Container>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <Dropdown
         style={[
           styles.dropdown,

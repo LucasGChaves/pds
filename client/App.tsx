@@ -23,6 +23,7 @@ import { pt, registerTranslation } from "react-native-paper-dates";
 import VaccineRegistration from "./src/pages/VaccineRegistration";
 import OwnerInfo from "./src/pages/OwnerInfo";
 import NewAppointmentTime from "./src/pages/NewAppointmentTime";
+import VetInfo from "./src/pages/VetInfo";
 
 registerTranslation("pt", pt);
 
@@ -136,8 +137,25 @@ const TabNavigator = () => {
   );
 };
 
+export type PetsScreensStackParamList = {
+  PetRegistration?: {
+    pet: {
+      name: string;
+      species: string;
+      breed: string;
+      birthDate: string;
+    };
+  };
+  Pets: undefined;
+  PetDetails: undefined;
+  OwnerInfo: undefined;
+  name: undefined;
+  VaccineRegistration: undefined;
+  Vaccines: undefined;
+};
+
 const PetsScreens = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<PetsScreensStackParamList>();
 
   return (
     <Stack.Navigator
@@ -158,6 +176,16 @@ const PetsScreens = () => {
   );
 };
 
+export type AppointmentScreensStackParamList = {
+  VetInfo?: {
+    vetId: string;
+  };
+  Appointments: undefined;
+  Vets: undefined;
+  NewAppointment: undefined;
+  NewAppointmentTime: undefined;
+};
+
 const AppointmentScreens = () => {
   const Stack = createNativeStackNavigator();
 
@@ -172,6 +200,7 @@ const AppointmentScreens = () => {
       <Stack.Screen name="Vets" component={Vets} />
       <Stack.Screen name="NewAppointment" component={NewAppointment} />
       <Stack.Screen name="NewAppointmentTime" component={NewAppointmentTime} />
+      <Stack.Screen name="VetInfo" component={VetInfo} />
     </Stack.Navigator>
   );
 };
