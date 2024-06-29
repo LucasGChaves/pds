@@ -7,21 +7,28 @@ import OrangeBorderCardSkeleton, {
 import CustomChip from "../CustomChip";
 interface Props {
   name: string;
-  specialty: string;
+  // specialty: string;
   photo: string;
-  distance: string;
+  address: {
+    city: string;
+    neightborhood: string;
+    street: string;
+    number: string;
+  };
   handleClick: () => void;
 }
-const VetCard = ({ distance, name, photo, specialty, handleClick }: Props) => {
+const VetCard = ({ address, name, photo, handleClick }: Props) => {
   return (
     <OrangeBorderCardSkeleton handleClick={handleClick} photo={photo}>
       <OrangeBorderCardContent>
         <OrangeBorderCardTitle>{`Dr. ${name}`}</OrangeBorderCardTitle>
-        <CustomChip text={specialty} color="blue" />
-        <DistanceChipContainer>
+        <AddressChipContainer>
           <Entypo name="location-pin" size={24} color="black" />
-          <DistanceText>Distância {distance}</DistanceText>
-        </DistanceChipContainer>
+          <AddressTextContainer>
+            <AddressText>{`${address.city}, ${address.neightborhood}`}</AddressText>
+            <AddressText>{`${address.street}, ${address.number}`}</AddressText>
+          </AddressTextContainer>
+        </AddressChipContainer>
       </OrangeBorderCardContent>
     </OrangeBorderCardSkeleton>
   );
@@ -29,11 +36,12 @@ const VetCard = ({ distance, name, photo, specialty, handleClick }: Props) => {
 
 export default VetCard;
 
-const DistanceChipContainer = styled.View`
+const AddressChipContainer = styled.View`
   display: flex;
   flex-direction: row;
-  column-gap: 5px;
+  align-items: center;
 `;
-const DistanceText = styled.Text`
+const AddressTextContainer = styled.View``;
+const AddressText = styled.Text`
   font-weight: bold;
 `;

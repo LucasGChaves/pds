@@ -21,7 +21,7 @@ function MyContextProvider({ children }) {
     email: "john.doe@example.com",
     phone: "(11) 99999-9999",
     photoFileName: "john.jpg",
-    role: { id: 1, roleName: userTypeEnum.VET }, // Veterinarian
+    role: { id: 1, roleName: userTypeEnum.OWNER }, // Veterinarian
     availableTime: new Date("2024-03-10T09:00:00"),
   });
 

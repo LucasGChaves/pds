@@ -15,12 +15,14 @@ const Appointments = ({ navigation }) => {
   const { isUserVet } = useMyContext();
 
   const handleAdd = () => {
-    navigation.navigate("NewAppointmentTime");
+    if (isUserVet) {
+      navigation.navigate("NewAppointmentTime");
+      return;
+    }
+    navigation.navigate("Vets");
   };
 
-  const handleCardClick = (id: string) => {
-    // navigation.navigate("PetDetails", id);
-  };
+  const handleCardClick = (id: string) => {};
 
   return (
     <LoggedAreaContainer hideBackButton>
