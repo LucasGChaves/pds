@@ -10,9 +10,18 @@ import VaccineCard from "../../shared/components/Cards/VaccineCard";
 import CircularAddButton from "../../shared/components/CircularAddButton";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
+import CustomDialog from "../../shared/components/CustomDialog";
 
 const Vaccines = ({ navigation }) => {
   const [filter, setFilter] = useState<Date>();
+  const [exclusionDialog, setExclusionDialog] = useState<{
+    isVisible: boolean;
+    itemId: string;
+  }>({ isVisible: false, itemId: "-1" });
+
+  const handleHideDialog = () => {
+    setExclusionDialog({ isVisible: false, itemId: "-1" });
+  };
 
   const handleBack = () => {
     navigation.goBack();
@@ -22,8 +31,20 @@ const Vaccines = ({ navigation }) => {
     navigation.navigate("VaccineRegistration");
   };
 
+  const handleCardClick = (id: string) => {
+    setExclusionDialog({ isVisible: true, itemId: id });
+  };
+
+  const handleDelete = () => {};
+
   return (
     <OrangeContainer>
+      <CustomDialog
+        handleOk={handleDelete}
+        text="Tem certeza que deseja excluir essa vacina?"
+        isVisible={exclusionDialog.isVisible}
+        handleHide={handleHideDialog}
+      />
       <BackButton handleClick={handleBack} isWhite />
       <OrangeContent>
         <ScreenTitle white>Vacinas</ScreenTitle>
@@ -48,7 +69,7 @@ const Vaccines = ({ navigation }) => {
                 manufacturer={item.manufacturer}
                 vaccineName={item.vaccineName}
                 vetName={item.vet.name}
-                handleClick={() => {}}
+                handleClick={() => handleCardClick(item.id.toString())}
                 date={new Date()}
               />
             )}

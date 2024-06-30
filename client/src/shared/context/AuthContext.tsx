@@ -61,7 +61,7 @@ const useAuthContext = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error("Trying to acess MyContext out of the Provider");
+    throw new Error("Trying to acess AuthContext out of the Provider");
   }
 
   return context;

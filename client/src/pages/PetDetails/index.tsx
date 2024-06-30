@@ -14,6 +14,8 @@ import { useAuthContext } from "../../shared/context/AuthContext";
 import { PetsScreensStackParamList } from "../../../App";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { PHOTOS_PATH } from "../../utils/constants";
+import { useState } from "react";
+import CustomDialog from "../../shared/components/CustomDialog";
 
 const petToBeEdited = {
   id: 2,
@@ -84,7 +86,11 @@ const PetDetails = ({ navigation }) => {
     });
   };
 
-  const handleDelete = () => {};
+  const handleShowDeleteDialog = () => {
+    setExclusionDialog({ isVisible: true, itemId: id });
+  };
+
+  const handleDeletePet = () => {};
 
   const handleShowOwnerInfo = () => {
     // TODO: passar informações do dono
@@ -97,8 +103,23 @@ const PetDetails = ({ navigation }) => {
     });
   };
 
+  const [exclusionDialog, setExclusionDialog] = useState<{
+    isVisible: boolean;
+    itemId: string;
+  }>({ isVisible: false, itemId: "-1" });
+
+  const handleHideDialog = () => {
+    setExclusionDialog({ isVisible: false, itemId: "-1" });
+  };
+
   return (
-    <LoggedAreaContainer handleDelete={handleDelete}>
+    <LoggedAreaContainer handleDelete={handleShowDeleteDialog}>
+      <CustomDialog
+        handleOk={handleDeletePet}
+        text="Tem certeza que deseja excluir esse pet?"
+        isVisible={exclusionDialog.isVisible}
+        handleHide={handleHideDialog}
+      />
       <Container>
         <PhotoContainer>
           {/* TODO: mudar codigo abaixo para pegar o cpf do owner que vem no pet */}

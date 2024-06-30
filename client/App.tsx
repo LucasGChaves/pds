@@ -28,6 +28,7 @@ import {
   AuthContextProvider,
   useAuthContext,
 } from "./src/shared/context/AuthContext";
+import { SnackbarContextProvider } from "./src/shared/context/SnackbarContext";
 
 registerTranslation("pt", pt);
 
@@ -45,9 +46,11 @@ export default function App() {
   return (
     <AuthContextProvider>
       <PaperProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <Navigation />
-        </QueryClientProvider>
+        <SnackbarContextProvider>
+          <QueryClientProvider client={queryClient}>
+            <Navigation />
+          </QueryClientProvider>
+        </SnackbarContextProvider>
       </PaperProvider>
     </AuthContextProvider>
   );

@@ -7,6 +7,7 @@ import { Button } from "react-native-paper";
 import { ScreenTitle } from "../../shared/components/Title";
 import AppStyles from "../../styles";
 import { handleChangeformData } from "../../utils/functions";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
 
 interface FormData {
   email: string;
@@ -16,8 +17,10 @@ interface FormData {
 const Login = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
 
+  const { setSnackbarParams } = useSnackbarContext();
   const handleLogin = () => {
-    navigation.navigate("TabNavigator");
+    // navigation.navigate("TabNavigator");
+    setSnackbarParams({ show: true, text: "Erro" });
   };
 
   const handleSignUp = () => {
