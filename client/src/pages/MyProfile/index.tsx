@@ -5,13 +5,13 @@ import DataListWithDivider, {
   DataListValueType,
 } from "../../shared/components/DataListWithDivider";
 import AppStyles from "../../styles";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PHOTOS_PATH } from "../../utils/constants";
 
 const MyProfile = ({ navigation }) => {
-  const { user } = useMyContext();
+  const { user } = useAuthContext();
 
   const vetData: DataListValueType[] = [
     {

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useMyContext } from "../../context/MyContext";
+import { useAuthContext } from "../../context/AuthContext";
 
 interface Props {
   children: ReactNode;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 const ShowComponentByRole = ({ children, role }: Props) => {
-  const { user } = useMyContext();
+  const { user } = useAuthContext();
   if (user.role.roleName === role) return <>{children}</>;
   return undefined;
 };

@@ -10,7 +10,7 @@ import AppStyles from "../../styles";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { Ionicons } from "@expo/vector-icons";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import { PetsScreensStackParamList } from "../../../App";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { PHOTOS_PATH } from "../../utils/constants";
@@ -39,7 +39,7 @@ const petToBeEdited = {
 };
 
 const PetDetails = ({ navigation }) => {
-  const { user } = useMyContext();
+  const { user } = useAuthContext();
 
   const route = useRoute<RouteProp<PetsScreensStackParamList, "PetDetails">>();
   const id = route.params.petId;

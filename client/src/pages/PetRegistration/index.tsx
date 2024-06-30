@@ -11,7 +11,7 @@ import { PetsScreensStackParamList } from "../../../App";
 import { handleChangeformData } from "../../utils/functions";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import { PHOTOS_PATH } from "../../utils/constants";
 
 interface FormData {
@@ -25,7 +25,7 @@ interface FormData {
 const PetRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
 
-  const { user } = useMyContext();
+  const { user } = useAuthContext();
 
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
 

@@ -12,7 +12,7 @@ import AppStyles from "../../styles";
 import { useEffect, useState } from "react";
 import AppointmentDescription from "../../shared/components/AppointmentDescription";
 import { handleChangeformData } from "../../utils/functions";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { PHOTOS_PATH } from "../../utils/constants";
@@ -28,7 +28,7 @@ const AppointmentDetails = ({ navigation }) => {
     >();
   const id = route.params.appointmentId;
 
-  const { isUserOwner } = useMyContext();
+  const { isUserOwner } = useAuthContext();
 
   const [formData, setFormData] = useState<FormData>();
 

@@ -18,13 +18,16 @@ import NewAppointment from "./src/pages/NewAppointment";
 import ProfileEdition from "./src/pages/ProfileEdition";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { MyContextProvider } from "./src/shared/context/MyContext";
 import { pt, registerTranslation } from "react-native-paper-dates";
 import VaccineRegistration from "./src/pages/VaccineRegistration";
 import OwnerInfo from "./src/pages/OwnerInfo";
 import NewAppointmentTime from "./src/pages/NewAppointmentTime";
 import VetInfo from "./src/pages/VetInfo";
 import AppointmentDetails from "./src/pages/AppointmentDetails";
+import {
+  AuthContextProvider,
+  useAuthContext,
+} from "./src/shared/context/AuthContext";
 
 registerTranslation("pt", pt);
 
@@ -37,46 +40,81 @@ const navTheme = {
 };
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
-
   const queryClient = new QueryClient();
 
   return (
-    <MyContextProvider>
+    <AuthContextProvider>
       <PaperProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <NavigationContainer theme={navTheme}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen
-                  name="Login"
-                  component={Login}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="SignUp"
-                  component={SignUp}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="TabNavigator"
-                  component={TabNavigator}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-              </Stack.Navigator>
-            </SafeAreaView>
-          </NavigationContainer>
+          <Navigation />
         </QueryClientProvider>
       </PaperProvider>
-    </MyContextProvider>
+    </AuthContextProvider>
   );
 }
+
+const Navigation = () => {
+  const Stack = createNativeStackNavigator();
+
+  const { isSignedIn } = useAuthContext();
+
+  return (
+    <NavigationContainer theme={navTheme}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Stack.Navigator>
+          {/* {isSignedIn ? (
+            <Stack.Screen
+              name="TabNavigator"
+              component={TabNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+          ) : (
+            <>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </>
+          )} */}
+
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="TabNavigator"
+            component={TabNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </SafeAreaView>
+    </NavigationContainer>
+  );
+};
 
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();

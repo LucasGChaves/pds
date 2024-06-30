@@ -7,13 +7,13 @@ import { useState } from "react";
 import { MOCKED_APPOINTMENTS } from "../../mocks/mocks";
 import CircularAddButton from "../../shared/components/CircularAddButton";
 import AppointmentCard from "../../shared/components/Cards/AppointmentCard";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import { PHOTOS_PATH } from "../../utils/constants";
 
 const Appointments = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { isUserVet } = useMyContext();
+  const { isUserVet } = useAuthContext();
 
   const handleAdd = () => {
     if (isUserVet) {

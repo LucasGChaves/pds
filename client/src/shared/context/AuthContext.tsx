@@ -1,16 +1,18 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { IUserGet } from "../../model/user";
 import { userTypeEnum } from "../../enums/userTypeEnum";
+import { getToken } from "../../../config/axios";
 
-interface MyContextType {
+interface AuthContextType {
   user: IUserGet;
   isUserOwner: boolean;
   isUserVet: boolean;
+  isSignedIn: boolean;
 }
 
-const MyContext = createContext<MyContextType>(null);
+const AuthContext = createContext<AuthContextType>(null);
 
-function MyContextProvider({ children }) {
+const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState<IUserGet>({
     id: 1,
     name: "John",
@@ -34,15 +36,29 @@ function MyContextProvider({ children }) {
   const isUserOwner = user.role.roleName === userTypeEnum.OWNER;
   const isUserVet = user.role.roleName === userTypeEnum.VET;
 
-  return (
-    <MyContext.Provider value={{ user, isUserOwner, isUserVet }}>
-      {children}
-    </MyContext.Provider>
-  );
-}
+  const [isSignedIn, setIsSignedIn] = useState<boolean>();
 
-const useMyContext = () => {
-  const context = useContext(MyContext);
+  useEffect(() => {
+    const verifyAuth = async () => {
+      const token = await getToken();
+      if (token === "expired" || token == null) {
+        setIsSignedIn(false);
+      }
+      setIsSignedIn(true);
+    };
+
+    verifyAuth();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, isUserOwner, isUserVet, isSignedIn }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const useAuthContext = () => {
+  const context = useContext(AuthContext);
 
   if (!context) {
     throw new Error("Trying to acess MyContext out of the Provider");
@@ -51,4 +67,4 @@ const useMyContext = () => {
   return context;
 };
 
-export { MyContextProvider, useMyContext };
+export { AuthContextProvider, useAuthContext };

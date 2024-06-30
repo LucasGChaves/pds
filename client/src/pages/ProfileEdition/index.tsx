@@ -6,7 +6,7 @@ import TextField from "../../shared/components/TextField";
 import styled from "styled-components/native";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import UploadButton from "../../shared/components/UploadButton";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -23,7 +23,7 @@ interface FormData {
 
 const ProfileEdition = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
-  const { user } = useMyContext();
+  const { user } = useAuthContext();
 
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
 

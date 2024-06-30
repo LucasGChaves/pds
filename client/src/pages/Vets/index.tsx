@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import { FlatList } from "react-native";
 import { useState } from "react";
 import { MOCKED_USERS } from "../../mocks/mocks";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import VetCard from "../../shared/components/Cards/VetCard";
 import { handleChangeformData } from "../../utils/functions";
 import { PHOTOS_PATH } from "../../utils/constants";
@@ -18,7 +18,7 @@ interface FormData {
 const Vets = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
 
-  const { isUserVet } = useMyContext();
+  const { isUserVet } = useAuthContext();
 
   const handleCardClick = (id: string) => {
     navigation.navigate("VetInfo", { vetId: id });

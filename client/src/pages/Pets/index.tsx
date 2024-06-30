@@ -8,14 +8,14 @@ import { MOCKED_PETS } from "../../mocks/mocks";
 import MyPetCard from "../../shared/components/Cards/MyPetCard";
 import CircularAddButton from "../../shared/components/CircularAddButton";
 import PatientCard from "../../shared/components/Cards/PatientCard";
-import { useMyContext } from "../../shared/context/MyContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { PHOTOS_PATH } from "../../utils/constants";
 
 const Pets = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { isUserOwner, user } = useMyContext();
+  const { isUserOwner, user } = useAuthContext();
 
   const handleAdd = () => {
     navigation.navigate("PetRegistration");
