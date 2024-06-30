@@ -8,6 +8,7 @@ import { MOCKED_USERS } from "../../mocks/mocks";
 import { useMyContext } from "../../shared/context/MyContext";
 import VetCard from "../../shared/components/Cards/VetCard";
 import { handleChangeformData } from "../../utils/functions";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 interface FormData {
   city: string;
@@ -50,7 +51,7 @@ const Vets = ({ navigation }) => {
           renderItem={({ item }) => (
             <VetCard
               name={item.name}
-              photo=""
+              photo={`${PHOTOS_PATH}user_${item.cpf}.jpg`}
               address={{
                 city: "Belo Horizonte",
                 district: "Cidade Nova",

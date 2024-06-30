@@ -27,6 +27,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O aplicativo pode acessar suas fotos para adicioná-las no seu perfil/pet."
+        }
+      ]
+    ]
   }
 }

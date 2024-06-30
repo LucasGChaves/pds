@@ -11,7 +11,7 @@ interface Props {
 const OrangeBorderCardSkeleton = ({ children, handleClick, photo }: Props) => {
   return (
     <Container onPress={handleClick}>
-      <Photo />
+      <Photo source={{ uri: photo }} />
       {children}
       <Entypo name="chevron-right" size={40} color={AppStyles.colors.primary} />
     </Container>
@@ -32,11 +32,11 @@ const Container = styled.TouchableOpacity`
   justify-content: space-between;
 `;
 
-const Photo = styled.View`
+const Photo = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 8px;
-  background-color: gray;
+  background-color: ${AppStyles.colors.noPhotoGray};
 `;
 
 export const OrangeBorderCardTitle = styled.Text`

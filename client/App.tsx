@@ -141,6 +141,7 @@ const TabNavigator = () => {
 export type PetsScreensStackParamList = {
   PetRegistration?: {
     pet: {
+      id: string;
       name: string;
       species: string;
       breed: string;
@@ -149,7 +150,7 @@ export type PetsScreensStackParamList = {
   };
   PetDetails: { petId: string };
   Pets: undefined;
-  OwnerInfo: undefined;
+  OwnerInfo: { data: { email: string; phone: string; cpf: string } };
   name: undefined;
   VaccineRegistration: undefined;
   Vaccines: undefined;

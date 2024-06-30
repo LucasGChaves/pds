@@ -92,7 +92,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 1,
     name: "Buddy",
-    owner: MOCKED_USERS[2], // Alice
+    owner: MOCKED_USERS[0], // Alice
     birthDate: new Date("2020-05-10"),
     species: "Dog",
     breed: "Golden Retriever",
@@ -102,7 +102,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 2,
     name: "Mia",
-    owner: MOCKED_USERS[3], // Bob
+    owner: MOCKED_USERS[0], // Bob
     birthDate: new Date("2018-12-01"),
     species: "Cat",
     breed: "Siamese",
@@ -112,7 +112,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 3,
     name: "Rex",
-    owner: MOCKED_USERS[2], // Alice
+    owner: MOCKED_USERS[0], // Alice
     birthDate: new Date("2022-03-15"),
     species: "Dog",
     breed: "German Shepherd",
@@ -122,7 +122,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 4,
     name: "Fluffy",
-    owner: MOCKED_USERS[3], // Bob
+    owner: MOCKED_USERS[0], // Bob
     birthDate: new Date("2017-08-20"),
     species: "Cat",
     breed: "Persian",
@@ -132,7 +132,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 5,
     name: "Fluffy",
-    owner: MOCKED_USERS[3], // Bob
+    owner: MOCKED_USERS[0], // Bob
     birthDate: new Date("2017-08-20"),
     species: "Cat",
     breed: "Persian",
@@ -142,7 +142,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 6,
     name: "Fluffy",
-    owner: MOCKED_USERS[3], // Bob
+    owner: MOCKED_USERS[0], // Bob
     birthDate: new Date("2017-08-20"),
     species: "Cat",
     breed: "Persian",
@@ -152,7 +152,7 @@ export const MOCKED_PETS: IPet[] = [
   {
     id: 7,
     name: "Fluffy",
-    owner: MOCKED_USERS[3], // Bob
+    owner: MOCKED_USERS[0], // Bob
     birthDate: new Date("2017-08-20"),
     species: "Cat",
     breed: "Persian",

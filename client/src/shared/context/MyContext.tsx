@@ -17,12 +17,18 @@ function MyContextProvider({ children }) {
     lastName: "Doe",
     cpf: "123.456.789-00",
     crmv: "12345",
-    cnpj: "67.467.532/0001-04",
     email: "john.doe@example.com",
     phone: "(11) 99999-9999",
     photoFileName: "john.jpg",
     role: { id: 1, roleName: userTypeEnum.OWNER }, // Veterinarian
     availableTime: new Date("2024-03-10T09:00:00"),
+    address: {
+      city: "Belo Horizonte",
+      district: "Bandeirantes",
+      number: "1",
+      state: "MG",
+      street: "Rua Margarida",
+    },
   });
 
   const isUserOwner = user.role.roleName === userTypeEnum.OWNER;

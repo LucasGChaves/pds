@@ -13,9 +13,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useMyContext } from "../../shared/context/MyContext";
 import { PetsScreensStackParamList } from "../../../App";
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 const petToBeEdited = {
-  id: 1,
+  id: 2,
   name: "Buddy",
   owner: {
     id: 4,
@@ -74,6 +75,7 @@ const PetDetails = ({ navigation }) => {
   const handleEdit = () => {
     navigation.navigate("PetRegistration", {
       pet: {
+        id: petToBeEdited.id,
         name: petToBeEdited.name,
         species: petToBeEdited.species,
         breed: petToBeEdited.breed,
@@ -85,14 +87,22 @@ const PetDetails = ({ navigation }) => {
   const handleDelete = () => {};
 
   const handleShowOwnerInfo = () => {
-    navigation.navigate("OwnerInfo");
+    // TODO: passar informações do dono
+    navigation.navigate("OwnerInfo", {
+      data: {
+        email: "email@email.com",
+        phone: "(31) 93333-3333",
+        cpf: "123.456.789-00",
+      },
+    });
   };
 
   return (
     <LoggedAreaContainer handleDelete={handleDelete}>
       <Container>
         <PhotoContainer>
-          <Photo />
+          {/* TODO: mudar codigo abaixo para pegar o cpf do owner que vem no pet */}
+          <Photo source={{ uri: `${PHOTOS_PATH}pet_${id}_${user.cpf}.jpg` }} />
           <PetName>Dudu</PetName>
         </PhotoContainer>
         <Button
@@ -153,11 +163,11 @@ const Container = styled.View`
 const PhotoContainer = styled.View`
   row-gap: 16px;
 `;
-const Photo = styled.View`
+const Photo = styled.Image`
   width: 200px;
   height: 200px;
   border-radius: 100px;
-  background-color: gray;
+  background-color: ${AppStyles.colors.noPhotoGray};
   margin: 0 auto;
 `;
 

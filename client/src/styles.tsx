@@ -14,6 +14,7 @@ export const AppStyles = {
     lightGreen: "#77CCC6",
     lightText: "#808080",
     superLightText: "#9B9B9B",
+    noPhotoGray: "#c9c9c9",
   },
 };
 

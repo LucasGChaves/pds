@@ -8,6 +8,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import Select, { ItemProps } from "../../shared/components/Select";
 import { handleChangeformData } from "../../utils/functions";
+import AppStyles from "../../styles";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 interface ScheduleAppointmentFormData {
   date: string;
@@ -21,7 +23,7 @@ const VetInfo = ({ navigation }) => {
     useRoute<RouteProp<AppointmentScreensStackParamList, "VetInfo">>();
   const id = route.params.vetId;
 
-  const vet = MOCKED_USERS[1];
+  const vet = MOCKED_USERS[0];
 
   const handleSchedule = () => {};
 
@@ -50,7 +52,7 @@ const VetInfo = ({ navigation }) => {
     <LoggedAreaContainer>
       <Container>
         <PhotoContainer>
-          <Photo />
+          <Photo source={{ uri: `${PHOTOS_PATH}user_${vet.cpf}.jpg` }} />
           <VetInfoText>{`${vet.name} ${vet.lastName}`}</VetInfoText>
           <VetInfoText>{`CRMV/${vet.address.state} ${vet.crmv}`}</VetInfoText>
           <AddressText>{`${vet.address.city} | Bairro ${vet.address.district} | ${vet.address.street}, ${vet.address.number}`}</AddressText>
@@ -100,11 +102,11 @@ const Container = styled.View`
 const PhotoContainer = styled.View`
   row-gap: 8px;
 `;
-const Photo = styled.View`
+const Photo = styled.Image`
   width: 200px;
   height: 200px;
   border-radius: 100px;
-  background-color: gray;
+  background-color: ${AppStyles.colors.noPhotoGray};
   margin: 0 auto;
 `;
 

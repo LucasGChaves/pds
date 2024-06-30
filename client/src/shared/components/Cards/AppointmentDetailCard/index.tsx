@@ -24,7 +24,7 @@ const AppointmentDetailsCard = ({
 }: Props) => {
   return (
     <Container>
-      <Photo />
+      <Photo source={{ uri: photo }} />
       <Content>
         <Title>{petName}</Title>
         <DateText isFinished={date.toLowerCase() === "finalizada"}>
@@ -65,11 +65,11 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const Photo = styled.View`
+const Photo = styled.Image`
   width: 90px;
   height: 90px;
   border-radius: 8px;
-  background-color: gray;
+  background-color: ${AppStyles.colors.noPhotoGray};
 `;
 
 const Title = styled.Text`

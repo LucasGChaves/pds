@@ -9,6 +9,11 @@ import DatePicker from "../../shared/components/DatePicker";
 import UploadButton from "../../shared/components/UploadButton";
 import { PetsScreensStackParamList } from "../../../App";
 import { handleChangeformData } from "../../utils/functions";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import { useMyContext } from "../../shared/context/MyContext";
+import { PHOTOS_PATH } from "../../utils/constants";
+
 interface FormData {
   name: string;
   species: string;
@@ -20,19 +25,55 @@ interface FormData {
 const PetRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
 
-  const onSubmit = () => {
-    if (formData) {
-      const { birthDate, breed, name, photo, species } = formData;
-    }
+  const { user } = useMyContext();
 
-    navigation.navigate("Pets");
-  };
-
-  const handleUploadPhoto = () => {};
+  const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
 
   const route =
     useRoute<RouteProp<PetsScreensStackParamList, "PetRegistration">>();
   const pet = route.params?.pet;
+
+  const handleChoosePhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result);
+    }
+  };
+
+  const savePhoto = async (petId: string) => {
+    const directoryInfo = await FileSystem.getInfoAsync(PHOTOS_PATH);
+    const photoName = `pet_${petId}_${user.cpf}.jpg`;
+    if (!directoryInfo.exists) {
+      await FileSystem.makeDirectoryAsync(PHOTOS_PATH);
+    }
+
+    const photos = await FileSystem.readDirectoryAsync(PHOTOS_PATH);
+    if (photos.find((existingPhotoName) => existingPhotoName === photoName)) {
+      FileSystem.deleteAsync(`${PHOTOS_PATH}/${photoName}`);
+    }
+
+    await FileSystem.moveAsync({
+      from: image.assets[0].uri,
+      to: `${PHOTOS_PATH}/${photoName}`,
+    });
+  };
+
+  const onSubmit = async () => {
+    if (formData) {
+      const { birthDate, breed, name, photo, species } = formData;
+    }
+
+    //TODO: pegar id do pet e salvar
+    //caso de editar abaixo
+    await savePhoto(pet.id);
+    navigation.navigate("Pets");
+  };
 
   useEffect(() => {
     if (pet)
@@ -47,7 +88,9 @@ const PetRegistration = ({ navigation }) => {
   return (
     <LoggedAreaContainer>
       <Container>
-        <ScreenTitle orange>Cadastro de pet</ScreenTitle>
+        <ScreenTitle orange>
+          {pet ? "Edição de pet" : "Cadastro de pet"}
+        </ScreenTitle>
         <InputsContainer>
           <TextField
             value={formData?.name}
@@ -85,7 +128,10 @@ const PetRegistration = ({ navigation }) => {
           />
         </InputsContainer>
         <ButtonContainer>
-          <UploadButton handleClick={handleUploadPhoto} />
+          <PhotoChoiceContainer>
+            {image && <Photo source={{ uri: image.assets[0].uri }} />}
+            <UploadButton handleClick={handleChoosePhoto} />
+          </PhotoChoiceContainer>
           <Button mode="contained" style={{ width: 200 }} onPress={onSubmit}>
             Cadastrar
           </Button>
@@ -109,4 +155,16 @@ const InputsContainer = styled.View`
 const ButtonContainer = styled.View`
   align-items: center;
   row-gap: 150px;
+`;
+
+const PhotoChoiceContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+`;
+
+const Photo = styled.Image`
+  width: 50px;
+  height: 50px;
 `;

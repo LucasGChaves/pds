@@ -8,6 +8,7 @@ import AppStyles from "../../styles";
 import { useMyContext } from "../../shared/context/MyContext";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 const MyProfile = ({ navigation }) => {
   const { user } = useMyContext();
@@ -59,7 +60,7 @@ const MyProfile = ({ navigation }) => {
     <LoggedAreaContainer hideBackButton handleLogout={handleLogout}>
       <Container>
         <PhotoContainer>
-          <Photo />
+          <Photo source={{ uri: `${PHOTOS_PATH}user_${user.cpf}.jpg` }} />
           <UserName>Albert Stevano Bajefski</UserName>
         </PhotoContainer>
         <DataListWithDivider
@@ -101,11 +102,11 @@ const Container = styled.View`
 const PhotoContainer = styled.View`
   row-gap: 16px;
 `;
-const Photo = styled.View`
+const Photo = styled.Image`
   width: 200px;
   height: 200px;
   border-radius: 100px;
-  background-color: gray;
+  background-color: ${AppStyles.colors.noPhotoGray};
   margin: 0 auto;
 `;
 

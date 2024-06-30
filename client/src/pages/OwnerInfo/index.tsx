@@ -3,16 +3,23 @@ import styled from "styled-components/native";
 import DataListWithDivider, {
   DataListValueType,
 } from "../../shared/components/DataListWithDivider";
+import AppStyles from "../../styles";
+import { PHOTOS_PATH } from "../../utils/constants";
+import { PetsScreensStackParamList } from "../../../App";
+import { RouteProp, useRoute } from "@react-navigation/native";
 
 const OwnerInfo = ({ navigation }) => {
+  const route = useRoute<RouteProp<PetsScreensStackParamList, "OwnerInfo">>();
+  const { cpf, email, phone } = route.params.data;
+
   const data: DataListValueType[] = [
     {
       leftValue: "Email",
-      rightValue: "fulano@email.com",
+      rightValue: email,
     },
     {
       leftValue: "Telefone",
-      rightValue: "(31)91434-5454",
+      rightValue: phone,
     },
   ];
 
@@ -20,7 +27,7 @@ const OwnerInfo = ({ navigation }) => {
     <LoggedAreaContainer>
       <Container>
         <PhotoContainer>
-          <Photo />
+          <Photo source={{ uri: `${PHOTOS_PATH}user_${cpf}.jpg` }} />
           <PetName>Fulanildo</PetName>
         </PhotoContainer>
         <DataListWithDivider data={data} />
@@ -40,11 +47,11 @@ const Container = styled.View`
 const PhotoContainer = styled.View`
   row-gap: 16px;
 `;
-const Photo = styled.View`
+const Photo = styled.Image`
   width: 200px;
   height: 200px;
   border-radius: 100px;
-  background-color: gray;
+  background-color: ${AppStyles.colors.noPhotoGray};
   margin: 0 auto;
 `;
 

@@ -15,6 +15,7 @@ import { handleChangeformData } from "../../utils/functions";
 import { useMyContext } from "../../shared/context/MyContext";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 interface FormData {
   description: string;
@@ -68,7 +69,7 @@ const AppointmentDetails = ({ navigation }) => {
             ownerName={appointment.pet.owner.name}
             petName={appointment.pet.name}
             viewerType={isUserOwner ? "owner" : "vet"}
-            photo=""
+            photo={`${PHOTOS_PATH}pet_${appointment.pet.id}_${appointment.pet.owner.cpf}.jpg`}
           />
           {showDescription ? (
             <AppointmentDescription

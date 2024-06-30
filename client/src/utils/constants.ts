@@ -1,4 +1,5 @@
 import { ItemProps } from "../shared/components/Select";
+import * as FileSystem from "expo-file-system";
 
 export const BRASILIAN_STATES: ItemProps[] = [
   { value: "AC", label: "Acre" },
@@ -116,3 +117,5 @@ export const TIMES: ItemProps[] = [
     value: "19:00",
   },
 ];
+
+export const PHOTOS_PATH = `${FileSystem.documentDirectory}photos/`;

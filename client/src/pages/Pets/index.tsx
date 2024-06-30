@@ -11,17 +11,18 @@ import PatientCard from "../../shared/components/Cards/PatientCard";
 import { useMyContext } from "../../shared/context/MyContext";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 const Pets = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { isUserOwner } = useMyContext();
+  const { isUserOwner, user } = useMyContext();
 
   const handleAdd = () => {
     navigation.navigate("PetRegistration");
   };
 
   const handleCardClick = (id: string) => {
-    navigation.navigate("PetDetails", id);
+    navigation.navigate("PetDetails", { petId: id });
   };
 
   return (
@@ -50,7 +51,7 @@ const Pets = ({ navigation }) => {
                 breed={item.breed}
                 handleClick={() => handleCardClick(item.id.toString())}
                 name={item.name}
-                photo={item.photo}
+                photo={PHOTOS_PATH + `pet_${item.id}_${item.owner.cpf}.jpg`}
               />
             ) : (
               <PatientCard
@@ -59,7 +60,7 @@ const Pets = ({ navigation }) => {
                 ownerName={item.owner.name}
                 handleClick={() => handleCardClick(item.id.toString())}
                 name={item.name}
-                photo={item.photo}
+                photo={PHOTOS_PATH + `pet_${item.id}_${item.owner.cpf}.jpg`}
               />
             );
           }}

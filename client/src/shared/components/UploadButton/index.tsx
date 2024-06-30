@@ -7,13 +7,9 @@ interface Props {
 
 const UploadButton = ({ handleClick }: Props) => {
   return (
-    <Container
-      onPress={() => {
-        handleClick;
-      }}
-    >
+    <Container onPress={handleClick}>
       <Entypo name="arrow-with-circle-up" size={24} color="#B0770B" />
-      <Text>Upload de foto</Text>
+      <Text>Escolher foto</Text>
     </Container>
   );
 };

@@ -8,6 +8,7 @@ import { MOCKED_APPOINTMENTS } from "../../mocks/mocks";
 import CircularAddButton from "../../shared/components/CircularAddButton";
 import AppointmentCard from "../../shared/components/Cards/AppointmentCard";
 import { useMyContext } from "../../shared/context/MyContext";
+import { PHOTOS_PATH } from "../../utils/constants";
 
 const Appointments = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,7 +54,7 @@ const Appointments = ({ navigation }) => {
               pacientName={item.pet.name}
               isFinished={item.id % 2 > 0}
               vetName={item.vet.name}
-              photo=""
+              photo={`${PHOTOS_PATH}pet_${item.pet.id}_${item.pet.owner.cpf}.jpg`}
               handleClick={() => handleCardClick(item.id.toString())}
             />
           )}
