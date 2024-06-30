@@ -17,10 +17,8 @@ interface FormData {
 const Login = ({ navigation }) => {
   const [formData, setFormData] = useState<FormData>();
 
-  const { setSnackbarParams } = useSnackbarContext();
   const handleLogin = () => {
-    // navigation.navigate("TabNavigator");
-    setSnackbarParams({ show: true, text: "Erro" });
+    navigation.navigate("TabNavigator");
   };
 
   const handleSignUp = () => {

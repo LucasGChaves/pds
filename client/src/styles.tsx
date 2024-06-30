@@ -7,6 +7,7 @@ export const AppStyles = {
     primary40: "#F8B683",
     primary70: "#A3612E",
     red: "#920000",
+    error: "#d45d5d",
     green: "#00642d",
     gray: "#CCCCCC",
     buttonPrimary: "#FFAB6A",

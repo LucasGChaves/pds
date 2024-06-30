@@ -12,6 +12,7 @@ import { useAuthContext } from "../../shared/context/AuthContext";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { PHOTOS_PATH } from "../../utils/constants";
+import InfoCard from "../../shared/components/InfoCard";
 
 const Pets = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,35 +37,41 @@ const Pets = ({ navigation }) => {
           onChangeText={setSearchQuery}
           value={searchQuery}
         />
-        <FlatList
-          nestedScrollEnabled
-          style={
-            isUserOwner ? { maxHeight: 425, height: "58%" } : { height: "62%" }
-          }
-          data={MOCKED_PETS}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ gap: 12 }}
-          renderItem={({ item }) => {
-            return isUserOwner ? (
-              <MyPetCard
-                age={item.age}
-                breed={item.breed}
-                handleClick={() => handleCardClick(item.id.toString())}
-                name={item.name}
-                photo={PHOTOS_PATH + `pet_${item.id}_${item.owner.cpf}.jpg`}
-              />
-            ) : (
-              <PatientCard
-                age={item.age}
-                species={item.species}
-                ownerName={item.owner.name}
-                handleClick={() => handleCardClick(item.id.toString())}
-                name={item.name}
-                photo={PHOTOS_PATH + `pet_${item.id}_${item.owner.cpf}.jpg`}
-              />
-            );
-          }}
-        />
+        {true ? (
+          <FlatList
+            nestedScrollEnabled
+            style={
+              isUserOwner
+                ? { maxHeight: 425, height: "58%" }
+                : { height: "62%" }
+            }
+            data={MOCKED_PETS}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{ gap: 12 }}
+            renderItem={({ item }) => {
+              return isUserOwner ? (
+                <MyPetCard
+                  age={item.age}
+                  breed={item.breed}
+                  handleClick={() => handleCardClick(item.id.toString())}
+                  name={item.name}
+                  photo={PHOTOS_PATH + `pet_${item.id}_${item.owner.cpf}.jpg`}
+                />
+              ) : (
+                <PatientCard
+                  age={item.age}
+                  species={item.species}
+                  ownerName={item.owner.name}
+                  handleClick={() => handleCardClick(item.id.toString())}
+                  name={item.name}
+                  photo={PHOTOS_PATH + `pet_${item.id}_${item.owner.cpf}.jpg`}
+                />
+              );
+            }}
+          />
+        ) : (
+          <InfoCard type="error" />
+        )}
       </Container>
       <ShowComponentByRole role={userTypeEnum.OWNER}>
         <AddButtonContainer>
