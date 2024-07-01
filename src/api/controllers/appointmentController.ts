@@ -59,7 +59,17 @@ export class AppointmentController {
 
     async createNewAppointmentAsOwner(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const appointmentId = req.params && Number(req.params.id);
+
+            if(!req.user || !req.params) {
+                return next(new HttpError("Ocorreu um erro ao marcar nova consulta.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const appointmentId = Number(req.params.id);
+
+            if(!userRoleId || userRoleId === Number(Roles.vet)) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
 
             const appointment = await userService.scheduleAppointmentForOwner(appointmentId);
 
@@ -75,8 +85,17 @@ export class AppointmentController {
 
     async updateAppointment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const appointmentId = req.params && Number(req.params.id);
+            if(!req.user || !req.params || !req.body) {
+                return next(new HttpError("Ocorreu um erro ao atualizar a consulta.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const appointmentId = Number(req.params.id);
             const appointmentData = req.body;
+
+            if(!userRoleId || userRoleId === Number(Roles.owner)) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
 
             const appointment = await appointmentService.updateAppointment(appointmentId, appointmentData);
 

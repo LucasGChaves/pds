@@ -10,7 +10,16 @@ const examRequestService = new ExamRequestService(examRequestRepository);
 export class ExamRequestController {
     async getExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const examRequestId = req.params && Number(req.params.id);
+            if(!req.user || !req.params) {
+                return next(new HttpError("Ocorreu um erro ao buscar o pedido de exame.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const examRequestId = Number(req.params.id);
+            
+            if(!userRoleId || userRoleId === Number(Roles.owner)) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
 
             const examRequest = await examRequestService.findById(examRequestId);
 
@@ -26,7 +35,11 @@ export class ExamRequestController {
 
     async createExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const userRoleId = req.user && req.user.roleId;
+            if(!req.user || !req.body) {
+                return next(new HttpError("Ocorreu um erro ao criar o pedido de exame.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
 
             if(!userRoleId || userRoleId === Number(Roles.owner)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
@@ -49,16 +62,47 @@ export class ExamRequestController {
             next(err);
         }
     }
-    async deleteExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+    async updateExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const userRoleId = req.user && req.user.roleId;
+            if(!req.user || !req.params || !req.body) {
+                return next(new HttpError("Ocorreu um erro ao atualizar o pedido de exame.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const examRequestId = Number(req.params.id);
+            const examRequestData = req.body;
 
             if(!userRoleId || userRoleId === Number(Roles.owner)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
             
-            const examRequestId = req.params && Number(req.params.id);
+            const examRequest = await examRequestService.updateExamRequest(examRequestId, examRequestData);
 
+            if(!examRequest) {
+                return next(new HttpError("Ocorreu um erro ao atualizar o pedido de exame.", 400));
+            }
+
+            res.status(200).json(examRequest);
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    async deleteExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            if(!req.user || !req.params) {
+                return next(new HttpError("Ocorreu um erro ao deletar o pedido de exame.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const examRequestId = Number(req.params.id);
+
+            if(!userRoleId || userRoleId === Number(Roles.owner)) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
+    
             const deleted = await examRequestService.deleteExamRequest(examRequestId);
 
             if(!deleted) {

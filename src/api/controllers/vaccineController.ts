@@ -10,7 +10,17 @@ const vaccineService = new VaccineService(vaccineRepository);
 export class VaccineController {
     async getVaccine(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const vaccineId = req.params && Number(req.params.id);
+            if(!req.user || !req.params) {
+                return next(new HttpError("Ocorreu um erro ao buscar a vacina.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const vaccineId = Number(req.params.id);
+
+            if(!userRoleId || userRoleId === Number(Roles.owner)) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
+
 
             const vaccine = await vaccineService.findById(vaccineId);
 
@@ -26,13 +36,17 @@ export class VaccineController {
 
     async createVaccine(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            if(!req.user || !req.body) {
+                return next(new HttpError("Ocorreu um erro ao criar a vacina.", 500));
+            }
+
             const userRoleId = req.user && req.user.roleId;
+            const vaccineData = req.body;
 
             if(!userRoleId || userRoleId === Number(Roles.owner)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
 
-            const vaccineData = req.body;
 
             if(!vaccineData.petId) {
                 return next(new HttpError("É necessário selecionar um pet para a criação da vacina.", 400));
@@ -51,13 +65,17 @@ export class VaccineController {
     }
     async deleteVaccine(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const userRoleId = req.user && req.user.roleId;
+            if(!req.user || !req.params) {
+                return next(new HttpError("Ocorreu um erro ao deletar a vacina.", 500));
+            }
+
+            const userRoleId = req.user.roleId;
+            const vaccineId = Number(req.params.id);
 
             if(!userRoleId || userRoleId === Number(Roles.owner)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
             
-            const vaccineId = req.params && Number(req.params.id);
 
             const deleted = await vaccineService.deleteVaccine(vaccineId);
 

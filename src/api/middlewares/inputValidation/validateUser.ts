@@ -1,26 +1,27 @@
 import { ValidationChain, body, validationResult } from "express-validator";
-import { cpf, cnpj } from 'cpf-cnpj-validator'; 
+import { cpf } from 'cpf-cnpj-validator'; 
 import { NextFunction, Response, Request } from "express";
 import { HttpError } from "../errors";
 
 export const create = [
-    body("firstName").notEmpty().withMessage("O campo \"Nome\" é obrigatório."),
-    body("lastName").notEmpty().withMessage("O campo \"Sobrenome\" é obrigatório."),
+    body("firstName").notEmpty().withMessage("O campo \"Nome\" é obrigatório.").isAlpha().withMessage("O nome inserido não é válido."),
+    body("lastName").notEmpty().withMessage("O campo \"Sobrenome\" é obrigatório.").isAlpha().withMessage("O sobrenome inserido não é válido."),
     body("email").notEmpty().withMessage("O campo \"Email\" é obrigatório.")
     .isEmail().withMessage("O email inserido não é válido."),
     body("phone").notEmpty().withMessage("O campo \"Celular\" é obrigatório."),
     body("cpf").notEmpty().withMessage("O campo \"CPF\" é obrigatório.")
     .custom(value => {
         if(!cpf.isValid(value)) {
-            throw new Error ("O \"CPF\" informado não é válido.");
+            throw new Error ("O CPF inserido não é válido.");
         }
         return true;
     }).customSanitizer(value => cpf.format(value)),
-    body("cnpj").optional().custom(value => {
-        if(!cnpj.isValid(value)) {
-            throw new Error ("O \"CNPJ\" informado não é válido.");
-        }
-    }).customSanitizer(value => cnpj.format(value))
+    body("address").notEmpty().withMessage("O campo \"Endereço\" é obrigatório."),
+    body("address.state").notEmpty().withMessage("O campo \"Estado\" é obrigatório."),
+    body("address.city").notEmpty().withMessage("O campo \"Cidade\" é obrigatório."),
+    body("address.district").notEmpty().withMessage("O campo \"Bairro\" é obrigatório."),
+    body("address.street").notEmpty().withMessage("O campo \"Rua\" é obrigatório."),
+    body("address.number").notEmpty().withMessage("O campo \"Número\" é obrigatório.").isNumeric().withMessage("O número inserido não é válido."),
 ];
 
 export const login = [
@@ -50,6 +51,8 @@ export const login = [
 ];
 
 export const update = [
+    body("firstName").optional().isAlpha().withMessage("O nome inserido não é válido."),
+    body("lastName").optional().isAlpha().withMessage("O sobrenome inserido não é válido."),
     body("email").optional().isEmail().withMessage("O email inserido não é válido."),
     body("cpf").optional().custom(value => {
         if(!cpf.isValid(value)) {
@@ -57,12 +60,7 @@ export const update = [
         }
         return true;
     })
-    .customSanitizer(value => cpf.format(value)),
-    body("cnpj").optional().custom(value => {
-        if(!cnpj.isValid(value)) {
-            throw new Error ("O \"CNPJ\" informado não é válido.");
-        }
-    }).customSanitizer(value => cnpj.format(value))
+    .customSanitizer(value => cpf.format(value))
 ]
 
 export function validateUser(method: ValidationChain[]){
@@ -81,4 +79,4 @@ export function validateUser(method: ValidationChain[]){
             next(err);
         }
     };
-  }
+}

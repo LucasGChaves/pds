@@ -20,7 +20,7 @@ export class AppointmentService {
         const createdAppointment = await this.appointmentRepository.createAppointment(appointment);
 
         if(!createdAppointment) {
-            throw new HttpError("Não foi possívle encontrar a consulta desejada.", 404);
+            throw new HttpError("Não foi possível encontrar a consulta desejada.", 404);
         }
 
         const vet = await userService.findById(Number(createdAppointment.vetId));
@@ -33,7 +33,7 @@ export class AppointmentService {
         const updatedAppointment = await this.appointmentRepository.updateAppointment(id, updatedData);
 
         if(!updatedAppointment) {
-            throw new HttpError("Não foi possívle encontrar a consulta desejada.", 404);
+            throw new HttpError("Não foi possível encontrar a consulta desejada.", 404);
         }
 
         const pet = await petService.findById(Number(updatedAppointment.petId));
@@ -51,7 +51,7 @@ export class AppointmentService {
         const appointment = await this.appointmentRepository.findById(id);
 
         if(!appointment) {
-            throw new HttpError("Não foi possívle encontrar a consulta desejada.", 404);
+            throw new HttpError("Não foi possível encontrar a consulta desejada.", 404);
         }
 
         const pet = await petService.findById(Number(appointment.petId));
@@ -65,7 +65,7 @@ export class AppointmentService {
         const appointments = await this.appointmentRepository.findAllByUserId(userId);
 
         if(!appointments) {
-            throw new HttpError("Não foi possívle encontrar nenhuma consulta.", 404);
+            throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
         }
 
         const appointmentsCopy = Promise.all(appointments.map(async appointment => {
@@ -83,7 +83,7 @@ export class AppointmentService {
         const appointments = await this.appointmentRepository.findAllByPetId(petId);
 
         if(!appointments) {
-            throw new HttpError("Não foi possívle encontrar nenhuma consulta.", 404);
+            throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
         }
 
         const appointmentsCopy = Promise.all(appointments.map(async appointment => {
@@ -101,7 +101,7 @@ export class AppointmentService {
         const appointments = await this.appointmentRepository.findAllAvailableForOwnerByUserId(userId);
 
         if(!appointments) {
-            throw new HttpError("Não foi possívle encontrar nenhuma consulta.", 404);
+            throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
         }
 
         const appointmentsCopy = Promise.all(appointments.map(async appointment => {
@@ -119,7 +119,7 @@ export class AppointmentService {
         const appointments = await this.appointmentRepository.findAllAvailableForOwnerByUserIdAndDate(userId, appointmentDate);
 
         if(!appointments) {
-            throw new HttpError("Não foi possívle encontrar nenhuma consulta.", 404);
+            throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
         }
 
         const appointmentsCopy = Promise.all(appointments.map(async appointment => {
