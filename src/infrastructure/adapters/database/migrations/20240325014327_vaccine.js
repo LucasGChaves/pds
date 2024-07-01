@@ -10,17 +10,7 @@ export const up = function(knex) {
         table.date("batch", 100).notNullable();
         table.integer("petId").notNullable().unsigned();
         table.integer("vetId").notNullable().unsigned();
-    }).then(function (){
-        return knex("vaccine").insert([
-            {
-                vaccineName: "vaccine",
-                manufacturer: "manufacturer",
-                batch: new Date(),
-                petId: 1,
-                vetId: 2
-            }
-        ]);
-    })
+    });
 };
 
 /**

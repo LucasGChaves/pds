@@ -1,5 +1,6 @@
 import { UserReturnType } from "./userType";
 import { PetReturnType } from "../../domain/entities/pet";
+import { AppointmentReturnType } from "./appointment";
 
 export type ExamRequestReturnType = {
     id: number;
@@ -11,4 +12,5 @@ export type ExamRequestReturnType = {
     pet: PetReturnType;
     vet: UserReturnType;
     owner: UserReturnType;
+    appointment: AppointmentReturnType;
 };

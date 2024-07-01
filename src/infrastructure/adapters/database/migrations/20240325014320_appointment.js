@@ -9,16 +9,7 @@ export const up = function(knex) {
         table.string("description", 100).notNullable();
         table.integer("petId").notNullable().unsigned();
         table.integer("vetId").notNullable().unsigned();
-    }).then(function (){
-        return knex("appointment").insert([
-            {
-                appointmentDate: new Date(),
-                description: "description",
-                petId: 1,
-                vetId: 2
-            }
-        ]);
-    })
+    });
 };
 
 /**

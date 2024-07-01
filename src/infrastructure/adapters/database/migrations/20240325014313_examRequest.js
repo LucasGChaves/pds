@@ -10,17 +10,7 @@ export const up = function(knex) {
         table.binary("resultFile").notNullable();
         table.integer("petId").notNullable().unsigned();
         table.integer("vetId").notNullable().unsigned();
-    }).then(function (){
-        return knex("examRequest").insert([
-            {
-                vetSignature: 0b0,
-                result: "ok",
-                resultFile: 0b0,
-                petId:1,
-                vetId: 2
-            }
-        ]);
-    })
+    });
 };
 
 /**
