@@ -5,13 +5,11 @@ import { AppointmentReturnType } from "./appointment";
 export type ExamRequestReturnType = {
     id: number;
     vetSignature: string;
-    result: string;
-    resultFile: string;
+    result?: string;
+    resultFile?: string;
     petId: number;
     vetId: number;
     appointmentId: number;
     pet: PetReturnType;
     vet: UserReturnType;
-    owner: UserReturnType;
-    appointment: AppointmentReturnType;
 };

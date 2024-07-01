@@ -33,8 +33,9 @@ export class Auth {
                 const payload = {
                     "id": user.id,
                     "email": user.email,
-                    "cpf": user.cpf
-                }
+                    "cpf": user.cpf,
+                    "roleId": user.roleId
+                };
 
                 req.login(payload, {session: false}, (err) => {
                     if(err) {

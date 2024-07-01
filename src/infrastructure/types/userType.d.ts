@@ -1,3 +1,4 @@
+import { AddressReturnType } from "./address";
 import { RoleReturnType } from "./roleType";
 
 export type UserReturnType = {
@@ -8,8 +9,9 @@ export type UserReturnType = {
     email: string;
     phone: string;
     cpf: string;
-    crmv: string;
-    photoFileName: string;
+    crmv?: string;
+    photoFileName?: string;
     roleId: number;
     role: RoleReturnType;
+    address: AddressReturnType;
 }

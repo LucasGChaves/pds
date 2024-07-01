@@ -1,20 +1,32 @@
 import { Request, Response, NextFunction } from "express";
 import { PetRepository } from "../../infrastructure/adapters/repository/petRepository";
 import { PetService } from "../../application/usecases/petService";
-import { Pet } from "../../domain/entities/pet";
 import { validationResult } from "express-validator";
 import { HttpError } from "../middlewares/errors";
+import { Roles } from "../../infrastructure/rolesDictionary";
+import { UserRepository } from "../../infrastructure/adapters/repository/userRepository";
+import { UserService } from "../../application/usecases/userService";
 
 const petRepository = new PetRepository();
 const petService = new PetService(petRepository);
+
+const userRepository = new UserRepository();
+const userService = new UserService(userRepository);
 
 export class PetController {
     async createPet(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const errors = validationResult(req);
 
+            const userId = req.user && req.user.id;
+            const userRoleId = req.user && req.user.roleId;
+
+            if(!userId || !userRoleId || userRoleId === Number(Roles.vet)) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
+
             if(errors.isEmpty()) {
-                const pet = await petService.createPet(req.body);
+                const pet = await petService.createPet(req.body, userId);
 
                 if(!pet) {
                     return next(new HttpError("Ocorreu um erro ao salvar as informações do pet.", 500));
@@ -96,7 +108,7 @@ export class PetController {
         try {
             const petId = req.params && Number(req.params.id);
 
-            const vaccines = await petService.getPetVaccines(petId);
+            const vaccines = await userService.findAllVaccinesByPetId(petId);
 
             if(!vaccines) {
                 return next(new HttpError("Nenhuma vacina foi encontrada.", 400));

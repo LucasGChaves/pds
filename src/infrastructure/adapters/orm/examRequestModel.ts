@@ -13,22 +13,22 @@ export class ExamRequestModel extends Model {
   vetId!: number
   appointmentId!: number
 
-  static relationMappings = {
-    user: {
-      relation: Model.HasOneRelation,
-      modelClass: UserModel,
-      join: {
-        from: "examRequest.vetId",
-        to: "user.id"
-      }
-    },
-    pet: {
-        relation: Model.HasOneRelation,
-        modelClass: PetModel,
-        join: {
-            from: "examRequest.petId",
-            to: "pet.id"
-        }
-    }
-  }
+  // static relationMappings = {
+  //   user: {
+  //     relation: Model.HasOneRelation,
+  //     modelClass: UserModel,
+  //     join: {
+  //       from: "examRequest.vetId",
+  //       to: "user.id"
+  //     }
+  //   },
+  //   pet: {
+  //       relation: Model.HasOneRelation,
+  //       modelClass: PetModel,
+  //       join: {
+  //           from: "examRequest.petId",
+  //           to: "pet.id"
+  //       }
+  //   }
+  // }
 }

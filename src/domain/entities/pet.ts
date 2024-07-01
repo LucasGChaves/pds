@@ -6,7 +6,7 @@ export class Pet {
   species!: string
   breed?: string
   photoFileName?: string;
-  ownerId!: string
+  ownerId!: number
 
   constructor (pet: Partial<Pet>) {
     Object.assign(this, pet);

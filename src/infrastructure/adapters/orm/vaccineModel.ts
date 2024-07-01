@@ -14,22 +14,22 @@ export class VaccineModel extends Model {
     petId!: number;
     vetId!: number;
     
-    static relationMappings = {
-      pet: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: PetModel,
-        join: {
-          from: "vaccine.petId",
-          to:"pet.id"
-        }
-      },
-      user: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: UserModel,
-        join: {
-          from: "vaccine.ownerId",
-          to: "user.id"
-        }
-      }
-    }
+    // static relationMappings = {
+    //   pet: {
+    //     relation: Model.BelongsToOneRelation,
+    //     modelClass: PetModel,
+    //     join: {
+    //       from: "vaccine.petId",
+    //       to:"pet.id"
+    //     }
+    //   },
+    //   user: {
+    //     relation: Model.BelongsToOneRelation,
+    //     modelClass: UserModel,
+    //     join: {
+    //       from: "vaccine.ownerId",
+    //       to: "user.id"
+    //     }
+    //   }
+    // }
   }
