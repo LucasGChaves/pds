@@ -10,5 +10,6 @@ export type AppointmentReturnType = {
     petId: number;
     vetId: number;
     pet: PetReturnType;
-    user: UserReturnType;
+    vet: UserReturnType;
+    owner: UserReturnType;
 };

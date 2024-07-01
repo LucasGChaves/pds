@@ -9,5 +9,6 @@ export type ExamRequestReturnType = {
     petId: number;
     vetId: number;
     pet: PetReturnType;
-    user: UserReturnType;
+    vet: UserReturnType;
+    owner: UserReturnType;
 };

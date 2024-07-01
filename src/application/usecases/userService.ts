@@ -19,6 +19,10 @@ import { Roles } from "../../infrastructure/rolesDictionary";
 import { RoleRepository } from "../../infrastructure/adapters/repository/roleRepository";
 import { AddressRepository } from "../../infrastructure/adapters/repository/addressRepository";
 import { AddressService } from "./addressService";
+import { UserReturnType } from "../../infrastructure/types/userType";
+import { AppointmentReturnType } from "../../infrastructure/types/appointment";
+import { ExamRequestReturnType } from "../../infrastructure/types/examRequest";
+import { VaccineReturnType } from "../../infrastructure/types/vaccine";
 
 const petRepository = new PetRepository();
 const petService = new PetService(petRepository);
@@ -40,19 +44,32 @@ const roleRepository = new RoleRepository();
 export class UserService {
     constructor(private userRepository: UserRepositoryInterface) {}
 
-    async createUser(user: Partial<User>, address: Partial<Address>): Promise<User> {
+    async createUser(user: Partial<User>, address: Partial<Address>): Promise<UserReturnType> {
       const hashedPassword = await bcrypt.hash(user.password!, 10);
       user.password = hashedPassword;
-      await addressService.createAddress(address);
-      return await this.userRepository.createUser(user);
+      const createdAddress = await addressService.createAddress(address);
+      const createdUser = await this.userRepository.createUser(user);
+      const userCopy:any = {...createdUser};
+
+      return {...userCopy, address: createdAddress};
     }
     
-    async updateUser(userId: number, updatedData: Partial<User>): Promise<User | undefined> {
+    async updateUser(userId: number, updatedData: Partial<User>): Promise<UserReturnType | undefined> {
       if(updatedData.password) {
         const hashedPassword = await bcrypt.hash(updatedData.password, 10);
         updatedData.password = hashedPassword;
       }
-      return await this.userRepository.updateUser(userId, updatedData);
+
+      const updatedUser = await this.userRepository.updateUser(userId, updatedData);
+
+      if(!updatedUser) {
+        throw new HttpError("Não foi possível encontrar o usuário desejado.", 400);
+      }
+      
+      const address = await addressService.findByUserId(updatedUser.id);
+      const updatedUserCopy: any = {...updatedUser};
+
+      return {...updatedUserCopy, address: address};
     }
 
     async getUserAddress(userId: number): Promise <Address | undefined> {
@@ -71,7 +88,7 @@ export class UserService {
       return deleted;
     }
 
-    async findByEmail(email: string): Promise<User | undefined> {
+    async findByEmail(email: string): Promise<UserReturnType | undefined> {
       const user = await this.userRepository.findByEmail(email);
       const role = await roleRepository.findById(Number(user?.roleId));
       let userWithRole: any = {...user, role: role};
@@ -79,7 +96,7 @@ export class UserService {
       return userWithRole;
     }
   
-    async findByCpf(cpf: string): Promise<User | undefined> {
+    async findByCpf(cpf: string): Promise<UserReturnType | undefined> {
       const user = await this.userRepository.findByCpf(cpf);
       const role = await roleRepository.findById(Number(user?.roleId));
       let userWithRole: any = {...user, role: role};
@@ -87,7 +104,7 @@ export class UserService {
       return userWithRole;
     }
 
-    async findById(id: number): Promise<User | undefined> {
+    async findById(id: number): Promise<UserReturnType | undefined> {
       const user = await this.userRepository.findById(id);
       const role = await roleRepository.findById(Number(user?.roleId));
       let userWithRole: any = {...user, role: role};
@@ -96,7 +113,7 @@ export class UserService {
     }
 
 
-    async getMyAppointments(id: number, roleId: number): Promise<Appointment[] | undefined> {
+    async getMyAppointments(id: number, roleId: number): Promise<AppointmentReturnType[] | undefined> {
       const appointmentRepository =  new AppointmentRepository();
       const appointmentService = new AppointmentService(appointmentRepository);
       const appointments = await appointmentService.findAllByUserId(id);
@@ -133,7 +150,7 @@ export class UserService {
       return appointmentsCopy;
     }
 
-    async getMyExamRequests(id: number, roleId: number): Promise<ExamRequest[] | undefined> {
+    async getMyExamRequests(id: number, roleId: number): Promise<ExamRequestReturnType[] | undefined> {
       const examRequestRepository = new ExamRequestRepository();
       const examRequestService = new ExamRequestService(examRequestRepository);
       const examRequests = await examRequestService.findAllByUserId(id);
@@ -170,7 +187,7 @@ export class UserService {
       return examRequestsCopy;
     }
 
-    async getMyVaccines(id: number, roleId: number): Promise<Vaccine[] | undefined> {
+    async getMyVaccines(id: number, roleId: number): Promise<VaccineReturnType[] | undefined> {
       const vaccineRepository = new VaccineRepository();
       const vaccineService = new VaccineService(vaccineRepository);
       const vaccines = await vaccineService.findAllByUserId(id);
@@ -283,12 +300,12 @@ export class UserService {
       return appointmentsTimes;
     }
 
-    async scheduleAppointmentForOwner(appointmentId: number): Promise<Appointment | undefined> {
+    async scheduleAppointmentForOwner(appointmentId: number): Promise<AppointmentReturnType | undefined> {
       const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {scheduled: true});
       return updatedAppointment;
     }
 
-    async cancelAppointmentAsOwner(appointmentId: number): Promise <Appointment | undefined> {
+    async cancelAppointmentAsOwner(appointmentId: number): Promise <AppointmentReturnType | undefined> {
       const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {scheduled: false});
       return updatedAppointment; 
     }
@@ -338,39 +355,39 @@ export class UserService {
       return patientsAndOwnersData;
     }
 
-    async createVaccine(petId: number, vetId: number, vaccine: Partial<Vaccine>): Promise<Vaccine | undefined> {
-      vaccine.petId = petId;
-      vaccine.vetId = vetId;
+    // async createVaccine(petId: number, vetId: number, vaccine: Partial<Vaccine>): Promise<VaccineReturnType | undefined> {
+    //   vaccine.petId = petId;
+    //   vaccine.vetId = vetId;
 
-      const createdVaccine = await vaccineService.createVaccine(vaccine);
-      return createdVaccine;
-    }
+    //   const createdVaccine = await vaccineService.createVaccine(vaccine);
+    //   return createdVaccine;
+    // }
 
-    async updateVaccine(vaccineId: number, petId: number, vetId: number, vaccineData: Partial<Vaccine>): Promise<Vaccine | undefined> {
-      vaccineData.petId = petId;
-      vaccineData.vetId = vetId;
+    // async updateVaccine(vaccineId: number, petId: number, vetId: number, vaccineData: Partial<Vaccine>): Promise<VaccineReturnType | undefined> {
+    //   vaccineData.petId = petId;
+    //   vaccineData.vetId = vetId;
 
-      const updatedVaccine = await vaccineService.updateVaccine(vaccineId, vaccineData);
-      return updatedVaccine;
-    }
+    //   const updatedVaccine = await vaccineService.updateVaccine(vaccineId, vaccineData);
+    //   return updatedVaccine;
+    // }
 
-    async createExamRequest(petId: number, vetId: number, examRequest: Partial<ExamRequest>): Promise<ExamRequest | undefined> {
-      examRequest.petId = petId;
-      examRequest.vetId = vetId;
+    // async createExamRequest(petId: number, vetId: number, examRequest: Partial<ExamRequest>): Promise<ExamRequestReturnType | undefined> {
+    //   examRequest.petId = petId;
+    //   examRequest.vetId = vetId;
 
-      const createdExamRequest = await examRequestService.createExamRequest(examRequest);
-      return createdExamRequest;
-    }
+    //   const createdExamRequest = await examRequestService.createExamRequest(examRequest);
+    //   return createdExamRequest;
+    // }
 
-    async updateExamRequest(examRequestId: number, petId: number, vetId: number, examRequestData: Partial<ExamRequest>): Promise<ExamRequest | undefined> {
-      examRequestData.petId = petId;
-      examRequestData.vetId = vetId;
+    // async updateExamRequest(examRequestId: number, petId: number, vetId: number, examRequestData: Partial<ExamRequest>): Promise<ExamRequestReturnType | undefined> {
+    //   examRequestData.petId = petId;
+    //   examRequestData.vetId = vetId;
 
-      const updatedExamRequest = await examRequestService.updateExamRequest(examRequestId, examRequestData);
-      return updatedExamRequest;
-    }
+    //   const updatedExamRequest = await examRequestService.updateExamRequest(examRequestId, examRequestData);
+    //   return updatedExamRequest;
+    // }
 
-    async scheduleAppointmentAsVet(vetId: number, appointmentDate: Date, appointmentTime: string): Promise<Appointment | undefined> {
+    async scheduleAppointmentAsVet(vetId: number, appointmentDate: Date, appointmentTime: string): Promise<AppointmentReturnType | undefined> {
       const appointments = await appointmentService.findAllByUserId(vetId);
       let dateAndTimeAlreadyTaken = false;
       

@@ -10,5 +10,6 @@ export type VaccineReturnType = {
     petId: number;
     vetId: number;
     pet: PetReturnType;
-    user: UserReturnType;
+    vet: UserReturnType;
+    owner: UserReturnType;
 };
