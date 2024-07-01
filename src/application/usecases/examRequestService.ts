@@ -4,6 +4,8 @@ import { PetRepository } from "../../infrastructure/adapters/repository/petRepos
 import { PetService } from "./petService";
 import { UserRepository } from "../../infrastructure/adapters/repository/userRepository";
 import { UserService } from "./userService";
+import { AppointmentRepository } from "../../infrastructure/adapters/repository/appointmentRepository";
+import { AppointmentService } from "./appointmentService";
 import { HttpError } from "../../api/middlewares/errors";
 import { ExamRequestReturnType } from "../../infrastructure/types/examRequest";
 
@@ -12,6 +14,9 @@ const petService = new PetService(petRepository);
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
+
+const appointmentRepository = new AppointmentRepository();
+const appointmentService = new AppointmentService(appointmentRepository);
 
 export class ExamRequestService {
     constructor(private examRequestRepository: ExamRequestRepositoryInterface) {}
@@ -96,5 +101,21 @@ export class ExamRequestService {
         }));
 
         return examRequestsCopy;
+    }
+
+    async findByAppointmentId(appointmentId: number): Promise<ExamRequestReturnType | undefined> {
+        const examRequest = await this.examRequestRepository.findByAppointmentId(appointmentId);
+
+        if(!examRequest) {
+            throw new HttpError("Não foi possívle encontrar o pedido de exame desejado.", 404);
+        }
+
+        const pet = await petService.findById(Number(examRequest.petId));
+        const vet = await userService.findById(Number(examRequest.vetId));
+        const appointment = await appointmentService.findById(Number(examRequest.appointmentId));
+
+        let examRequestCopy: any = {...examRequest, pet: pet, vet: vet, appointment: appointment};
+
+        return examRequestCopy;
     }
 }

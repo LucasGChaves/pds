@@ -35,12 +35,16 @@ export class ExamRequestRepository implements ExamRequestRepositoryInterface {
     }
 
     async findAllByUserId(userId: number): Promise<ExamRequest[] | undefined> {
-        const examRequestes = await ExamRequestModel.query().where("userId", userId);
-        return examRequestes;
+        const examRequests = await ExamRequestModel.query().where("userId", userId);
+        return examRequests;
     }
 
     async findAllByPetId(petId: number): Promise<ExamRequest[] | undefined> {
-        const examRequestes = await ExamRequestModel.query().where("petId", petId);
-        return examRequestes;
+        const examRequests = await ExamRequestModel.query().where("petId", petId);
+        return examRequests;
+    }
+    async findByAppointmentId(appointmentId: number): Promise<ExamRequest | undefined> {
+        const examRequest = await ExamRequestModel.query().where("appointmentId", appointmentId).first();
+        return examRequest;
     }
 }

@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import { ExamRequestRepository } from "../../infrastructure/adapters/repository/examRequestRepository";
 import { ExamRequestService } from "../../application/usecases/examRequestService";
+import { AppointmentRepository } from "../../infrastructure/adapters/repository/appointmentRepository";
+import { AppointmentService } from "../../application/usecases/appointmentService";
 import { HttpError } from "../middlewares/errors";
 import { Roles } from "../../infrastructure/rolesDictionary";
 
 const examRequestRepository = new ExamRequestRepository();
 const examRequestService = new ExamRequestService(examRequestRepository);
+
+const appointmentRepository = new AppointmentRepository();
+const appointmentService = new AppointmentService(appointmentRepository);
 
 export class ExamRequestController {
     async getExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -20,14 +25,22 @@ export class ExamRequestController {
             if(!userRoleId || userRoleId === Number(Roles.owner)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
-
+            
             const examRequest = await examRequestService.findById(examRequestId);
-
+            
             if(!examRequest) {
                 return next(new HttpError("Nenhum pedido de exame foi encontrado.", 400));
             }
 
-            res.status(200).json(examRequest);
+            const appointment = await appointmentService.findById(examRequest.appointmentId);
+
+            if(!appointment) {
+                return next(new HttpError("Ocorreu um erro ao buscar a consulta do pedido de exame.", 500));
+            }
+
+            const returnObject: any = {...examRequest, appointment: appointment};
+
+            res.status(200).json(returnObject);
         } catch(err) {
             next(err);
         }

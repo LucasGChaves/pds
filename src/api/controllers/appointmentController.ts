@@ -3,6 +3,8 @@ import { AppointmentRepository } from "../../infrastructure/adapters/repository/
 import { AppointmentService } from "../../application/usecases/appointmentService";
 import { UserRepository } from "../../infrastructure/adapters/repository/userRepository";
 import { UserService } from "../../application/usecases/userService";
+import { ExamRequestRepository } from "../../infrastructure/adapters/repository/examRequestRepository";
+import { ExamRequestService } from "../../application/usecases/examRequestService";
 import { HttpError } from "../middlewares/errors";
 import { Roles } from "../../infrastructure/rolesDictionary";
 
@@ -12,18 +14,29 @@ const appointmentService = new AppointmentService(appointmentRepository);
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 
+const examRequestRepository = new ExamRequestRepository();
+const examRequestService = new ExamRequestService(examRequestRepository);
+
 export class AppointmentController {
     async getAppointment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const appointmentId = req.params && Number(req.params.id);
 
             const appointment = await appointmentService.findById(appointmentId);
-
+            
             if(!appointment) {
                 return next(new HttpError("Nenhuma consulta foi encontrada.", 400));
             }
+            
+            const examRequest = await examRequestService.findByAppointmentId(appointmentId);
 
-            res.status(200).json(appointment);
+            if(!examRequest) {
+                res.status(200).json(appointment);
+            }
+            else {
+                let returnObject: any = {...appointment, examRequest: examRequest};
+                res.status(200).json(returnObject);
+            }
         } catch(err) {
             next(err);
         }
@@ -91,13 +104,23 @@ export class AppointmentController {
 
             const userRoleId = req.user.roleId;
             const appointmentId = Number(req.params.id);
-            const appointmentData = req.body;
+            let appointmentDataCopy:any = {...req.body};
+            const examRequestData = {...appointmentDataCopy.examRequest};
+            delete appointmentDataCopy.examRequest;
+
+            if(examRequestData) {
+                const createdExamRequest = await examRequestService.createExamRequest(examRequestData);
+
+                if(!createdExamRequest) {
+                    return next(new HttpError("Ocoreu um erro ao criar o pedido de exame.", 500));
+                }
+            }
 
             if(!userRoleId || userRoleId === Number(Roles.owner)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
 
-            const appointment = await appointmentService.updateAppointment(appointmentId, appointmentData);
+            const appointment = await appointmentService.updateAppointment(appointmentId, appointmentDataCopy);
 
             if(!appointment) {
                 return next(new HttpError("Nenhuma consulta foi encontrada.", 500));

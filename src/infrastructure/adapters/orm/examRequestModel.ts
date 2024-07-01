@@ -11,6 +11,7 @@ export class ExamRequestModel extends Model {
   resultFile?: string
   petId!: number
   vetId!: number
+  appointmentId!: number
 
   static relationMappings = {
     user: {

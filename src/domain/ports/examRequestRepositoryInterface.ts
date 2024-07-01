@@ -7,4 +7,5 @@ export interface ExamRequestRepositoryInterface {
     findById(id: number): Promise<ExamRequest | undefined>;
     findAllByUserId(userId: number): Promise<ExamRequest[] | undefined>;
     findAllByPetId(petId: number): Promise<ExamRequest[] | undefined>;
+    findByAppointmentId(appointmentId: number): Promise<ExamRequest | undefined>;
 }
