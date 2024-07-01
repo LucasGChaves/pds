@@ -7,14 +7,10 @@ import DatePicker from "../../shared/components/DatePicker";
 import Select from "../../shared/components/Select";
 import { TIMES } from "../../utils/constants";
 import { handleChangeformData } from "../../utils/functions";
-
-interface FormData {
-  date: Date;
-  time: string;
-}
+import { INewAppointmentTimeFormData } from "../../model/appointment";
 
 const NewAppointmentTime = ({ navigation }) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<INewAppointmentTimeFormData>();
 
   const onSubmit = () => {
     if (formData) {
@@ -37,6 +33,7 @@ const NewAppointmentTime = ({ navigation }) => {
             value={formData?.date}
             placeholder="Selecione a data"
             mode="outlined"
+            allowOnlyFutureDates
           />
           <Select
             data={TIMES}

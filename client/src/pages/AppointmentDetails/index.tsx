@@ -16,10 +16,7 @@ import { useAuthContext } from "../../shared/context/AuthContext";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { PHOTOS_PATH } from "../../utils/constants";
-
-interface FormData {
-  description: string;
-}
+import { IAppointmentDetailsFormData } from "../../model/appointment";
 
 const AppointmentDetails = ({ navigation }) => {
   const route =
@@ -30,7 +27,7 @@ const AppointmentDetails = ({ navigation }) => {
 
   const { isUserOwner } = useAuthContext();
 
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IAppointmentDetailsFormData>();
 
   const [showDescription, setShowDescription] = useState(false);
 

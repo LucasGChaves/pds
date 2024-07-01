@@ -13,17 +13,10 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { useAuthContext } from "../../shared/context/AuthContext";
 import { PHOTOS_PATH } from "../../utils/constants";
-
-interface FormData {
-  name: string;
-  species: string;
-  breed: string;
-  birthDate: Date;
-  photo?: string;
-}
+import { IPetRegistrationFormData } from "../../model/pet";
 
 const PetRegistration = ({ navigation }) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IPetRegistrationFormData>();
 
   const { user } = useAuthContext();
 

@@ -10,3 +10,10 @@ export interface IVaccine {
   pet: IPet;
   vet: IUserGet;
 }
+
+export interface IVaccineRegistrationFormData {
+  vaccineName: string;
+  manufacturer: string;
+  batch: string;
+  date: Date;
+}

@@ -7,15 +7,10 @@ import { Button } from "react-native-paper";
 import { ScreenTitle } from "../../shared/components/Title";
 import AppStyles from "../../styles";
 import { handleChangeformData } from "../../utils/functions";
-import { useSnackbarContext } from "../../shared/context/SnackbarContext";
-
-interface FormData {
-  email: string;
-  password: string;
-}
+import { ILoginFormData } from "../../model/login";
 
 const Login = ({ navigation }) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<ILoginFormData>();
 
   const handleLogin = () => {
     navigation.navigate("TabNavigator");

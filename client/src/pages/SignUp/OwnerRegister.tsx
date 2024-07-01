@@ -9,23 +9,14 @@ import {
   ParamListBase,
   NavigationProp,
 } from "@react-navigation/native";
+import { IOwnerRegisterFormData } from "../../model/user";
 
 interface Props {
   handleBack(): void;
 }
 
-interface FormData {
-  name: string;
-  lastName: string;
-  cpf: string;
-  phone: string;
-  email: string;
-  password: string;
-  passwordRepetition: string;
-}
-
 const OwnerRegister = ({ handleBack }: Props) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IOwnerRegisterFormData>();
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 

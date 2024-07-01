@@ -6,16 +6,10 @@ import TextField from "../../shared/components/TextField";
 import styled from "styled-components/native";
 import DatePicker from "../../shared/components/DatePicker";
 import { handleChangeformData } from "../../utils/functions";
-
-interface FormData {
-  vaccineName: string;
-  manufacturer: string;
-  batch: string;
-  date: Date;
-}
+import { IVaccineRegistrationFormData } from "../../model/vaccine";
 
 const VaccineRegistration = ({ navigation }) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IVaccineRegistrationFormData>();
 
   const onSubmit = () => {
     if (formData) {

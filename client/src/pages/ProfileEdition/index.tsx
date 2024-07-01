@@ -12,17 +12,10 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { PHOTOS_PATH } from "../../utils/constants";
 import { handleChangeformData } from "../../utils/functions";
-interface FormData {
-  name: string;
-  lastName: string;
-  cpf: string;
-  email: string;
-  phone: string;
-  crmv: string;
-}
+import { IProfileEditionFormData } from "../../model/user";
 
 const ProfileEdition = ({ navigation }) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IProfileEditionFormData>();
   const { user } = useAuthContext();
 
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);

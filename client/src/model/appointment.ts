@@ -9,3 +9,13 @@ export interface IAppointment {
   description?: string;
   examRequest: string;
 }
+
+export interface IAppointmentDetailsFormData {
+  id: string;
+  description: string;
+}
+
+export interface INewAppointmentTimeFormData {
+  date: Date;
+  time: string;
+}

@@ -9,14 +9,10 @@ import { useAuthContext } from "../../shared/context/AuthContext";
 import VetCard from "../../shared/components/Cards/VetCard";
 import { handleChangeformData } from "../../utils/functions";
 import { PHOTOS_PATH } from "../../utils/constants";
-
-interface FormData {
-  city: string;
-  district: string;
-}
+import { IVetFiltersFormData } from "../../model/user";
 
 const Vets = ({ navigation }) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IVetFiltersFormData>();
 
   const { isUserVet } = useAuthContext();
 

@@ -10,3 +10,12 @@ export interface IPet {
   photo: string;
   age: number;
 }
+
+export interface IPetRegistrationFormData {
+  id?: string;
+  name: string;
+  species: string;
+  breed: string;
+  birthDate: Date;
+  photo?: string;
+}

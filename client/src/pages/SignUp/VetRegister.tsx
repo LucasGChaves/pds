@@ -6,29 +6,14 @@ import { ScreenTitle } from "../../shared/components/Title";
 import BackButton from "../../shared/components/BackButton";
 import Select from "../../shared/components/Select";
 import { BRASILIAN_STATES } from "../../utils/constants";
+import { IVetRegisterFormData } from "../../model/user";
 
 interface Props {
   handleBack(): void;
 }
 
-interface FormData {
-  name: string;
-  lastName: string;
-  cpf: string;
-  crmv: string;
-  phone: string;
-  email: string;
-  password: string;
-  passwordRepetition: string;
-  state: string;
-  city: string;
-  district: string;
-  street: string;
-  number: string;
-}
-
 const VetRegister = ({ handleBack }: Props) => {
-  const [formData, setFormData] = useState<FormData>();
+  const [formData, setFormData] = useState<IVetRegisterFormData>();
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const [isSecondPart, setIsSecondPart] = useState(false);
 

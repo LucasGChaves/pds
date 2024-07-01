@@ -14,7 +14,6 @@ import PetRegistration from "./src/pages/PetRegistration";
 import PetDetails from "./src/pages/PetDetails";
 import Vaccines from "./src/pages/Vaccines";
 import Vets from "./src/pages/Vets";
-import NewAppointment from "./src/pages/NewAppointment";
 import ProfileEdition from "./src/pages/ProfileEdition";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -243,7 +242,6 @@ const AppointmentScreens = () => {
       <Stack.Screen name="Appointments" component={Appointments} />
       <Stack.Screen name="Vets" component={Vets} />
       <Stack.Screen name="AppointmentDetails" component={AppointmentDetails} />
-      <Stack.Screen name="NewAppointment" component={NewAppointment} />
       <Stack.Screen name="NewAppointmentTime" component={NewAppointmentTime} />
       <Stack.Screen name="VetInfo" component={VetInfo} />
     </Stack.Navigator>

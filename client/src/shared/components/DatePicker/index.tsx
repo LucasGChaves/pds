@@ -11,6 +11,7 @@ interface Props {
   placeholder: string;
   value: Date;
   mode: "outlined" | "round";
+  allowOnlyFutureDates?: boolean;
 }
 
 const DatePicker = ({
@@ -19,6 +20,7 @@ const DatePicker = ({
   placeholder,
   value,
   mode,
+  allowOnlyFutureDates,
 }: Props) => {
   const [open, setOpen] = React.useState(false);
 
@@ -57,6 +59,7 @@ const DatePicker = ({
         onDismiss={onDismissSingle}
         date={value}
         onConfirm={onConfirmSingle}
+        validRange={allowOnlyFutureDates && { startDate: new Date() }}
       />
     </Container>
   );
