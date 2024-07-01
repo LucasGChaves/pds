@@ -4,7 +4,7 @@ import { IProfileEditionFormData } from "../../model/user";
 class UserRepository {
   path = "user";
 
-  //   public UserRepository(role: "owner" | "vet") {
+  //   constructor(role: "owner" | "vet") {
   //     if (role === "owner") {
   //       this.path = "user/owner/";
   //     }
@@ -19,6 +19,10 @@ class UserRepository {
     return await api
       .get(`${this.path}/${id}`)
       .then((response) => response.data);
+  }
+
+  async getUserInfo() {
+    return await api.get(`${this.path}`).then((response) => response.data);
   }
 }
 
