@@ -1,14 +1,14 @@
-export default class Appointment {
+export class Appointment {
 
-    readonly appointmentDate: Date
-    readonly description: string
-    readonly petId: string
-    readonly vetId: string
+    id!: number
+    appointmentDate!: Date
+    appointmentTime!: string
+    description?: string
+    scheduled!: boolean
+    petId?: number
+    vetId!: number
 
-    constructor(data: Appointment) {
-        this.appointmentDate = data.appointmentDate;
-        this.description = data.description;
-        this.petId = data.petId;
-        this.vetId = data.vetId;
+    constructor (appointment: Partial<Appointment>) {
+        Object.assign(this, appointment);
     }
 }

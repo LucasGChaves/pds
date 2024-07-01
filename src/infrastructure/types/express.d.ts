@@ -6,6 +6,7 @@ declare global {
             id: number;
             email: string;
             cpf: string;
+            roleId: number
         }
 
         interface Request {

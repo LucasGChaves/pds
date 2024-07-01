@@ -4,9 +4,8 @@
  */
 export const up = function(knex) {
     return knex.schema.table("user", (table) => {
-        table.dropColumn("username");
-        table.renameColumn("cellphone", "phone");
-        table.renameColumn("photo", "photoFileName");
+        table.setNullable("crmv");
+        table.dropColumn("cnpj");
     });
 };
 
@@ -16,8 +15,7 @@ export const up = function(knex) {
  */
 export const down = function(knex) {
     return knex.schema.table("user", (table) => {
-        table.string("username").after("id");
-        table.renameColumn("phone", "cellphone");
-        table.renameColumn("photoFileName", "photo");
+        table.dropNullable("crmv");
+        table.string("crmv", 100).unique().nullable().after("cpf");
     });
 };

@@ -1,18 +1,14 @@
 export class Pet {
 
-    readonly name: string
-    readonly birthDate: Date
-    readonly species: string
-    readonly breed: string
-    readonly ownerId: string
-    readonly photo: File
+  id!: number
+  name!: string
+  birthDate!: Date
+  species!: string
+  breed?: string
+  photoFileName?: string;
+  ownerId!: string
 
-    constructor(data: Pet) {
-        this.name = data.name;
-        this.birthDate = data.birthDate;
-        this.species = data.species;
-        this.breed = data.breed;
-        this.ownerId = data.ownerId;
-        this.photo = data.photo;
-    }
+  constructor (pet: Partial<Pet>) {
+    Object.assign(this, pet);
+  }
 }

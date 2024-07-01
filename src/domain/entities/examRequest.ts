@@ -1,16 +1,13 @@
-export default class ExamRequest {
+export class ExamRequest {
 
-    readonly vetSignature: string
-    readonly result: string
-    readonly resultFile: File
-    readonly petId: string
-    readonly vetId: string
+    id!: number
+    vetSignature!: string
+    result?: string
+    resultFile?: string
+    petId!: number
+    vetId!: number
 
-    constructor(data: ExamRequest) {
-        this.vetSignature = data.vetSignature;
-        this.result = data.result;
-        this.resultFile = data.resultFile;
-        this.petId = data.petId;
-        this.vetId = data.vetId;
+    constructor (exam: Partial<ExamRequest>) {
+        Object.assign(this, exam);
     }
 }

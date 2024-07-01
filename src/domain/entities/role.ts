@@ -1,8 +1,9 @@
-export default class Role {
+export class Role {
 
-    readonly roleName: string
+    id!: number;
+    roleName!: string;
 
-    constructor(data: Role) {
-        this.roleName = data.roleName;
-    }
+    constructor (role: Partial<Role>) {
+        Object.assign(this, role);
+      }
 }
