@@ -8,3 +8,21 @@ export const create = [
     body("batch").notEmpty().withMessage("O campo \"Lote da vacina\" é obrigatório").isString().withMessage("O lote inserido não é válido."),
     body("applicationDate").notEmpty().withMessage("O campo \"Data da aplicação\" é obrigatório").isDate().withMessage("A data inserida não é válida.")
 ];
+
+export function validateVaccine(method: ValidationChain[]){
+    return async function(req: Request, res: Response, next: NextFunction) {
+        try {
+            for (const validation of method) {
+                await validation.run(req);
+              }
+              const result = validationResult(req);
+              if(!result.isEmpty()) {
+                return next(new HttpError(result.array()[0].msg, 400));
+              }
+              console.log(JSON.stringify(req.body))
+              next();
+        } catch (err) {
+            next(err);
+        }
+    };
+}
