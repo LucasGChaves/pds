@@ -5,7 +5,7 @@ import { IVaccineRegistrationFormData } from "../../model/vaccine";
 class VaccineRepository {
   path: "pet/vaccines";
 
-  //   public VaccineRepository(role: "owner" | "vet") {
+  //   constructor(role: "owner" | "vet") {
   //     if (role === "owner") {
   //       this.path = "user/owner/pets";
   //     }

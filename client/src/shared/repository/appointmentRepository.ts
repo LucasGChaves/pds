@@ -7,7 +7,7 @@ import {
 class AppointmentRepository {
   path: string;
 
-  public AppointmentRepository(role: "owner" | "vet") {
+  constructor(role: "owner" | "vet") {
     if (role === "owner") {
       this.path = "user/owner/appointments";
     }

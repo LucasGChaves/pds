@@ -4,7 +4,7 @@ import { IPetRegistrationFormData } from "../../model/pet";
 class PetRepository {
   path: string;
 
-  public PetRepository(role: "owner" | "vet") {
+  constructor(role: "owner" | "vet") {
     if (role === "owner") {
       this.path = "user/owner/pets";
     }
