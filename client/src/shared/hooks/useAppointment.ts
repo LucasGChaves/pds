@@ -3,7 +3,7 @@ import { ReactQueryCache, STALE_TIME } from "../../enums/reactQueryCacheEnum";
 import AppointmentRepository from "../repository/appointmentRepository";
 
 interface Params {
-  role: "owner" | "vet";
+  role: string;
   id: string;
 }
 

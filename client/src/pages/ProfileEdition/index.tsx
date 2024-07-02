@@ -13,10 +13,14 @@ import * as FileSystem from "expo-file-system";
 import { PHOTOS_PATH } from "../../utils/constants";
 import { handleChangeformData } from "../../utils/functions";
 import { IProfileEditionFormData } from "../../model/user";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import UserRepository from "../../shared/repository/userRepository";
 
 const ProfileEdition = ({ navigation }) => {
   const [formData, setFormData] = useState<IProfileEditionFormData>();
   const { user } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const { setSnackbarParams } = useSnackbarContext();
 
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
 
@@ -54,9 +58,30 @@ const ProfileEdition = ({ navigation }) => {
   const onSubmit = async () => {
     if (formData) {
       const { cpf, crmv, email, lastName, name, phone } = formData;
-    }
 
-    await savePhoto();
+      const userRepository = new UserRepository();
+      setIsLoading(true);
+      try {
+        await userRepository.edit({
+          cpf: cpf,
+          crmv: crmv,
+          email: email,
+          lastName: lastName,
+          name: name,
+          phone: phone,
+        });
+        if (image) {
+          await savePhoto();
+        }
+      } catch (error) {
+        setSnackbarParams({
+          show: true,
+          text: "Ocorreu um erro. Tente novamente",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   useEffect(() => {
@@ -131,7 +156,12 @@ const ProfileEdition = ({ navigation }) => {
             {image && <Photo source={{ uri: image.assets[0].uri }} />}
             <UploadButton handleClick={handleChoosePhoto} />
           </PhotoChoiceContainer>
-          <Button mode="contained" style={{ width: 200 }} onPress={onSubmit}>
+          <Button
+            mode="contained"
+            style={{ width: 200 }}
+            onPress={onSubmit}
+            loading={isLoading}
+          >
             Editar
           </Button>
         </ButtonsContainer>

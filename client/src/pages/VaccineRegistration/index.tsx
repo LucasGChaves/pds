@@ -7,13 +7,36 @@ import styled from "styled-components/native";
 import DatePicker from "../../shared/components/DatePicker";
 import { handleChangeformData } from "../../utils/functions";
 import { IVaccineRegistrationFormData } from "../../model/vaccine";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import VaccineRepository from "../../shared/repository/vaccineRepository";
 
 const VaccineRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<IVaccineRegistrationFormData>();
+  const [isLoading, setIsLoading] = useState(false);
+  const { setSnackbarParams } = useSnackbarContext();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (formData) {
       const { batch, manufacturer, vaccineName, date } = formData;
+
+      const vaccineRepository = new VaccineRepository();
+
+      setIsLoading(true);
+      try {
+        await vaccineRepository.create({
+          batch: batch,
+          date: date,
+          manufacturer: manufacturer,
+          vaccineName: vaccineName,
+        });
+      } catch (error) {
+        setSnackbarParams({
+          show: true,
+          text: "Erro ao cadastrar vacina. Tente novamente",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     navigation.navigate("Vaccines");

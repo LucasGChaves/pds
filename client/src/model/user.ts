@@ -53,7 +53,7 @@ export interface IOwnerRegisterFormData {
   phone: string;
   email: string;
   password: string;
-  passwordRepetition: string;
+  passwordRepetition?: string;
 }
 
 export interface IVetRegisterFormData {
@@ -64,7 +64,7 @@ export interface IVetRegisterFormData {
   phone: string;
   email: string;
   password: string;
-  passwordRepetition: string;
+  passwordRepetition?: string;
   state: string;
   city: string;
   district: string;

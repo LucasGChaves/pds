@@ -7,6 +7,8 @@ import BackButton from "../../shared/components/BackButton";
 import Select from "../../shared/components/Select";
 import { BRASILIAN_STATES } from "../../utils/constants";
 import { IVetRegisterFormData } from "../../model/user";
+import AuthRepository from "../../shared/repository/AuthRepository";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
 
 interface Props {
   handleBack(): void;
@@ -16,6 +18,9 @@ const VetRegister = ({ handleBack }: Props) => {
   const [formData, setFormData] = useState<IVetRegisterFormData>();
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const [isSecondPart, setIsSecondPart] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { setSnackbarParams } = useSnackbarContext();
 
   const handleChangeformData = (prop: string, value: string) => {
     setFormData({
@@ -36,7 +41,7 @@ const VetRegister = ({ handleBack }: Props) => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (formData) {
       const {
         cpf,
@@ -44,10 +49,40 @@ const VetRegister = ({ handleBack }: Props) => {
         name,
         lastName,
         password,
-        passwordRepetition,
         phone,
         crmv,
+        city,
+        district,
+        number,
+        state,
+        street,
       } = formData;
+      const authRepository = new AuthRepository();
+
+      setIsLoading(true);
+      try {
+        await authRepository.RegisterVet({
+          cpf: cpf,
+          email: email,
+          lastName: lastName,
+          name: name,
+          password: password,
+          phone: phone,
+          city: city,
+          crmv: crmv,
+          district: district,
+          number: number,
+          state: state,
+          street: street,
+        });
+      } catch (error) {
+        setSnackbarParams({
+          show: true,
+          text: "Ocorreu um erro ao fazer cadastro. Tente novamente",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -188,6 +223,7 @@ const VetRegister = ({ handleBack }: Props) => {
           mode="contained"
           style={{ width: 200 }}
           onPress={handleButtonClick}
+          loading={isLoading}
         >
           {isSecondPart ? "Cadastrar" : "Avançar"}
         </Button>

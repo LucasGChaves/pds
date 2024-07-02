@@ -10,6 +10,7 @@ import Select, { ItemProps } from "../../shared/components/Select";
 import { handleChangeformData } from "../../utils/functions";
 import AppStyles from "../../styles";
 import { PHOTOS_PATH } from "../../utils/constants";
+import { useVet } from "../../shared/hooks/useVet";
 
 interface ScheduleAppointmentFormData {
   date: string;
@@ -48,8 +49,10 @@ const VetInfo = ({ navigation }) => {
     },
   ];
 
+  const { data, isLoading, error } = useVet(id);
+
   return (
-    <LoggedAreaContainer>
+    <LoggedAreaContainer isLoading={isLoading} error={Boolean(error)}>
       <Container>
         <PhotoContainer>
           <Photo source={{ uri: `${PHOTOS_PATH}user_${vet.cpf}.jpg` }} />

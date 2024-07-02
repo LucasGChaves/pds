@@ -1,13 +1,14 @@
 import api from "../../../config/axios";
+import { IUserGet } from "../../model/user";
 
 class VetRepository {
   path = "";
 
-  async list() {
+  async list(): Promise<IUserGet[]> {
     return await api.get(this.path).then((response) => response.data);
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<IUserGet> {
     return await api
       .get(`${this.path}/${id}`)
       .then((response) => response.data);

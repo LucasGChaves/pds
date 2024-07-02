@@ -1,5 +1,5 @@
 import api from "../../../config/axios";
-import { IProfileEditionFormData } from "../../model/user";
+import { IProfileEditionFormData, IUserGet } from "../../model/user";
 
 class UserRepository {
   path = "user";
@@ -15,13 +15,13 @@ class UserRepository {
     return await api.put(`${this.path}/${body?.id}`, body);
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<IUserGet> {
     return await api
       .get(`${this.path}/${id}`)
       .then((response) => response.data);
   }
 
-  async getUserInfo() {
+  async getUserInfo(): Promise<IUserGet> {
     return await api.get(`${this.path}`).then((response) => response.data);
   }
 }

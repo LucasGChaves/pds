@@ -16,6 +16,7 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { PHOTOS_PATH } from "../../utils/constants";
 import { useState } from "react";
 import CustomDialog from "../../shared/components/CustomDialog";
+import { usePet } from "../../shared/hooks/usePet";
 
 const petToBeEdited = {
   id: 2,
@@ -46,7 +47,7 @@ const PetDetails = ({ navigation }) => {
   const route = useRoute<RouteProp<PetsScreensStackParamList, "PetDetails">>();
   const id = route.params.petId;
 
-  const data: DataListValueType[] = [
+  const dataListData: DataListValueType[] = [
     {
       leftValue: "Espécie",
       rightValue: "Cachorro",
@@ -67,7 +68,7 @@ const PetDetails = ({ navigation }) => {
   };
 
   if (user.role.roleName === userTypeEnum.VET) {
-    data.push(ownerValues);
+    dataListData.push(ownerValues);
   }
 
   const handleVaccines = () => {
@@ -92,6 +93,17 @@ const PetDetails = ({ navigation }) => {
 
   const handleDeletePet = () => {};
 
+  const [exclusionDialog, setExclusionDialog] = useState<{
+    isVisible: boolean;
+    itemId: string;
+  }>({ isVisible: false, itemId: "-1" });
+
+  const handleHideDialog = () => {
+    setExclusionDialog({ isVisible: false, itemId: "-1" });
+  };
+
+  const { data, error, isLoading } = usePet(id);
+
   const handleShowOwnerInfo = () => {
     // TODO: passar informações do dono
     navigation.navigate("OwnerInfo", {
@@ -103,17 +115,12 @@ const PetDetails = ({ navigation }) => {
     });
   };
 
-  const [exclusionDialog, setExclusionDialog] = useState<{
-    isVisible: boolean;
-    itemId: string;
-  }>({ isVisible: false, itemId: "-1" });
-
-  const handleHideDialog = () => {
-    setExclusionDialog({ isVisible: false, itemId: "-1" });
-  };
-
   return (
-    <LoggedAreaContainer handleDelete={handleShowDeleteDialog}>
+    <LoggedAreaContainer
+      handleDelete={handleShowDeleteDialog}
+      isLoading={isLoading}
+      error={Boolean(error)}
+    >
       <CustomDialog
         handleOk={handleDeletePet}
         text="Tem certeza que deseja excluir esse pet?"
@@ -134,7 +141,7 @@ const PetDetails = ({ navigation }) => {
         >
           Ver vacinas
         </Button>
-        <DataListWithDivider data={data} />
+        <DataListWithDivider data={dataListData} />
         <ShowComponentByRole role={userTypeEnum.OWNER}>
           <Button
             icon={({}) => (

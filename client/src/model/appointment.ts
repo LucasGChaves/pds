@@ -11,7 +11,7 @@ export interface IAppointment {
 }
 
 export interface IAppointmentDetailsFormData {
-  id: string;
+  id?: string;
   description: string;
 }
 
