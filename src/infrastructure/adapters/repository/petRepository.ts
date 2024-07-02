@@ -21,7 +21,7 @@ export class PetRepository implements PetRepositoryInterface {
 
   async deletePet(petId: number): Promise<boolean | undefined> {
     try {
-      await PetModel.query().where("petId", petId).del();
+      await PetModel.query().deleteById(petId);
       return true;
     } catch (err: any) {
       throw new HttpError(err.message || "Não foi possível deletar o pet solicitado", 500);

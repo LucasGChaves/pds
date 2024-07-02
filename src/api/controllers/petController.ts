@@ -72,7 +72,8 @@ export class PetController {
                 return next(new HttpError("Não foi possível obter o perfil do pet especificado.", 500));
             }
 
-            const pet = await petService.findById(petId);
+            console.log(petId);
+            const pet = await userService.findPetByIdAndReturnFullObject(petId);
 
             if(!pet) {
                 return next(new HttpError("Não foi possível obter o perfil do pet especificado.", 500));

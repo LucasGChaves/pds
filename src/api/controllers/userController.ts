@@ -68,7 +68,7 @@ export class UserController {
             if(address) {
 
                 const originalAddress = await addressService.findByUserId(userId);
-                const originalAdressCopy: any = {...originalAddress};
+                const originalAdressCopy: Partial<Address> = {...originalAddress};
 
                 if(verifyIfAddressChanged(address, originalAdressCopy)) {
                     const updatedAddress = await addressService.updateAddress(userId, address);
@@ -118,28 +118,11 @@ export class UserController {
 
                 const user = await userService.findById(userId);
 
-                
-                const userAddress = await userService.getUserAddress(userId);
-
-                let userAddressCopy:any = {...userAddress};
-                delete userAddressCopy.userId;
-
-                let userCopy:any = null;
-                                
-                if(getLoggedUserOwnProfile || (user && user.roleId && user.roleId.toString() === Roles.vet)) {
-                    userCopy = {...user, ...userAddressCopy};
-                }
-                else {
-                    userCopy = {...user};
+                if(!user) {
+                    return next(new HttpError("Não foi possível recuperar o perfil especificado. Tente novamente.", 500));
                 }
 
-                delete userCopy.password;
-
-                if(!user || userCopy) {
-                    return next(new HttpError("Não foi possível recuperar o perfil especificado. Tente novamente", 500));
-                }
-
-                res.status(200).json(userCopy);
+                res.status(200).json(user);
             } catch (err) {
                 next(err);
             }
@@ -160,6 +143,7 @@ export class UserController {
                 return next(new HttpError("Ocorreu um erro ao deletar o usuário. Tente novamente.", 500));
             }
             
+
             res.clearCookie('token').status(204).send("Usuário deletado com sucesso.");
         } catch (err) {
             next(err);
@@ -292,8 +276,8 @@ export class UserController {
 
 function verifyIfAddressChanged(newAddressObject: any, oldAddressObject: any) {
     let changed = false;
-    Object.keys(newAddressObject).forEach(key => {
-        if(newAddressObject[key] !== oldAddressObject[key]) {
+    Object.keys(oldAddressObject).forEach(key => {
+        if(newAddressObject[key] && (oldAddressObject[key] !== newAddressObject[key])) {
             changed = true;
             return;
         }

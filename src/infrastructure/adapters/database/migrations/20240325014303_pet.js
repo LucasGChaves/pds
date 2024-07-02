@@ -11,18 +11,7 @@ export const up = function(knex) {
         table.string("breed", 100);
         table.binary("photo");
         table.integer("ownerId").unsigned();
-    }).then(function (){
-        return knex("pet").insert([
-            {
-                name: "Bella",
-                birthDate: new Date(),
-                species: "dog",
-                breed: "maltese",
-                photo: 0b0,
-                ownerId: 1
-            }
-        ]);
-    })
+    });
 };
 
 /**

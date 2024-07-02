@@ -4,6 +4,7 @@ import { UserModel } from "./userModel";
 export class AddressModel extends Model {
   static tableName = "address";
   
+  id!: number;
   state!: number;
   city!: string;
   district!: string;

@@ -3,12 +3,11 @@ export class User {
   id!: number;
   firstName!: string;
   lastName!: string;
-  password!: string;
+  password?: string;
   email!: string;
   phone!: string;
   cpf!: string;
   crmv?: string;
-  cnpj?: string;
   photoFileName?: string;
   roleId!: number;
   
