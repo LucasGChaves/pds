@@ -13,17 +13,17 @@ export class PetModel extends Model {
   species!: string
   breed?: string
   photoFileName?: string;
-  ownerId!: string
+  ownerId!: number
   
   static relationMappings = {
-    user: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: UserModel,
-      join: {
-        from: "pet.ownerId",
-        to:"user.id"
-      }
-    },
+    // user: {
+    //   relation: Model.BelongsToOneRelation,
+    //   modelClass: UserModel,
+    //   join: {
+    //     from: "pet.ownerId",
+    //     to:"user.id"
+    //   }
+    // },
     vaccine: {
       relation: Model.HasManyRelation,
       modelClass: VaccineModel,

@@ -1,5 +1,3 @@
-import { UserReturnType } from "./userType";
-
 export type AddressReturnType = {
     state: number;
     city: string;
@@ -7,5 +5,4 @@ export type AddressReturnType = {
     street: string;
     number: number;
     userId: number;
-    user: UserReturnType;
 };

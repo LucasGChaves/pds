@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import { VaccineRepository } from "../../infrastructure/adapters/repository/vaccineRepository";
 import { VaccineService } from "../../application/usecases/vaccineService";
+import { UserRepository } from "../../infrastructure/adapters/repository/userRepository";
+import { UserService } from "../../application/usecases/userService";
 import { HttpError } from "../middlewares/errors";
 import { Roles } from "../../infrastructure/rolesDictionary";
 
 const vaccineRepository = new VaccineRepository();
 const vaccineService = new VaccineService(vaccineRepository);
+
+const userRepository = new UserRepository();
+const userService = new UserService(userRepository);
 
 export class VaccineController {
     async getVaccine(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -22,7 +27,7 @@ export class VaccineController {
             }
 
 
-            const vaccine = await vaccineService.findById(vaccineId);
+            const vaccine = await userService.findVaccineByIdAndReturnFullObject(vaccineId);
 
             if(!vaccine) {
                 return next(new HttpError("Nenhuma vacina foi encontrada.", 400));

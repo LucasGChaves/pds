@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import { ExamRequestRepository } from "../../infrastructure/adapters/repository/examRequestRepository";
 import { ExamRequestService } from "../../application/usecases/examRequestService";
-import { AppointmentRepository } from "../../infrastructure/adapters/repository/appointmentRepository";
-import { AppointmentService } from "../../application/usecases/appointmentService";
 import { HttpError } from "../middlewares/errors";
 import { Roles } from "../../infrastructure/rolesDictionary";
+import { UserRepository } from "../../infrastructure/adapters/repository/userRepository";
+import { UserService } from "../../application/usecases/userService";
 
 const examRequestRepository = new ExamRequestRepository();
 const examRequestService = new ExamRequestService(examRequestRepository);
 
-const appointmentRepository = new AppointmentRepository();
-const appointmentService = new AppointmentService(appointmentRepository);
+const userRepository = new UserRepository();
+const userService = new UserService(userRepository);
 
 export class ExamRequestController {
     async getExamRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -26,21 +26,13 @@ export class ExamRequestController {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
             
-            const examRequest = await examRequestService.findById(examRequestId);
+            const examRequest = await userService.findExamRequestByIdAndReturnFullObject(examRequestId);
             
             if(!examRequest) {
                 return next(new HttpError("Nenhum pedido de exame foi encontrado.", 400));
             }
 
-            const appointment = await appointmentService.findById(examRequest.appointmentId);
-
-            if(!appointment) {
-                return next(new HttpError("Ocorreu um erro ao buscar a consulta do pedido de exame.", 500));
-            }
-
-            const returnObject: any = {...examRequest, appointment: appointment};
-
-            res.status(200).json(returnObject);
+            res.status(200).json(examRequest);
         } catch(err) {
             next(err);
         }

@@ -56,7 +56,7 @@ passport.use(new LocalStrategy({usernameField: "identifier", passwordField: "pas
                 return done(new HttpError(identifierType + " ou senha incorretos.", 401), false);
             }
             console.log("User: " + JSON.stringify(user));
-            return done(null, {id: user.id, email: user.email, cpf: user.cpf});
+            return done(null, {id: user.id, email: user.email, cpf: user.cpf, roleId: user.roleId});
         } catch (err) {
             return done(err, false);
         }

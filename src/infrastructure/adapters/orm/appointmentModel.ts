@@ -13,22 +13,22 @@ export class AppointmentModel extends Model {
   petId?: number
   vetId!: number
   
-  static relationMappings = {
-    user: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: UserModel,
-      join: {
-        from: "appointment.vetId",
-        to:"user.id"
-      }
-    },
-    pet: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: PetModel,
-        join: {
-            from: "appointment.petId",
-            to: "pet.id"
-        }
-    }
-  }
+  // static relationMappings = {
+  //   user: {
+  //     relation: Model.BelongsToOneRelation,
+  //     modelClass: UserModel,
+  //     join: {
+  //       from: "appointment.vetId",
+  //       to:"user.id"
+  //     }
+  //   },
+  //   pet: {
+  //       relation: Model.BelongsToOneRelation,
+  //       modelClass: PetModel,
+  //       join: {
+  //           from: "appointment.petId",
+  //           to: "pet.id"
+  //       }
+  //   }
+  // }
 }

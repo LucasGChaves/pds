@@ -1,13 +1,10 @@
 import { Address } from "../../domain/entities/address";
 import { User } from "../../domain/entities/user";
 import { UserRepositoryInterface } from "../../domain/ports/userRepositoryInterface";
-import { Appointment } from "../../domain/entities/appointment";
 import { AppointmentRepository } from "../../infrastructure/adapters/repository/appointmentRepository";
 import { AppointmentService } from "./appointmentService";
-import { ExamRequest } from "../../domain/entities/examRequest";
 import { ExamRequestRepository } from "../../infrastructure/adapters/repository/examRequestRepository";
 import { ExamRequestService } from "./examRequestService";
-import { Vaccine } from "../../domain/entities/vaccine";
 import { VaccineRepository } from "../../infrastructure/adapters/repository/vaccineRepository";
 import { VaccineService } from "./vaccineService";
 import { Pet } from "../../domain/entities/pet";
@@ -23,6 +20,7 @@ import { UserReturnType } from "../../infrastructure/types/userType";
 import { AppointmentReturnType } from "../../infrastructure/types/appointment";
 import { ExamRequestReturnType } from "../../infrastructure/types/examRequest";
 import { VaccineReturnType } from "../../infrastructure/types/vaccine";
+import { PetReturnType } from "../../infrastructure/types/petType";
 
 const petRepository = new PetRepository();
 const petService = new PetService(petRepository);
@@ -91,32 +89,33 @@ export class UserService {
     async findByEmail(email: string): Promise<UserReturnType | undefined> {
       const user = await this.userRepository.findByEmail(email);
       const role = await roleRepository.findById(Number(user?.roleId));
-      let userWithRole: any = {...user, role: role};
-      delete userWithRole.password;
-      return userWithRole;
+      const address = await addressRepository.findByUserId(user!.id);
+      let completeUserObject: any = {...user, role: role, address: address};
+      delete completeUserObject.password;
+      return completeUserObject;
     }
   
     async findByCpf(cpf: string): Promise<UserReturnType | undefined> {
       const user = await this.userRepository.findByCpf(cpf);
       const role = await roleRepository.findById(Number(user?.roleId));
-      let userWithRole: any = {...user, role: role};
-      delete userWithRole.password;
-      return userWithRole;
+      const address = await addressRepository.findByUserId(user!.id);
+      let completeUserObject: any = {...user, role: role, address: address};
+      delete completeUserObject.password;
+      return completeUserObject;
     }
 
     async findById(id: number): Promise<UserReturnType | undefined> {
       const user = await this.userRepository.findById(id);
       const role = await roleRepository.findById(Number(user?.roleId));
-      let userWithRole: any = {...user, role: role};
-      delete userWithRole.password;
-      return userWithRole;
+      const address = await addressRepository.findByUserId(user!.id);
+      let completeUserObject: any = {...user, role: role, address: address};
+      delete completeUserObject.password;
+      return completeUserObject;
     }
 
 
     async getMyAppointments(id: number, roleId: number): Promise<AppointmentReturnType[] | undefined> {
-      const appointmentRepository =  new AppointmentRepository();
-      const appointmentService = new AppointmentService(appointmentRepository);
-      const appointments = await appointmentService.findAllByUserId(id);
+      const appointments = await this.findAllAppointmentsByUserId(id);
 
       if(!appointments) {
         if(roleId === Number(Roles.owner)) {
@@ -125,35 +124,23 @@ export class UserService {
         throw new HttpError("Não foi possível encontrar nenhuma consulta relacionada ao veterinário especificado.", 404);
       }
 
-      let appointmentsCopy = Promise.all(appointments.map(async appointment => {
-        let appointmentCopy:any = {...appointment};
+      return Promise.all(appointments.map(async appointment => {
+        const vet = await this.findById(appointment.vetId);
+        const pet = await petService.findById(Number(appointment.petId));
 
-        let pet = await petService.findById(Number(appointment.petId));
+        if(pet) {
+          const owner = await this.findById(pet?.ownerId);
+          const completePetObject: PetReturnType = {...pet, owner: owner!};
 
-        let owner = await this.findById(Number(pet?.ownerId));
-        let ownerCopy:any = {...owner};
-        delete ownerCopy.password;
-        delete ownerCopy.cpf;
+          return {...appointment!, pet: completePetObject!, vet: vet!};
+        }
 
-        let vet = await this.findById(Number(appointment.vetId));
-        let vetCopy: any = {...vet};
-        delete vetCopy.password;
-        delete vetCopy.cpf;
-
-        appointmentCopy.pet = {...pet};
-        appointmentCopy.owner = ownerCopy;
-        appointmentCopy.vet = vetCopy;
-
-        return appointmentCopy;
+        return {...appointment!, vet: vet!};        
       }));
-
-      return appointmentsCopy;
     }
 
     async getMyExamRequests(id: number, roleId: number): Promise<ExamRequestReturnType[] | undefined> {
-      const examRequestRepository = new ExamRequestRepository();
-      const examRequestService = new ExamRequestService(examRequestRepository);
-      const examRequests = await examRequestService.findAllByUserId(id);
+      const examRequests = await this.findAllExamRequestsByUserId(id);
 
       if(!examRequests) {
         if(roleId === Number(Roles.owner)) {
@@ -162,35 +149,18 @@ export class UserService {
         throw new HttpError("Não foi possível encontrar nenhum pedido de exame  relacionado ao veterinário especificado.", 404);
       }
 
-      let examRequestsCopy = Promise.all(examRequests.map(async examRequest => {
-        let examRequestCopy:any = {...examRequest};
+      return Promise.all(examRequests.map(async examRequest => {
+        const vet = await this.findById(examRequest.vetId);
+        const pet = await petService.findById(examRequest.petId);
+        const owner = await this.findById(pet?.ownerId!);
+        const completePetObject: PetReturnType = {...pet!, owner: owner!};
 
-        let pet = await petService.findById(Number(examRequest.petId));
-
-        let owner = await this.findById(Number(pet?.ownerId));
-        let ownerCopy:any = {...owner};
-        delete ownerCopy.password;
-        delete ownerCopy.cpf;
-
-        let vet = await this.findById(Number(examRequest.vetId));
-        let vetCopy: any = {...vet};
-        delete vetCopy.password;
-        delete vetCopy.cpf;
-
-        examRequestCopy.pet = {...pet};
-        examRequestCopy.owner = ownerCopy;
-        examRequestCopy.vet = vetCopy;
-
-        return examRequestCopy;
+        return {...examRequest!, pet: completePetObject!, vet: vet!};
       }));
-
-      return examRequestsCopy;
     }
 
     async getMyVaccines(id: number, roleId: number): Promise<VaccineReturnType[] | undefined> {
-      const vaccineRepository = new VaccineRepository();
-      const vaccineService = new VaccineService(vaccineRepository);
-      const vaccines = await vaccineService.findAllByUserId(id);
+      const vaccines = await this.findAllVaccinesByUserId(id);
 
       if(!vaccines) {
         if(roleId === Number(Roles.owner)) {
@@ -199,28 +169,14 @@ export class UserService {
         throw new HttpError("Não foi possível encontrar nenhuma vacina relacionada ao veterinário especificado.", 404);
       }
       
-      let vaccinesCopy = Promise.all(vaccines.map(async vaccine => {
-        let vaccineCopy: any = {...vaccine};
+      return Promise.all(vaccines.map(async vaccine => {
+        const pet = await petService.findById(vaccine.petId);
+        const vet = await this.findById(vaccine.vetId);
+        const owner = await this.findById(pet?.ownerId!);
+        const completePetObject: PetReturnType = {...pet!, owner: owner!};
 
-        let pet = await petService.findById(Number(vaccine.petId));
-
-        let owner = await this.findById(Number(pet?.ownerId));
-        let ownerCopy:any = {...owner};
-        delete ownerCopy.password;
-        delete ownerCopy.cpf;
-
-        let vet = await this.findById(Number(vaccine.vetId));
-        let vetCopy: any = {...vet};
-        delete vetCopy.password;
-        delete vetCopy.cpf;
-
-        vaccineCopy.pet = {...pet};
-        vaccineCopy.owner = ownerCopy;
-        vaccineCopy.vet = vetCopy;
-
-        return vaccineCopy;
+        return {...vaccine!, pet: completePetObject!, vet: vet!};
       }));
-      return vaccinesCopy;
     }
 
     //owner exclusive
@@ -229,24 +185,7 @@ export class UserService {
       return pets;
     }
 
-    async getOwnerByPetId(petId: number): Promise<User | undefined> {
-      const pet = await petService.findById(petId);
-
-      if(!pet || pet && !pet.ownerId) {
-        throw new HttpError("Não foi possível recuperar o pet especificado.", 404);
-      }
-
-      const ownerId = Number(pet.ownerId);
-      const owner = await this.findById(ownerId);
-
-      if(!owner) {
-        throw new HttpError("Não foi possível recuperar o tutor especificado.", 404);
-      }
-
-      return owner;
-    }
-
-    async searchForVet(city?: string, district?: string): Promise<User[] | undefined> {
+    async searchForVet(city?: string, district?: string): Promise<UserReturnType[] | undefined> {
       let vets = null;
       const role = Number(Roles.vet);
       let filters: any = {};
@@ -269,24 +208,16 @@ export class UserService {
         throw new HttpError("Nenhum veterinário foi encontrado.", 404);
       }
 
-      let vetsCopy = Promise.all(vets.map(async vet => {
-        let vetCopy: any = {...vet};
-        let address = await addressService.findByUserId(vetCopy.id);
+      return Promise.all(vets.map(async vet => {
+        const address = await addressService.findByUserId(vet.id);
+        const role = await roleRepository.findById(vet.roleId);
 
-        if(address) {
-          vetCopy.address = address;
-        }
-
-        delete vetCopy.password;
-        delete vetCopy.cpf;
-        return vetCopy;
+        return {...vet!, address: address!, role: role!};
       }));
-
-      return vetsCopy;
     }
 
     async getAvailableAppointmentDatesForOwner(vetId: number, roleId: number): Promise<Date[] | undefined> {
-      const appointments = await appointmentService.findAllAvailableForOwnerByUserId(vetId);
+      const appointments = await this.findAllAppointmentsAvailableForOwnerByUserId(vetId);
       const appointmentsDates = appointments?.map(appointment => appointment.appointmentDate);
       const appointmentDatesFiltered = appointmentsDates?.filter((value, index) => appointmentsDates.indexOf(value) === index);
 
@@ -294,20 +225,27 @@ export class UserService {
     }
 
     async getAvailableAppointmentTimesForOwner(vetId: number, appointmentDate: Date): Promise<any | undefined> {
-      const appointments = await appointmentService.findAllAvailableForOwnerByUserIdAndDate(vetId, appointmentDate);
+      const appointments = await this.findAllAppointmentsAvailableForOwnerByUserIdAndDate(vetId, appointmentDate);
       const appointmentsTimes = appointments?.map(appointment => ({id: appointment.id, appointmentTime: appointment.appointmentTime}));
 
       return appointmentsTimes;
     }
 
-    async scheduleAppointmentForOwner(appointmentId: number): Promise<AppointmentReturnType | undefined> {
-      const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {scheduled: true});
-      return updatedAppointment;
+    async scheduleAppointmentForOwner(appointmentId: number, petId: number): Promise<AppointmentReturnType | undefined> {
+      const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {scheduled: true, petId: petId});
+
+      const vet = await this.findById(updatedAppointment?.vetId!);
+      const pet = await petService.findById(petId);
+      const owner = await this.findById(pet?.ownerId!);
+      const completePetObject: PetReturnType = {...pet!, owner: owner!};
+
+      return {...updatedAppointment!, pet: completePetObject!, vet: vet!};
     }
 
     async cancelAppointmentAsOwner(appointmentId: number): Promise <AppointmentReturnType | undefined> {
-      const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {scheduled: false});
-      return updatedAppointment; 
+      const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {scheduled: false, petId: undefined});
+      const vet = await this.findById(updatedAppointment?.vetId!);
+      return {...updatedAppointment!, vet: vet!};
     }
 
     //vet exclusive
@@ -343,52 +281,16 @@ export class UserService {
         throw new HttpError("Não foi possível encontrar nenhum paciente para o veterinário especificado.", 404);
       }
 
-      let patientsAndOwnersData = await Promise.all(patients.map(async patient => {
-        let owner = await this.getOwnerByPetId(patient.id);
-        let ownerCopy: any = {...owner};
-        delete ownerCopy.password;
-        delete ownerCopy.cpf;
+      return await Promise.all(patients.map(async patient => {
+        const owner = await this.findById(patient.ownerId);
+        const completePetObject: PetReturnType = {...patient!, owner: owner!}
 
-        return {...patient, owner: ownerCopy};
+        return completePetObject;
       }));
-
-      return patientsAndOwnersData;
     }
 
-    // async createVaccine(petId: number, vetId: number, vaccine: Partial<Vaccine>): Promise<VaccineReturnType | undefined> {
-    //   vaccine.petId = petId;
-    //   vaccine.vetId = vetId;
-
-    //   const createdVaccine = await vaccineService.createVaccine(vaccine);
-    //   return createdVaccine;
-    // }
-
-    // async updateVaccine(vaccineId: number, petId: number, vetId: number, vaccineData: Partial<Vaccine>): Promise<VaccineReturnType | undefined> {
-    //   vaccineData.petId = petId;
-    //   vaccineData.vetId = vetId;
-
-    //   const updatedVaccine = await vaccineService.updateVaccine(vaccineId, vaccineData);
-    //   return updatedVaccine;
-    // }
-
-    // async createExamRequest(petId: number, vetId: number, examRequest: Partial<ExamRequest>): Promise<ExamRequestReturnType | undefined> {
-    //   examRequest.petId = petId;
-    //   examRequest.vetId = vetId;
-
-    //   const createdExamRequest = await examRequestService.createExamRequest(examRequest);
-    //   return createdExamRequest;
-    // }
-
-    // async updateExamRequest(examRequestId: number, petId: number, vetId: number, examRequestData: Partial<ExamRequest>): Promise<ExamRequestReturnType | undefined> {
-    //   examRequestData.petId = petId;
-    //   examRequestData.vetId = vetId;
-
-    //   const updatedExamRequest = await examRequestService.updateExamRequest(examRequestId, examRequestData);
-    //   return updatedExamRequest;
-    // }
-
     async scheduleAppointmentAsVet(vetId: number, appointmentDate: Date, appointmentTime: string): Promise<AppointmentReturnType | undefined> {
-      const appointments = await appointmentService.findAllByUserId(vetId);
+      const appointments = await this.findAllAppointmentsByUserId(vetId);
       let dateAndTimeAlreadyTaken = false;
       
       appointments?.map(appointment => {
@@ -409,7 +311,9 @@ export class UserService {
       };
 
       const createdAppointment = await appointmentService.createAppointment(newAppointment);
-      return createdAppointment;
+      const vet = await this.findById(vetId);
+
+      return {...createdAppointment, vet: vet!};
     }
 
     async cancelAppointmentAsVet(appointmentId: number): Promise<boolean | undefined> {
@@ -423,4 +327,160 @@ export class UserService {
 
       return deleted;
     }
+
+    async findAppointmentByIdAndReturnFullObject(id: number): Promise<AppointmentReturnType | undefined> {
+      const appointment = await appointmentService.findById(id);
+
+      if(!appointment) {
+        throw new HttpError("Não foi possível encontrar a consulta desejada.", 404);
+      }
+
+      const vet = await this.findById(appointment.vetId);
+
+      if(appointment.petId) {
+        const pet = await petService.findById(appointment.petId);
+        const owner = await this.findById(pet?.ownerId!);
+        const completePetObject: PetReturnType = {...pet!, owner: owner!};
+        return {...appointment, pet: completePetObject!, vet: vet!};
+      }
+      return {...appointment, vet: vet!};
+    }
+
+    async findAllAppointmentsByUserId(userId: number): Promise<AppointmentReturnType[] | undefined> {
+      const appointments = await appointmentRepository.findAllByUserId(userId);
+
+      if(!appointments) {
+          throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
+      }
+
+      return Promise.all(appointments.map(async appointment => {
+          const vet = await this.findById(appointment.vetId);
+
+          if(appointment.petId) {
+            const pet = await petService.findById(appointment.petId!);
+            const owner = await this.findById(pet?.ownerId!);
+            const completePetObject: PetReturnType = {...pet!, owner: owner!};
+            return {...appointment!, pet: completePetObject!, vet: vet!};
+          }
+          return {...appointment!, vet: vet!};
+      }));
+  }
+
+  async findAllAppointmentsAvailableForOwnerByUserId(userId: number): Promise<AppointmentReturnType[] | undefined> {
+    const appointments = await appointmentRepository.findAllAvailableForOwnerByUserId(userId);
+
+    if(!appointments) {
+        throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
+    }
+
+    return Promise.all(appointments.map(async appointment => {
+        const vet = await this.findById(Number(appointment.vetId));
+
+        if(appointment.petId) {
+          const pet = await petService.findById(Number(appointment.petId));
+          const owner = await this.findById(pet?.ownerId!);
+          const completePetObject: PetReturnType = {...pet!, owner: owner!};
+          return {...appointment!, pet: completePetObject!, vet: vet!};
+        }
+        return {...appointment!, vet: vet!};
+    }));
+}
+
+  async findAllAppointmentsAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: Date): Promise <AppointmentReturnType[] | undefined> {
+    const appointments = await appointmentRepository.findAllAvailableForOwnerByUserIdAndDate(userId, appointmentDate);
+
+    if(!appointments) {
+        throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
+    }
+
+    const appointmentsCopy = Promise.all(appointments.map(async appointment => {
+        let pet = await petService.findById(Number(appointment.petId));
+        let vet = await this.findById(Number(appointment.vetId));
+
+        let appointmentCopy: any = {...appointment, pet: pet, vet: vet};
+        return appointmentCopy;
+    }));
+
+    return appointmentsCopy;
+  }
+  
+  async findVaccineByIdAndReturnFullObject(vaccineId: number): Promise<VaccineReturnType | undefined> {
+    const vaccine = await vaccineService.findById(vaccineId);
+    const vet = await this.findById(vaccine?.vetId!);
+    const pet = await petService.findById(vaccine?.petId!);
+    const owner = await this.findById(pet?.ownerId!);
+    const completePetObject = {...pet!, owner: owner!};
+    return {...vaccine!, pet: completePetObject!, vet: vet!};
+  }
+
+  async findAllVaccinesByUserId(userId: number): Promise<VaccineReturnType[] | undefined> {
+    const vaccines = await vaccineRepository.findAllByUserId(userId);
+
+    if(!vaccines) {
+        throw new HttpError("Não foi possível encontrar nenhuma vacina.", 404);
+    }
+
+    return Promise.all(vaccines.map(async vaccine => {
+      const vet = await this.findById(vaccine?.vetId!);
+      const pet = await petService.findById(vaccine?.petId!);
+      const owner = await this.findById(pet?.ownerId!);
+      const completePetObject = {...pet!, owner: owner!};
+      return {...vaccine!, pet: completePetObject!, vet: vet!};
+    }));
+  }
+
+  async findAllVaccinesByPetId(petId: number): Promise<VaccineReturnType[] | undefined> {
+    const vaccines = await vaccineRepository.findAllByPetId(petId);
+
+    if(!vaccines) {
+        throw new HttpError("Não foi possível encontrar nenhuma vacina.", 404);
+    }
+
+    return Promise.all(vaccines.map(async vaccine => {
+      const vet = await this.findById(vaccine?.vetId!);
+      const pet = await petService.findById(vaccine?.petId!);
+      const owner = await this.findById(pet?.ownerId!);
+      const completePetObject = {...pet!, owner: owner!};
+      return {...vaccine!, pet: completePetObject!, vet: vet!};
+    }));
+  }
+
+  async findExamRequestByIdAndReturnFullObject(id: number): Promise<ExamRequestReturnType | undefined> {
+    const examRequest = await examRequestService.findById(id);
+    const vet = await this.findById(examRequest?.vetId!);
+    const pet = await petService.findById(examRequest?.petId!);
+    const owner = await this.findById(pet?.ownerId!);
+    const completePetObject: PetReturnType = {...pet!, owner: owner!};
+    return {...examRequest!, pet: completePetObject!, vet: vet!};
+  }
+
+  async findAllExamRequestsByUserId(userId: number): Promise<ExamRequestReturnType[] | undefined> {
+    const examRequests = await examRequestRepository.findAllByUserId(userId);
+
+    if(!examRequests) {
+        throw new HttpError("Não foi possível encontrar nenhum pedido de exame.", 404);
+    }
+
+    return Promise.all(examRequests.map(async examRequest => {
+      const vet = await this.findById(examRequest?.vetId!);
+      const pet = await petService.findById(examRequest?.petId!);
+      const owner = await this.findById(pet?.ownerId!);
+      const completePetObject: PetReturnType = {...pet!, owner: owner!};
+      return {...examRequest!, pet: completePetObject!, vet: vet!};
+    }));
+  }
+
+  async findExamRequestByAppointmentId(appointmentId: number): Promise<ExamRequestReturnType | undefined> {
+    const examRequest = await examRequestRepository.findByAppointmentId(appointmentId);
+
+    if(!examRequest) {
+        throw new HttpError("Não foi possível encontrar o pedido de exame desejado.", 404);
+    }
+
+    const vet = await this.findById(examRequest?.vetId!);
+    const pet = await petService.findById(examRequest?.petId!);
+    const owner = await this.findById(pet?.ownerId!);
+    const completePetObject: PetReturnType = {...pet!, owner: owner!};
+    return {...examRequest!, pet: completePetObject!, vet: vet!};
+  }
 }

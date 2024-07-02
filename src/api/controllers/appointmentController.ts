@@ -22,13 +22,13 @@ export class AppointmentController {
         try {
             const appointmentId = req.params && Number(req.params.id);
 
-            const appointment = await appointmentService.findById(appointmentId);
+            const appointment = await userService.findAppointmentByIdAndReturnFullObject(appointmentId);
             
             if(!appointment) {
                 return next(new HttpError("Nenhuma consulta foi encontrada.", 400));
             }
             
-            const examRequest = await examRequestService.findByAppointmentId(appointmentId);
+            const examRequest = await userService.findExamRequestByAppointmentId(appointmentId);
 
             if(!examRequest) {
                 res.status(200).json(appointment);
@@ -73,18 +73,19 @@ export class AppointmentController {
     async createNewAppointmentAsOwner(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
-            if(!req.user || !req.params) {
+            if(!req.user || !req.params || !req.body) {
                 return next(new HttpError("Ocorreu um erro ao marcar nova consulta.", 500));
             }
 
             const userRoleId = req.user.roleId;
             const appointmentId = Number(req.params.id);
+            const petId = req.body.petId;
 
             if(!userRoleId || userRoleId === Number(Roles.vet)) {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
 
-            const appointment = await userService.scheduleAppointmentForOwner(appointmentId);
+            const appointment = await userService.scheduleAppointmentForOwner(appointmentId, petId);
 
             if(!appointment) {
                 return next(new HttpError("Nenhuma consulta foi encontrada.", 500));
