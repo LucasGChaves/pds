@@ -1,5 +1,6 @@
 import api from "../../../config/axios";
 import {
+  IAppointment,
   IAppointmentDetailsFormData,
   INewAppointmentTimeFormData,
 } from "../../model/appointment";
@@ -7,7 +8,7 @@ import {
 class AppointmentRepository {
   path: string;
 
-  constructor(role: "owner" | "vet") {
+  constructor(role: string) {
     if (role === "owner") {
       this.path = "user/owner/appointments";
     }
@@ -18,7 +19,7 @@ class AppointmentRepository {
     return await api.post(this.path, body);
   }
 
-  async list() {
+  async list(): Promise<IAppointment[]> {
     return await api.get(this.path).then((response) => response.data);
   }
 
@@ -26,7 +27,7 @@ class AppointmentRepository {
     return await api.put(`${this.path}/${body.id}`, body);
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<IAppointment> {
     return await api
       .get(`${this.path}/${id}`)
       .then((response) => response.data);

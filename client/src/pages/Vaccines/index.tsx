@@ -11,6 +11,9 @@ import CircularAddButton from "../../shared/components/CircularAddButton";
 import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import CustomDialog from "../../shared/components/CustomDialog";
+import { useVaccines } from "../../shared/hooks/useVaccines";
+import Loading from "../../shared/components/Loading";
+import InfoCard from "../../shared/components/InfoCard";
 
 const Vaccines = ({ navigation }) => {
   const [filter, setFilter] = useState<Date>();
@@ -37,6 +40,8 @@ const Vaccines = ({ navigation }) => {
 
   const handleDelete = () => {};
 
+  const { data, error, isLoading } = useVaccines();
+
   return (
     <OrangeContainer>
       <CustomDialog
@@ -46,6 +51,7 @@ const Vaccines = ({ navigation }) => {
         handleHide={handleHideDialog}
       />
       <BackButton handleClick={handleBack} isWhite />
+
       <OrangeContent>
         <ScreenTitle white>Vacinas</ScreenTitle>
         <DatePicker
@@ -57,23 +63,30 @@ const Vaccines = ({ navigation }) => {
       </OrangeContent>
       <WhiteContainer>
         <ListContainer>
-          <FlatList
-            nestedScrollEnabled
-            style={{ maxHeight: 380 }}
-            data={MOCKED_VACCINES}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={{ gap: 12 }}
-            renderItem={({ item }) => (
-              <VaccineCard
-                batch={item.batch}
-                manufacturer={item.manufacturer}
-                vaccineName={item.vaccineName}
-                vetName={item.vet.name}
-                handleClick={() => handleCardClick(item.id.toString())}
-                date={new Date()}
-              />
-            )}
-          />
+          {!error ? (
+            <FlatList
+              ListEmptyComponent={
+                isLoading ? <Loading /> : <InfoCard type="emptyList" />
+              }
+              nestedScrollEnabled
+              style={{ maxHeight: 380 }}
+              data={MOCKED_VACCINES}
+              keyExtractor={(item) => item.id.toString()}
+              contentContainerStyle={{ gap: 12 }}
+              renderItem={({ item }) => (
+                <VaccineCard
+                  batch={item.batch}
+                  manufacturer={item.manufacturer}
+                  vaccineName={item.vaccineName}
+                  vetName={item.vet.name}
+                  handleClick={() => handleCardClick(item.id.toString())}
+                  date={new Date()}
+                />
+              )}
+            />
+          ) : (
+            <InfoCard type="error" />
+          )}
         </ListContainer>
         <AddButtonContainer>
           <CircularAddButton handleClick={handleAdd} />

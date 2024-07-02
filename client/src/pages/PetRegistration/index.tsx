@@ -13,18 +13,21 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { useAuthContext } from "../../shared/context/AuthContext";
 import { PHOTOS_PATH } from "../../utils/constants";
-import { IPetRegistrationFormData } from "../../model/pet";
+import { IPet, IPetRegistrationFormData } from "../../model/pet";
+import PetRepository from "../../shared/repository/petRepository";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
 
 const PetRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<IPetRegistrationFormData>();
-
-  const { user } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const { setSnackbarParams } = useSnackbarContext();
+  const { user, isUserOwner } = useAuthContext();
 
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
 
   const route =
     useRoute<RouteProp<PetsScreensStackParamList, "PetRegistration">>();
-  const pet = route.params?.pet;
+  const existingPet = route.params?.pet;
 
   const handleChoosePhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -59,22 +62,54 @@ const PetRegistration = ({ navigation }) => {
 
   const onSubmit = async () => {
     if (formData) {
-      const { birthDate, breed, name, photo, species } = formData;
+      const { birthDate, breed, name, species } = formData;
+      const petRepository = new PetRepository(user.role.roleName);
+
+      setIsLoading(true);
+      try {
+        let pet: IPet;
+        if (existingPet) {
+          pet = await petRepository.edit({
+            birthDate: birthDate,
+            breed: breed,
+            name: name,
+            species: species,
+            id: existingPet.id,
+          });
+        } else {
+          pet = await petRepository.create({
+            birthDate: birthDate,
+            breed: breed,
+            name: name,
+            species: species,
+          });
+        }
+
+        if (image) {
+          await savePhoto(pet.id.toString());
+        }
+      } catch (error) {
+        setSnackbarParams({
+          show: true,
+          text: "Ocorreu um erro. Tente novamente",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     //TODO: pegar id do pet e salvar
     //caso de editar abaixo
-    await savePhoto(pet.id);
     navigation.navigate("Pets");
   };
 
   useEffect(() => {
-    if (pet)
+    if (existingPet)
       setFormData({
-        birthDate: new Date(pet.birthDate),
-        breed: pet.breed,
-        name: pet.name,
-        species: pet.species,
+        birthDate: new Date(existingPet.birthDate),
+        breed: existingPet.breed,
+        name: existingPet.name,
+        species: existingPet.species,
       });
   }, []);
 
@@ -82,7 +117,7 @@ const PetRegistration = ({ navigation }) => {
     <LoggedAreaContainer>
       <Container>
         <ScreenTitle orange>
-          {pet ? "Edição de pet" : "Cadastro de pet"}
+          {existingPet ? "Edição de pet" : "Cadastro de pet"}
         </ScreenTitle>
         <InputsContainer>
           <TextField
@@ -125,7 +160,12 @@ const PetRegistration = ({ navigation }) => {
             {image && <Photo source={{ uri: image.assets[0].uri }} />}
             <UploadButton handleClick={handleChoosePhoto} />
           </PhotoChoiceContainer>
-          <Button mode="contained" style={{ width: 200 }} onPress={onSubmit}>
+          <Button
+            mode="contained"
+            style={{ width: 200 }}
+            onPress={onSubmit}
+            loading={isLoading}
+          >
             Cadastrar
           </Button>
         </ButtonContainer>

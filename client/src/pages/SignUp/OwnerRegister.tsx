@@ -10,6 +10,8 @@ import {
   NavigationProp,
 } from "@react-navigation/native";
 import { IOwnerRegisterFormData } from "../../model/user";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import AuthRepository from "../../shared/repository/AuthRepository";
 
 interface Props {
   handleBack(): void;
@@ -18,7 +20,10 @@ interface Props {
 const OwnerRegister = ({ handleBack }: Props) => {
   const [formData, setFormData] = useState<IOwnerRegisterFormData>();
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  const { setSnackbarParams } = useSnackbarContext();
 
   const handleChangeformData = (prop: string, value: string) => {
     setFormData({
@@ -39,17 +44,29 @@ const OwnerRegister = ({ handleBack }: Props) => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (formData) {
-      const {
-        cpf,
-        email,
-        name,
-        lastName,
-        password,
-        passwordRepetition,
-        phone,
-      } = formData;
+      const authRepository = new AuthRepository();
+      const { cpf, email, name, lastName, password, phone } = formData;
+
+      setIsLoading(true);
+      try {
+        await authRepository.RegisterOwner({
+          cpf: cpf,
+          email: email,
+          lastName: lastName,
+          name: name,
+          password: password,
+          phone: phone,
+        });
+      } catch (error) {
+        setSnackbarParams({
+          show: true,
+          text: "Ocorreu um erro ao fazer cadastro. Tente novamente",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     navigation.navigate("TabNavigator");
@@ -116,7 +133,12 @@ const OwnerRegister = ({ handleBack }: Props) => {
         </HelperText>
       </InputsContainer>
       <ButtonContainer>
-        <Button mode="contained" style={{ width: 200 }} onPress={onSubmit}>
+        <Button
+          mode="contained"
+          style={{ width: 200 }}
+          onPress={onSubmit}
+          loading={isLoading}
+        >
           Cadastrar
         </Button>
       </ButtonContainer>

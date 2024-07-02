@@ -8,15 +8,37 @@ import { ScreenTitle } from "../../shared/components/Title";
 import AppStyles from "../../styles";
 import { handleChangeformData } from "../../utils/functions";
 import { ILoginFormData } from "../../model/login";
+import AuthRepository from "../../shared/repository/AuthRepository";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
 
 const Login = ({ navigation }) => {
   const [formData, setFormData] = useState<ILoginFormData>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
+  const { setSnackbarParams } = useSnackbarContext();
+
+  const handleLogin = async () => {
     navigation.navigate("TabNavigator");
+
+    const { identifier, password } = formData;
+    const authRepository = new AuthRepository();
+    setIsLoading(true);
+    try {
+      await authRepository.Login({
+        identifier: identifier,
+        password: password,
+      });
+    } catch (error) {
+      setSnackbarParams({
+        show: true,
+        text: "Ocorreu um erro ao fazer login. Tente novamente",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     navigation.navigate("SignUp");
   };
 
@@ -29,11 +51,11 @@ const Login = ({ navigation }) => {
       />
       <InputsContainer>
         <TextField
-          value={formData?.email}
-          label="Email"
-          placeholder="Insira seu email"
+          value={formData?.identifier}
+          label="Email ou CPF"
+          placeholder="Insira seu email ou cpf"
           handleChangeText={(text) =>
-            handleChangeformData("email", text, formData, setFormData)
+            handleChangeformData("identifier", text, formData, setFormData)
           }
         />
         <TextField
@@ -47,7 +69,12 @@ const Login = ({ navigation }) => {
         />
       </InputsContainer>
       <ButtonsContainer>
-        <Button mode="contained" style={{ width: 200 }} onPress={handleLogin}>
+        <Button
+          mode="contained"
+          style={{ width: 200 }}
+          onPress={handleLogin}
+          loading={isLoading}
+        >
           Login
         </Button>
         <Divider />

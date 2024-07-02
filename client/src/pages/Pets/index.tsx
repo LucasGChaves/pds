@@ -13,6 +13,8 @@ import ShowComponentByRole from "../../shared/components/ShowComponentByRole";
 import { userTypeEnum } from "../../enums/userTypeEnum";
 import { PHOTOS_PATH } from "../../utils/constants";
 import InfoCard from "../../shared/components/InfoCard";
+import { usePets } from "../../shared/hooks/usePets";
+import Loading from "../../shared/components/Loading";
 
 const Pets = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +28,10 @@ const Pets = ({ navigation }) => {
     navigation.navigate("PetDetails", { petId: id });
   };
 
+  const { data, error, isLoading } = usePets({
+    role: user.role.roleName,
+  });
+
   return (
     <LoggedAreaContainer hideBackButton>
       <Container>
@@ -37,9 +43,12 @@ const Pets = ({ navigation }) => {
           onChangeText={setSearchQuery}
           value={searchQuery}
         />
-        {true ? (
+        {!error ? (
           <FlatList
             nestedScrollEnabled
+            ListEmptyComponent={
+              isLoading ? <Loading /> : <InfoCard type="emptyList" />
+            }
             style={
               isUserOwner
                 ? { maxHeight: 425, height: "58%" }

@@ -3,7 +3,7 @@ import { ReactQueryCache, STALE_TIME } from "../../enums/reactQueryCacheEnum";
 import PetRepository from "../repository/petRepository";
 
 interface Params {
-  role: "owner" | "vet";
+  role: string;
 }
 
 export const usePets = ({ role }: Params) => {

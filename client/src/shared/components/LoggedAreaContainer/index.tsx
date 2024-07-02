@@ -7,12 +7,16 @@ import DeleteButton from "../DeleteButton";
 import ShowComponentByRole from "../ShowComponentByRole";
 import { userTypeEnum } from "../../../enums/userTypeEnum";
 import LogoutButton from "../LogoutButton";
+import Loading from "../Loading";
+import InfoCard from "../InfoCard";
 
 interface Props {
   children: React.ReactNode;
   hideBackButton?: boolean;
   handleDelete?: () => void;
   handleLogout?: () => void;
+  isLoading?: boolean;
+  error?: boolean;
 }
 
 const LoggedAreaContainer = ({
@@ -20,11 +24,21 @@ const LoggedAreaContainer = ({
   hideBackButton,
   handleDelete,
   handleLogout,
+  isLoading,
+  error,
 }: Props) => {
   const navigate = useNavigation();
 
   const handleBack = () => {
     navigate.goBack();
+  };
+
+  const getContent = () => {
+    if (isLoading) return <Loading />;
+
+    if (error) return <InfoCard type="error" />;
+
+    return children;
   };
 
   return (
@@ -34,7 +48,7 @@ const LoggedAreaContainer = ({
         {handleDelete && <DeleteButton handleDelete={handleDelete} />}
       </ShowComponentByRole>
       {handleLogout && <LogoutButton handleLogout={handleLogout} />}
-      <Content>{children}</Content>
+      <Content>{getContent()}</Content>
     </Container>
   );
 };

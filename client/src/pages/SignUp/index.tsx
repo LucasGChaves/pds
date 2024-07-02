@@ -22,8 +22,6 @@ const SignUp = ({ navigation }) => {
       setPage(selectedUserType === "owner" ? "owner" : "vet");
   };
 
-  const handleRegister = () => {};
-
   const handleBackToUserTypeSelection = () => {
     setPage("typeSelection");
   };
