@@ -5,7 +5,7 @@
 export const up = async function(knex) {
 
     await knex.schema.alterTable("appointment", (table) => {
-        //table.string("appointmentTime", 100).notNullable().after("appointmentDate");
+        table.string("appointmentTime", 100).notNullable().after("appointmentDate");
         table.boolean("scheduled").notNullable().after("description");
     });
 
