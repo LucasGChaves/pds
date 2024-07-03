@@ -42,7 +42,7 @@ export class Auth {
                         return next(err);
                     }
 
-                    const token = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: 120});
+                    const token = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: "4h"});
 
                     if(afterRegister) {
                         return res.cookie("token", token).status(200).send("Usuário registrado com sucesso.");

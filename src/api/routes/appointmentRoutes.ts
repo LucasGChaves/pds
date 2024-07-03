@@ -7,11 +7,11 @@ const router = Router();
 const appointmentController = new AppointmentController();
 const auth = new Auth();
 
-router.get("/appointment/:id/", auth.secureEndpoingWithJwt, appointmentController.getAppointment);
-router.post("/appointment/vet/", validateAppointment(create), auth.secureEndpoingWithJwt, appointmentController.createNewAppointmentAsVet);
-router.put("/appointment/:id/owner/", auth.secureEndpoingWithJwt, appointmentController.createNewAppointmentAsOwner);
-router.put("/appointment/:id", validateAppointment(update), auth.secureEndpoingWithJwt, appointmentController.updateAppointment);
-router.put("/appointment/:id/owner/cancel", auth.secureEndpoingWithJwt, appointmentController.cancelAppointmentAsOwner);
-router.delete("/appointment/:id/vet/", auth.secureEndpoingWithJwt, appointmentController.deleteAppointmentAsVet);
+router.get("/:id/", auth.secureEndpoingWithJwt, appointmentController.getAppointment);
+router.post("/vet/", validateAppointment(create), auth.secureEndpoingWithJwt, appointmentController.createNewAppointmentAsVet);
+router.put("/:id/owner/", auth.secureEndpoingWithJwt, appointmentController.createNewAppointmentAsOwner);
+router.put("/:id/vet/", validateAppointment(update), auth.secureEndpoingWithJwt, appointmentController.updateAppointment);
+router.put("/:id/owner/cancel", auth.secureEndpoingWithJwt, appointmentController.cancelAppointmentAsOwner);
+router.delete("/:id/vet/", auth.secureEndpoingWithJwt, appointmentController.deleteAppointmentAsVet);
 
 export default router;

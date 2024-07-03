@@ -10,12 +10,11 @@ export class UserModel extends Model {
   id!: number;
   firstName!: string;
   lastName!: string;
-  password!: string;
+  password?: string;
   phone!: string;
   email!: string;
   cpf!: string;
   crmv?: string;
-  cnpj?: string;
   photoFileName?: string;
   roleId!: number; 
   

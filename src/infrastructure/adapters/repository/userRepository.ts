@@ -29,10 +29,11 @@ export class UserRepository implements UserRepositoryInterface {
 
   async deleteUser(userId: number): Promise<boolean | undefined> {
     try {
+      console.log(userId);
       await UserModel.query().where("id", userId).del();
       return true;
     } catch (err: any) {
-      throw new HttpError(err.message || "Não foi possível deletar o usuário solicitado.", 500);
+      throw new HttpError(JSON.stringify(err) || "Não foi possível deletar o usuário solicitado.", 500);
     }
   }
 

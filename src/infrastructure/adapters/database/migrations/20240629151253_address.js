@@ -12,24 +12,6 @@ export const up = function(knex) {
         table.string("complement", 100).nullable();
         table.integer("userId").unsigned();
         table.foreign("userId").references("user.id");
-    }).then(function (){
-        return knex("address").insert([
-            {
-                "city": "Belo-Horizonte",
-                "district": "Liberdade",
-                "street": "Rua X",
-                "number": 123,
-                "complement": "casa",
-                "userId": 1
-            },
-            {
-                "city": "Belo-Horizonte",
-                "district": "Indaiá",
-                "street": "Rua Y",
-                "number": 1234,
-                "userId": 2
-            }
-        ]);
     })
 };
 

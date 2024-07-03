@@ -7,8 +7,8 @@ const router = Router();
 const vaccineController = new VaccineController();
 const auth = new Auth();
 
-router.get("/vaccine/:id/", auth.secureEndpoingWithJwt, vaccineController.getVaccine);
-router.post("/vaccine/", validateVaccine(create), auth.secureEndpoingWithJwt, vaccineController.createVaccine);
-router.delete("/vaccine/:id", auth.secureEndpoingWithJwt, vaccineController.deleteVaccine);
+router.get("/:id/", auth.secureEndpoingWithJwt, vaccineController.getVaccine);
+router.post("/", validateVaccine(create), auth.secureEndpoingWithJwt, vaccineController.createVaccine);
+router.delete("/:id/", auth.secureEndpoingWithJwt, vaccineController.deleteVaccine);
 
 export default router;

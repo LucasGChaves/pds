@@ -5,7 +5,7 @@ export type UserReturnType = {
     id: number;
     firstName: string;
     lastName: string;
-    password: string;
+    password?: string;
     email: string;
     phone: string;
     cpf: string;

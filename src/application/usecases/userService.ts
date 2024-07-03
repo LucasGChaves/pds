@@ -21,6 +21,7 @@ import { AppointmentReturnType } from "../../infrastructure/types/appointment";
 import { ExamRequestReturnType } from "../../infrastructure/types/examRequest";
 import { VaccineReturnType } from "../../infrastructure/types/vaccine";
 import { PetReturnType } from "../../infrastructure/types/petType";
+import { AddressReturnType } from "../../infrastructure/types/address";
 
 const petRepository = new PetRepository();
 const petService = new PetService(petRepository);
@@ -42,32 +43,38 @@ const roleRepository = new RoleRepository();
 export class UserService {
     constructor(private userRepository: UserRepositoryInterface) {}
 
-    async createUser(user: Partial<User>, address: Partial<Address>): Promise<UserReturnType> {
+    async createUser(user: Partial<User>, address: Partial<Address>): Promise<UserReturnType | undefined> {
       const hashedPassword = await bcrypt.hash(user.password!, 10);
       user.password = hashedPassword;
-      const createdAddress = await addressService.createAddress(address);
-      const createdUser = await this.userRepository.createUser(user);
-      const userCopy:any = {...createdUser};
 
-      return {...userCopy, address: createdAddress};
-    }
-    
-    async updateUser(userId: number, updatedData: Partial<User>): Promise<UserReturnType | undefined> {
-      if(updatedData.password) {
-        const hashedPassword = await bcrypt.hash(updatedData.password, 10);
-        updatedData.password = hashedPassword;
+      if(user && user.roleId && user.roleId === Number(Roles.vet)) {
+        if(!user.crmv) {
+          throw new HttpError("O campo \"CRMV\" é obrigatório", 400);
+        }
       }
 
-      const updatedUser = await this.userRepository.updateUser(userId, updatedData);
+      const createdUser = await this.userRepository.createUser(user);
+      const createdAddress = await addressService.createAddress({...address, userId:createdUser.id!});
+      const role = await roleRepository.findById(createdUser.roleId!);
+
+      return {...createdUser, address: createdAddress!, role: role!};
+    }
+    
+    async updateUser(userId: number, updatedUserData: Partial<User>): Promise<UserReturnType | undefined> {
+      if(updatedUserData.password) {
+        const hashedPassword = await bcrypt.hash(updatedUserData.password, 10);
+        updatedUserData.password = hashedPassword;
+      }
+      const updatedUser = await this.userRepository.updateUser(userId, updatedUserData);
 
       if(!updatedUser) {
         throw new HttpError("Não foi possível encontrar o usuário desejado.", 400);
       }
       
+      const role = await roleRepository.findById(updatedUser.roleId);
       const address = await addressService.findByUserId(updatedUser.id);
-      const updatedUserCopy: any = {...updatedUser};
 
-      return {...updatedUserCopy, address: address};
+      return {...updatedUser, address: address!, role: role!};
     }
 
     async getUserAddress(userId: number): Promise <Address | undefined> {
@@ -90,7 +97,7 @@ export class UserService {
       const user = await this.userRepository.findByEmail(email);
       const role = await roleRepository.findById(Number(user?.roleId));
       const address = await addressRepository.findByUserId(user!.id);
-      let completeUserObject: any = {...user, role: role, address: address};
+      let completeUserObject: UserReturnType = {...user!, role: role!, address: address!};
       delete completeUserObject.password;
       return completeUserObject;
     }
@@ -99,7 +106,7 @@ export class UserService {
       const user = await this.userRepository.findByCpf(cpf);
       const role = await roleRepository.findById(Number(user?.roleId));
       const address = await addressRepository.findByUserId(user!.id);
-      let completeUserObject: any = {...user, role: role, address: address};
+      let completeUserObject: UserReturnType = {...user!, role: role!, address: address!};
       delete completeUserObject.password;
       return completeUserObject;
     }
@@ -108,7 +115,7 @@ export class UserService {
       const user = await this.userRepository.findById(id);
       const role = await roleRepository.findById(Number(user?.roleId));
       const address = await addressRepository.findByUserId(user!.id);
-      let completeUserObject: any = {...user, role: role, address: address};
+      let completeUserObject: UserReturnType = {...user!, role: role!, address: address!};
       delete completeUserObject.password;
       return completeUserObject;
     }
@@ -482,5 +489,11 @@ export class UserService {
     const owner = await this.findById(pet?.ownerId!);
     const completePetObject: PetReturnType = {...pet!, owner: owner!};
     return {...examRequest!, pet: completePetObject!, vet: vet!};
+  }
+
+  async findPetByIdAndReturnFullObject(petId: number): Promise<PetReturnType | undefined> {
+    const pet = await petService.findById(petId);
+    const owner = await this.findById(pet?.ownerId!);
+    return {...pet!, owner: owner!};
   }
 }

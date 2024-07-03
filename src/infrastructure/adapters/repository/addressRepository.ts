@@ -10,7 +10,9 @@ export class AddressRepository implements AddressRepositoryInterface {
   }
 
   async updateAddress(userId: number, updatedData: Partial<Address>): Promise<Address | undefined> {
-    const updatedAddress = await AddressModel.query().where("userId", userId).patchAndFetch(updatedData);
+    console.log(updatedData);
+    const address = await AddressModel.query().where("userId", userId).first();
+    const updatedAddress = await AddressModel.query().patchAndFetchById(address?.id!, updatedData);
     if(!updatedAddress) {
         throw new HttpError("Endereço não encontrado.", 500);
     }

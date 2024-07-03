@@ -7,9 +7,9 @@ const router = Router();
 const examRequestController = new ExamRequestController();
 const auth = new Auth();
 
-router.get("/exam/:id/", auth.secureEndpoingWithJwt, examRequestController.getExamRequest);
-router.post("/exam/", validateExamRequest(create), auth.secureEndpoingWithJwt, examRequestController.createExamRequest);
-router.put("/exam/:id/", validateExamRequest(update), auth.secureEndpoingWithJwt, examRequestController.updateExamRequest);
-router.delete("/exam/:id", auth.secureEndpoingWithJwt, examRequestController.deleteExamRequest);
+router.get("/:id/", auth.secureEndpoingWithJwt, examRequestController.getExamRequest);
+router.post("/", validateExamRequest(create), auth.secureEndpoingWithJwt, examRequestController.createExamRequest);
+router.put("/:id/", validateExamRequest(update), auth.secureEndpoingWithJwt, examRequestController.updateExamRequest);
+router.delete("/:id", auth.secureEndpoingWithJwt, examRequestController.deleteExamRequest);
 
 export default router;
