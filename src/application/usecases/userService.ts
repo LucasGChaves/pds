@@ -204,7 +204,13 @@ export class UserService {
     //owner exclusive
     async getMyPets(id: number): Promise<Pet[] | undefined> {
       const pets = await petService.findAllByUserId(id);
-      return pets;
+      const owner = await this.findById(id);
+      const completePetObjects = (pets || []).map(pet => {
+        let birthDate = pet.birthDate.toISOString().split('T')[0];
+
+        return {...pet!, age: getAge(birthDate), owner: owner!}
+      });
+      return completePetObjects;
     }
 
     async searchForVet(city?: string, district?: string): Promise<UserReturnType[] | undefined> {
@@ -259,7 +265,8 @@ export class UserService {
       const vet = await this.findById(updatedAppointment?.vetId!);
       const pet = await petService.findById(petId);
       const owner = await this.findById(pet?.ownerId!);
-      const completePetObject: PetReturnType = {...pet!, owner: owner!};
+      const birthDate = pet!.birthDate.toISOString().split('T')[0];
+      const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate),owner: owner!};
 
       return {...updatedAppointment!, pet: completePetObject!, vet: vet!};
     }
@@ -305,7 +312,8 @@ export class UserService {
 
       return await Promise.all(patients.map(async patient => {
         const owner = await this.findById(patient.ownerId);
-        const completePetObject: PetReturnType = {...patient!, owner: owner!}
+        const birthDate = patient.birthDate.toISOString().split('T')[0];
+        const completePetObject: PetReturnType = {...patient!, age:getAge(birthDate) ,owner: owner!}
 
         return completePetObject;
       }));
@@ -362,7 +370,8 @@ export class UserService {
       if(appointment.petId) {
         const pet = await petService.findById(appointment.petId);
         const owner = await this.findById(pet?.ownerId!);
-        const completePetObject: PetReturnType = {...pet!, owner: owner!};
+        const birthDate = pet!.birthDate.toISOString().split('T')[0];
+        const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate), owner: owner!};
         return {...appointment, pet: completePetObject!, vet: vet!};
       }
       return {...appointment, vet: vet!};
@@ -388,7 +397,8 @@ export class UserService {
           if(appointment.petId) {
             const pet = await petService.findById(appointment.petId!);
             const owner = await this.findById(pet?.ownerId!);
-            const completePetObject: PetReturnType = {...pet!, owner: owner!};
+            const birthDate = pet!.birthDate.toISOString().split('T')[0];
+            const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate), owner: owner!};
             return {...appointment!, pet: completePetObject!, vet: vet!};
           }
           return {...appointment!, vet: vet!};
@@ -408,7 +418,8 @@ export class UserService {
         if(appointment.petId) {
           const pet = await petService.findById(Number(appointment.petId));
           const owner = await this.findById(pet?.ownerId!);
-          const completePetObject: PetReturnType = {...pet!, owner: owner!};
+          const birthDate = pet!.birthDate.toISOString().split('T')[0];
+          const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate), owner: owner!};
           return {...appointment!, pet: completePetObject!, vet: vet!};
         }
         return {...appointment!, vet: vet!};
@@ -424,9 +435,11 @@ export class UserService {
 
     const appointmentsCopy = Promise.all(appointments.map(async appointment => {
         let pet = await petService.findById(Number(appointment.petId));
+        let owner = await this.findById(pet?.ownerId!);
         let vet = await this.findById(Number(appointment.vetId));
-
-        let appointmentCopy: any = {...appointment, pet: pet, vet: vet};
+        const birthDate = pet!.birthDate.toISOString().split('T')[0];
+        const completePetObject = {...pet, age: getAge(birthDate), owner: owner};
+        let appointmentCopy: any = {...appointment, pet: completePetObject, vet: vet};
         return appointmentCopy;
     }));
 
@@ -438,7 +451,8 @@ export class UserService {
     const vet = await this.findById(vaccine?.vetId!);
     const pet = await petService.findById(vaccine?.petId!);
     const owner = await this.findById(pet?.ownerId!);
-    const completePetObject = {...pet!, owner: owner!};
+    const birthDate = pet!.birthDate.toISOString().split('T')[0];
+    const completePetObject = {...pet!, age: getAge(birthDate), owner: owner!};
     return {...vaccine!, pet: completePetObject!, vet: vet!};
   }
 
@@ -452,8 +466,9 @@ export class UserService {
     return Promise.all(vaccines.map(async vaccine => {
       const vet = await this.findById(vaccine?.vetId!);
       const pet = await petService.findById(vaccine?.petId!);
+      const birthDate = pet!.birthDate.toISOString().split('T')[0];
       const owner = await this.findById(pet?.ownerId!);
-      const completePetObject = {...pet!, owner: owner!};
+      const completePetObject = {...pet!, age: getAge(birthDate), owner: owner!};
       return {...vaccine!, pet: completePetObject!, vet: vet!};
     }));
   }
@@ -468,8 +483,9 @@ export class UserService {
     return Promise.all(vaccines.map(async vaccine => {
       const vet = await this.findById(vaccine?.vetId!);
       const pet = await petService.findById(vaccine?.petId!);
+      const birthDate = pet!.birthDate.toISOString().split('T')[0];
       const owner = await this.findById(pet?.ownerId!);
-      const completePetObject = {...pet!, owner: owner!};
+      const completePetObject = {...pet!, age: getAge(birthDate), owner: owner!};
       return {...vaccine!, pet: completePetObject!, vet: vet!};
     }));
   }
@@ -478,8 +494,9 @@ export class UserService {
     const examRequest = await examRequestService.findById(id);
     const vet = await this.findById(examRequest?.vetId!);
     const pet = await petService.findById(examRequest?.petId!);
+    const birthDate = pet!.birthDate.toISOString().split('T')[0];
     const owner = await this.findById(pet?.ownerId!);
-    const completePetObject: PetReturnType = {...pet!, owner: owner!};
+    const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate), owner: owner!};
     return {...examRequest!, pet: completePetObject!, vet: vet!};
   }
 
@@ -493,8 +510,9 @@ export class UserService {
     return Promise.all(examRequests.map(async examRequest => {
       const vet = await this.findById(examRequest?.vetId!);
       const pet = await petService.findById(examRequest?.petId!);
+      const birthDate = pet!.birthDate.toISOString().split('T')[0];
       const owner = await this.findById(pet?.ownerId!);
-      const completePetObject: PetReturnType = {...pet!, owner: owner!};
+      const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate), owner: owner!};
       return {...examRequest!, pet: completePetObject!, vet: vet!};
     }));
   }
@@ -508,15 +526,17 @@ export class UserService {
 
     const vet = await this.findById(examRequest?.vetId!);
     const pet = await petService.findById(examRequest?.petId!);
+    const birthDate = pet!.birthDate.toISOString().split('T')[0];
     const owner = await this.findById(pet?.ownerId!);
-    const completePetObject: PetReturnType = {...pet!, owner: owner!};
+    const completePetObject: PetReturnType = {...pet!, age: getAge(birthDate), owner: owner!};
     return {...examRequest!, pet: completePetObject!, vet: vet!};
   }
 
   async findPetByIdAndReturnFullObject(petId: number): Promise<PetReturnType | undefined> {
     const pet = await petService.findById(petId);
+    let birthDate = pet!.birthDate.toISOString().split('T')[0];
     const owner = await this.findById(pet?.ownerId!);
-    return {...pet!, owner: owner!};
+    return {...pet!, age: getAge(birthDate), owner: owner!};
   }
 
   async findAllAppointmentsForOwnersPets(ownerId: number): Promise<AppointmentReturnType[] | undefined> {
@@ -526,7 +546,8 @@ export class UserService {
     let completeAppointmentsReturnObject: AppointmentReturnType[] = [];
   
     for (const pet of (pets || [])) {
-      const completePetObject = { ...pet, owner: owner! };
+      const birthDate = pet.birthDate.toISOString().split('T')[0];
+      const completePetObject = { ...pet, age: getAge(birthDate), owner: owner! };
       const appointments = await appointmentRepository.findAllByPetId(pet.id);
   
       for (const appointment of (appointments || [])) {
@@ -545,7 +566,8 @@ export class UserService {
     let completeExamRequestsReturnObject: ExamRequestReturnType[] = [];
   
     for (const pet of (pets || [])) {
-      const completePetObject = { ...pet, owner: owner! };
+      const birthDate = pet.birthDate.toISOString().split('T')[0];
+      const completePetObject = { ...pet, age: getAge(birthDate), owner: owner! };
       const examRequests = await examRequestRepository.findAllByPetId(pet.id);
   
       for (const examRequest of (examRequests || [])) {
@@ -564,10 +586,19 @@ export class UserService {
   
     for (const pet of (pets || [])) {
       const vaccines = await this.findAllVaccinesByPetId(pet.id);
-      console.log("---------> " + JSON.stringify(vaccines));
       completeVaccineReturnObject = completeVaccineReturnObject.concat(vaccines!);
     }
-    console.log("VACCINES: " + completeVaccineReturnObject);
     return completeVaccineReturnObject;
   }
+}
+
+function getAge(dateString: string) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+  return age;
 }
