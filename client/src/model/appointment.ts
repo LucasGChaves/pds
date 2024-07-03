@@ -13,6 +13,7 @@ export interface IAppointment {
 export interface IAppointmentDetailsFormData {
   id?: string;
   description: string;
+  petId?: number;
 }
 
 export interface INewAppointmentTimeFormData {

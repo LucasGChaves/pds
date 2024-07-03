@@ -18,7 +18,7 @@ router.get("/exams/", auth.secureEndpoingWithJwt, userController.getUserExams);
 router.get("/vaccines/", auth.secureEndpoingWithJwt, userController.getUserVaccines);
 router.get("/owner/search/", auth.secureEndpoingWithJwt, userController.getVets); //owner
 router.get("/test");
-router.get("/:id/", auth.secureEndpoingWithJwt, userController.getUserById(false));
-router.get("/owner/search/vet/:id/date/", auth.secureEndpoingWithJwt, userController.getVetAvailableDates);
+router.get("/owner/search/vet/:id/dates/", auth.secureEndpoingWithJwt, userController.getVetAvailableDates);
 router.get("/owner/search/vet/:id/date/times/", auth.secureEndpoingWithJwt, userController.getVetAvailableTimes);
+router.get("/:id/", auth.secureEndpoingWithJwt, userController.getUserById(false));
 export default router;

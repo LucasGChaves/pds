@@ -2,37 +2,47 @@ import api from "../../../config/axios";
 import { IPet, IPetRegistrationFormData } from "../../model/pet";
 
 class PetRepository {
-  path: string;
+  petPath: string;
+  ownerPath: string;
+  vetPath: string;
+  role: string;
 
   constructor(role: string) {
-    if (role === "owner") {
-      this.path = "user/owner/pets";
-    }
-    this.path = "user/vet/pets";
+    // if (role === "owner") {
+    //   this.path = "user/owner/pets";
+    // }
+    // this.path = "user/vet/pets";
+    this.petPath = "pet";
+    this.ownerPath = "user/owner/pets/";
+    this.vetPath ="user/vet/patients/";
+    this.role = role;
   }
 
   async create(body: IPetRegistrationFormData): Promise<IPet> {
-    return await api.post(this.path, body).then((response) => response.data);
+    return await api.post(this.petPath, body).then((response) => response.data);
   }
 
   async list(): Promise<IPet[]> {
-    return await api.get(this.path).then((response) => response.data);
+    if(this.role === "owner") {
+      return await api.get(this.ownerPath).then((response) => response.data);
+    }
+    return await api.get(this.vetPath).then((response) => response.data); 
   }
 
   async edit(body: IPetRegistrationFormData): Promise<IPet> {
     return await api
-      .put(`${this.path}/${body?.id}`, body)
+      .put(`${this.petPath}/${body?.id}/`, body)
       .then((response) => response.data);
   }
 
   async getById(id: string): Promise<IPet> {
     return await api
-      .get(`${this.path}/${id}`)
+      .get(`${this.petPath}/${id}/`)
       .then((response) => response.data);
   }
 
   async delete(id: string) {
-    return await api.delete(`${this.path}/${id}`);
+    return await api.delete(`${this.petPath}/${id}/`);
   }
 }
 

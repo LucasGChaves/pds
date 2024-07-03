@@ -3,8 +3,8 @@ import { IPetRegistrationFormData } from "../../model/pet";
 import { IVaccine, IVaccineRegistrationFormData } from "../../model/vaccine";
 
 class VaccineRepository {
-  path: "pet/vaccines";
-
+  petPath = "pet";
+  vaccinePath = "vaccine";
   //   constructor(role: "owner" | "vet") {
   //     if (role === "owner") {
   //       this.path = "user/owner/pets";
@@ -13,15 +13,15 @@ class VaccineRepository {
   //   }
 
   async create(body: IVaccineRegistrationFormData) {
-    return await api.post(this.path, body);
+    return await api.post(this.vaccinePath, body);
   }
 
-  async list(): Promise<IVaccine[]> {
-    return await api.get(this.path).then((response) => response.data);
+  async list(id: string): Promise<IVaccine[]> {
+    return await api.get(`${this.petPath}/${id}/vaccines/`).then((response) => response.data);
   }
 
   async delete(id: string) {
-    return await api.delete(`${this.path}/${id}`);
+    return await api.delete(`${this.vaccinePath}/${id}/`);
   }
 }
 

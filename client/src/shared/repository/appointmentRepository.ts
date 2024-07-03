@@ -6,30 +6,41 @@ import {
 } from "../../model/appointment";
 
 class AppointmentRepository {
-  path: string;
+  appointmentPath: string;
+  userPath: string;
+  role: string
 
   constructor(role: string) {
-    if (role === "owner") {
-      this.path = "user/owner/appointments";
-    }
-    this.path = "user/vet/appointments";
+    // if (role === "owner") {
+    //   this.path = "user/owner/appointments";
+    // }
+    // this.path = "user/vet/appointments";
+    this.role = role;
+    this.appointmentPath = "appointment";
+    this.userPath = "user/appointments/";
   }
 
   async create(body: INewAppointmentTimeFormData) {
-    return await api.post(this.path, body);
+    return await api.post(this.appointmentPath+"/vet/", body);
   }
 
   async list(): Promise<IAppointment[]> {
-    return await api.get(this.path).then((response) => response.data);
+    return await api.get(this.userPath).then((response) => response.data);
   }
 
   async edit(body: IAppointmentDetailsFormData) {
-    return await api.put(`${this.path}/${body.id}`, body);
+    if(this.role === "vet") {
+      return await api.put(`${this.appointmentPath}/${body.id}/vet/`, body);
+    }
+    if(body && body.petId) {
+      return await api.put(`${this.appointmentPath}/${body.id}/owner/`, body);
+    }
+    return await api.put(`${this.appointmentPath}/${body.id}/owner/cancel/`, body);
   }
 
   async getById(id: string): Promise<IAppointment> {
     return await api
-      .get(`${this.path}/${id}`)
+      .get(`${this.appointmentPath}/${id}`)
       .then((response) => response.data);
   }
 }

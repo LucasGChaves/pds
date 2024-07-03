@@ -12,7 +12,7 @@ class UserRepository {
   //   }
 
   async edit(body: IProfileEditionFormData) {
-    return await api.put(`${this.path}/${body?.id}`, body);
+    return await api.put(`${this.path}`, body);
   }
 
   async getById(id: string): Promise<IUserGet> {

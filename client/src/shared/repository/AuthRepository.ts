@@ -1,24 +1,26 @@
 import api from "../../../config/axios";
-import { ILogin } from "../../model/login";
+import { ILoginFormData } from "../../model/login";
 import { IOwnerRegisterFormData, IVetRegisterFormData } from "../../model/user";
 
 class AuthRepository {
-  path = "";
-  async Login(body: ILogin) {
+  authPath = "auth";
+  userPath = "user";
+
+  async Login(body: ILoginFormData) {
     return await api
-      .post(`${this.path}`, body)
+      .post(`${this.authPath}/login/`, body)
       .then((response) => response.data);
   }
 
   async RegisterOwner(body: IOwnerRegisterFormData) {
     return await api
-      .post(`${this.path}/owner`, body)
+      .post(`${this.userPath}/register/`, body)
       .then((response) => response.data);
   }
 
   async RegisterVet(body: IVetRegisterFormData) {
     return await api
-      .post(`${this.path}/vet`, body)
+      .post(`${this.userPath}/register/`, body)
       .then((response) => response.data);
   }
 }
