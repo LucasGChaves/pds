@@ -14,6 +14,11 @@ import CustomDialog from "../../shared/components/CustomDialog";
 import { useVaccines } from "../../shared/hooks/useVaccines";
 import Loading from "../../shared/components/Loading";
 import InfoCard from "../../shared/components/InfoCard";
+import VaccineRepository from "../../shared/repository/vaccineRepository";
+import { tr } from "react-native-paper-dates";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import { useQueryClient } from "react-query";
+import { ReactQueryCache } from "../../enums/reactQueryCacheEnum";
 
 const Vaccines = ({ navigation }) => {
   const [filter, setFilter] = useState<Date>();
@@ -21,6 +26,8 @@ const Vaccines = ({ navigation }) => {
     isVisible: boolean;
     itemId: string;
   }>({ isVisible: false, itemId: "-1" });
+  const [isLoading, setIsLoading] = useState(false);
+  const { setSnackbarParams } = useSnackbarContext();
 
   const handleHideDialog = () => {
     setExclusionDialog({ isVisible: false, itemId: "-1" });
@@ -38,9 +45,25 @@ const Vaccines = ({ navigation }) => {
     setExclusionDialog({ isVisible: true, itemId: id });
   };
 
-  const handleDelete = () => {};
+  const queryClient = useQueryClient();
 
-  const { data, error, isLoading } = useVaccines();
+  const handleDelete = async () => {
+    setIsLoading(true);
+    const vaccineRepository = new VaccineRepository();
+    try {
+      await vaccineRepository.delete(exclusionDialog.itemId);
+      queryClient.invalidateQueries(ReactQueryCache.VACCINES);
+    } catch (error) {
+      setSnackbarParams({
+        show: true,
+        text: "Erro ao deletar vacina. Tente novamente",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const { data, error, isLoading: isLoadingVaccines } = useVaccines();
 
   return (
     <OrangeContainer>
@@ -66,7 +89,7 @@ const Vaccines = ({ navigation }) => {
           {!error ? (
             <FlatList
               ListEmptyComponent={
-                isLoading ? <Loading /> : <InfoCard type="emptyList" />
+                isLoadingVaccines ? <Loading /> : <InfoCard type="emptyList" />
               }
               nestedScrollEnabled
               style={{ maxHeight: 380 }}

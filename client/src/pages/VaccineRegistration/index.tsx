@@ -9,11 +9,14 @@ import { handleChangeformData } from "../../utils/functions";
 import { IVaccineRegistrationFormData } from "../../model/vaccine";
 import { useSnackbarContext } from "../../shared/context/SnackbarContext";
 import VaccineRepository from "../../shared/repository/vaccineRepository";
+import { useQueryClient } from "react-query";
+import { ReactQueryCache } from "../../enums/reactQueryCacheEnum";
 
 const VaccineRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<IVaccineRegistrationFormData>();
   const [isLoading, setIsLoading] = useState(false);
   const { setSnackbarParams } = useSnackbarContext();
+  const queryClient = useQueryClient();
 
   const onSubmit = async () => {
     if (formData) {
@@ -29,6 +32,8 @@ const VaccineRegistration = ({ navigation }) => {
           manufacturer: manufacturer,
           vaccineName: vaccineName,
         });
+        queryClient.invalidateQueries(ReactQueryCache.VACCINES);
+        navigation.navigate("Vaccines");
       } catch (error) {
         setSnackbarParams({
           show: true,
@@ -38,8 +43,6 @@ const VaccineRegistration = ({ navigation }) => {
         setIsLoading(false);
       }
     }
-
-    navigation.navigate("Vaccines");
   };
 
   return (
@@ -82,7 +85,12 @@ const VaccineRegistration = ({ navigation }) => {
           />
         </InputsContainer>
         <ButtonContainer>
-          <Button mode="contained" style={{ width: 200 }} onPress={onSubmit}>
+          <Button
+            mode="contained"
+            style={{ width: 200 }}
+            onPress={onSubmit}
+            loading={isLoading}
+          >
             Cadastrar
           </Button>
         </ButtonContainer>

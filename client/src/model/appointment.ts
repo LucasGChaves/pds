@@ -19,3 +19,9 @@ export interface INewAppointmentTimeFormData {
   date: Date;
   time: string;
 }
+
+export interface ScheduleAppointmentFormData {
+  date: string;
+  time: string;
+  petId: string;
+}

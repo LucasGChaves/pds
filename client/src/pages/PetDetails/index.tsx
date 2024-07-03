@@ -17,6 +17,10 @@ import { PHOTOS_PATH } from "../../utils/constants";
 import { useState } from "react";
 import CustomDialog from "../../shared/components/CustomDialog";
 import { usePet } from "../../shared/hooks/usePet";
+import { useQueryClient } from "react-query";
+import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import PetRepository from "../../shared/repository/petRepository";
+import { ReactQueryCache } from "../../enums/reactQueryCacheEnum";
 
 const petToBeEdited = {
   id: 2,
@@ -46,6 +50,9 @@ const PetDetails = ({ navigation }) => {
 
   const route = useRoute<RouteProp<PetsScreensStackParamList, "PetDetails">>();
   const id = route.params.petId;
+  const queryClient = useQueryClient();
+  const { setSnackbarParams } = useSnackbarContext();
+  const [loading, setIsLoading] = useState(false);
 
   const dataListData: DataListValueType[] = [
     {
@@ -91,7 +98,22 @@ const PetDetails = ({ navigation }) => {
     setExclusionDialog({ isVisible: true, itemId: id });
   };
 
-  const handleDeletePet = () => {};
+  const handleDeletePet = async () => {
+    setIsLoading(true);
+    const petRepository = new PetRepository(user.role.roleName);
+    try {
+      await petRepository.delete(exclusionDialog.itemId);
+      queryClient.invalidateQueries(ReactQueryCache.PETS);
+      navigation.navigate("Pets");
+    } catch (error) {
+      setSnackbarParams({
+        show: true,
+        text: "Erro ao deletar vacina. Tente novamente",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const [exclusionDialog, setExclusionDialog] = useState<{
     isVisible: boolean;
@@ -126,11 +148,14 @@ const PetDetails = ({ navigation }) => {
         text="Tem certeza que deseja excluir esse pet?"
         isVisible={exclusionDialog.isVisible}
         handleHide={handleHideDialog}
+        isLoading={isLoading}
       />
       <Container>
         <PhotoContainer>
           {/* TODO: mudar codigo abaixo para pegar o cpf do owner que vem no pet */}
-          <Photo source={{ uri: `${PHOTOS_PATH}pet_${id}_${user.cpf}.jpg` }} />
+          <Photo
+            source={{ uri: `${PHOTOS_PATH}pet_${id}_${data.owner.cpf}.jpg` }}
+          />
           <PetName>Dudu</PetName>
         </PhotoContainer>
         <Button
