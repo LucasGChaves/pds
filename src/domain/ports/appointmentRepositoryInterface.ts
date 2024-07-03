@@ -7,6 +7,6 @@ export interface AppointmentRepositoryInterface {
     findById(id: number): Promise<Appointment | undefined>;
     findAllByUserId(userId: number): Promise<Appointment[] | undefined>;
     findAllAvailableForOwnerByUserId(userId: number): Promise<Appointment[] | undefined>;
-    findAllAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: Date): Promise<Appointment[] | undefined>;
+    findAllAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: string): Promise<Appointment[] | undefined>;
     findAllByPetId(petId: number): Promise<Appointment[] | undefined>;
   }

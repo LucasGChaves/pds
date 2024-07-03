@@ -244,15 +244,15 @@ export class UserService {
       }));
     }
 
-    async getAvailableAppointmentDatesForOwner(vetId: number): Promise<Date[] | undefined> {
+    async getAvailableAppointmentDatesForOwner(vetId: number): Promise<string[] | undefined> {
       const appointments = await this.findAllAppointmentsAvailableForOwnerByUserId(vetId);
-      const appointmentsDates = appointments?.map(appointment => appointment.appointmentDate);
+      const appointmentsDates = appointments?.map(appointment => appointment.appointmentDate.toISOString().split('T')[0]);
       const appointmentDatesFiltered = appointmentsDates?.filter((value, index) => appointmentsDates.indexOf(value) === index);
 
       return appointmentDatesFiltered;
     }
 
-    async getAvailableAppointmentTimesForOwner(vetId: number, appointmentDate: Date): Promise<any | undefined> {
+    async getAvailableAppointmentTimesForOwner(vetId: number, appointmentDate: string): Promise<any | undefined> {
       const appointments = await this.findAllAppointmentsAvailableForOwnerByUserIdAndDate(vetId, appointmentDate);
       const appointmentsTimes = appointments?.map(appointment => ({id: appointment.id, appointmentTime: appointment.appointmentTime}));
 
@@ -426,20 +426,19 @@ export class UserService {
     }));
 }
 
-  async findAllAppointmentsAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: Date): Promise <AppointmentReturnType[] | undefined> {
+  async findAllAppointmentsAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: string): Promise <AppointmentReturnType[] | undefined> {
     const appointments = await appointmentRepository.findAllAvailableForOwnerByUserIdAndDate(userId, appointmentDate);
 
     if(!appointments) {
         throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
     }
-
     const appointmentsCopy = Promise.all(appointments.map(async appointment => {
-        let pet = await petService.findById(Number(appointment.petId));
-        let owner = await this.findById(pet?.ownerId!);
+        //let pet = await petService.findById(Number(appointment.petId));
+        //let owner = await this.findById(pet?.ownerId!);
         let vet = await this.findById(Number(appointment.vetId));
-        const birthDate = pet!.birthDate.toISOString().split('T')[0];
-        const completePetObject = {...pet, age: getAge(birthDate), owner: owner};
-        let appointmentCopy: any = {...appointment, pet: completePetObject, vet: vet};
+        //const birthDate = pet!.birthDate.toISOString().split('T')[0];
+        //const completePetObject = {...pet, age: getAge(birthDate), owner: owner};
+        let appointmentCopy: any = {...appointment, vet: vet};
         return appointmentCopy;
     }));
 

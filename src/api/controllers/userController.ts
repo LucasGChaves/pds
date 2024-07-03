@@ -309,7 +309,7 @@ export class UserController {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
 
-            const date = req.body && req.body.date;
+            const date = req.params && req.params.date;
 
             if(!date) {
                 return next(new HttpError("É necessário informar uma data.", 400));

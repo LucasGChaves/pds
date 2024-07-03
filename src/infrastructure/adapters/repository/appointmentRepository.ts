@@ -45,7 +45,7 @@ export class AppointmentRepository implements AppointmentRepositoryInterface {
 
     async findAllByUserId(userId: number): Promise<Appointment[] | undefined> {
         const appointments = await AppointmentModel.query().where("vetId", userId);
-        if(!appointments || appointments && !appointments.length) {
+        if(!appointments) {
             throw new HttpError("Consultas não encontradas.", 500);
         }
         return appointments;
@@ -72,14 +72,14 @@ export class AppointmentRepository implements AppointmentRepositoryInterface {
         return appointments;
     }
 
-    async findAllAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: Date): Promise <Appointment[] | undefined> {
+    async findAllAvailableForOwnerByUserIdAndDate(userId: number, appointmentDate: string): Promise <Appointment[] | undefined> {
         const appointments = await AppointmentModel.query()
         .where("vetId", userId)
         .andWhere("scheduled", false)
         .andWhere("appointmentDate", appointmentDate)
         .orderBy(["appointmentDate", "appointmentTime"]);
 
-        if(!appointments || appointments && !appointments.length) {
+        if(!appointments) {
             throw new HttpError("Consultas não encontradas.", 500);
         }
 

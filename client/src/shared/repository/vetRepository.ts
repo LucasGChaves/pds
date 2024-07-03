@@ -18,8 +18,8 @@ class VetRepository {
     return await api.get(`${this.path}/owner/search/vet/${id}/dates/`).then((response) => response.data);
   }
 
-  async getDateAvailableTimes(id: string, date: Date) {
-    return await api.get(`${this.path}/owner/search/vet/${id}/date/times`, date).then((response) => response.data);
+  async getDateAvailableTimes(id: string, date: string) {
+    return await api.get(`${this.path}/owner/search/vet/${id}/${date}/times`).then((response) => response.data);
   }
 }
 export default VetRepository;
