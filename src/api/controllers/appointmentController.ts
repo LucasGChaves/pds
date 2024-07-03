@@ -85,6 +85,7 @@ export class AppointmentController {
                 return next(new HttpError("Sem autorização para acessar.", 401));
             }
 
+            console.log("APPOINTMENT AND PET: " + appointmentId, petId);
             const appointment = await userService.scheduleAppointmentForOwner(appointmentId, petId);
 
             if(!appointment) {
@@ -106,7 +107,7 @@ export class AppointmentController {
             const userRoleId = req.user.roleId;
             const appointmentId = Number(req.params.id);
             let appointmentDataCopy:any = {...req.body};
-            const examRequestData = {...appointmentDataCopy.examRequest};
+            const examRequestData = appointmentDataCopy.examRequest === undefined ? undefined : {...appointmentDataCopy.examRequest, appointmentId: appointmentId};
             delete appointmentDataCopy.examRequest;
 
             if(examRequestData) {

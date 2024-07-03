@@ -38,13 +38,13 @@ export class PetRepository implements PetRepositoryInterface {
     return pets;
   }
 
-  async findByUserId(userId: number): Promise <Pet | undefined> {
-    const pet = await PetModel.query().where("userId", userId).first();
+  async findByUserId(ownerId: number): Promise <Pet | undefined> {
+    const pet = await PetModel.query().where("ownerId", ownerId).first();
     return pet;
   }
 
-  async findAllByUserId(userId: number): Promise<Pet[] | undefined> {
-    const pets = await PetModel.query().where("userId", userId);
+  async findAllByUserId(ownerId: number): Promise<Pet[] | undefined> {
+    const pets = await PetModel.query().where("ownerId", ownerId);
     return pets;  
   }
 }

@@ -69,7 +69,7 @@ export const up = async function(knex) {
         },
         {
             "appointmentDate": "2024-10-10",
-            "appointmentTime": "13:00",
+            "appointmentTime": "13:30",
             "scheduled": true,
             "description": "Lorem ipsum sit dolor amet.",
             "vetId": vetMarinaId,

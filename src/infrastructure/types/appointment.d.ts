@@ -8,7 +8,7 @@ export type AppointmentReturnType = {
     appointmentTime: string;
     description?: string;
     scheduled: boolean;
-    petId?: number;
+    petId?: number | null;
     vetId: number;
     pet?: PetReturnType;
     vet: UserReturnType;

@@ -10,7 +10,16 @@ export class AppointmentRepository implements AppointmentRepositoryInterface {
     }
 
     async updateAppointment(id: number, updatedData: Partial<Appointment>): Promise<Appointment | undefined> {
-        const updatedAppointment = await AppointmentModel.query().patchAndFetchById(id, updatedData);
+        let updatedAppointment = null;
+
+        if(updatedData && !updatedData.petId) {
+            delete updatedData.petId;
+            updatedAppointment = await AppointmentModel.query().patchAndFetchById(id, {...updatedData, petId: null});
+        }
+        else {
+            updatedAppointment = await AppointmentModel.query().patchAndFetchById(id, updatedData);
+        }
+
         if(!updatedAppointment) {
             throw new HttpError("Consulta não encontrada.", 500);
         }

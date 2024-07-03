@@ -175,6 +175,7 @@ export class UserController {
 
             const userId = req.user && req.user.id;
             const userRole = req.user && req.user.roleId;
+            console.log("userId: " + userId);
 
             if(!userId) {
                 return next(new HttpError("Não foi possível obter o perfil do usuário especificado. Faça login novamente.", 500));
@@ -267,6 +268,60 @@ export class UserController {
             }
 
             res.status(200).json(patients);
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    async getVetAvailableDates(req: Request, res: Response, next: NextFunction): Promise <void> {
+        try {
+            const vetId = req.params && Number(req.params.id);
+            const userId = req.user && Number(req.user.roleId);
+
+            if(!vetId) {
+                return next(new HttpError("É necessário informar um veterinário.", 400));
+            }
+            if(!userId) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
+
+            const dates = await userService.getAvailableAppointmentDatesForOwner(vetId);
+
+            if(!dates) {
+                return next(new HttpError("Nenhuma data disponível foi encontrada.", 400));
+            }
+
+            res.status(200).json(dates);
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    async getVetAvailableTimes(req: Request, res: Response, next: NextFunction): Promise <void> {
+        try {
+            const vetId = req.params && Number(req.params.id);
+            const userId = req.user && Number(req.user.roleId);
+
+            if(!vetId) {
+                return next(new HttpError("É necessário informar um veterinário.", 400));
+            }
+            if(!userId) {
+                return next(new HttpError("Sem autorização para acessar.", 401));
+            }
+
+            const date = req.body && req.body.date;
+
+            if(!date) {
+                return next(new HttpError("É necessário informar uma data.", 400));
+            }
+
+            const times = await userService.getAvailableAppointmentTimesForOwner(vetId, date);
+
+            if(!times) {
+                return next(new HttpError("Nenhum horário foi encontrado.", 400));
+            }
+
+            res.status(200).json(times);
         } catch(err) {
             next(err);
         }

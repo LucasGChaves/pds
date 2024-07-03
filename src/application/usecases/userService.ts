@@ -122,7 +122,7 @@ export class UserService {
 
 
     async getMyAppointments(id: number, roleId: number): Promise<AppointmentReturnType[] | undefined> {
-      const appointments = await this.findAllAppointmentsByUserId(id);
+      const appointments = await this.findAllAppointmentsByUserId(id, roleId);
 
       if(!appointments) {
         if(roleId === Number(Roles.owner)) {
@@ -147,7 +147,15 @@ export class UserService {
     }
 
     async getMyExamRequests(id: number, roleId: number): Promise<ExamRequestReturnType[] | undefined> {
-      const examRequests = await this.findAllExamRequestsByUserId(id);
+
+      let examRequests = null;
+
+      if(roleId === Number(Roles.vet)){
+        examRequests = await this.findAllExamRequestsByUserId(id);
+      }
+      else {
+        examRequests = await this.findAllExamRequestsForOwnersPets(id);
+      }
 
       if(!examRequests) {
         if(roleId === Number(Roles.owner)) {
@@ -167,7 +175,14 @@ export class UserService {
     }
 
     async getMyVaccines(id: number, roleId: number): Promise<VaccineReturnType[] | undefined> {
-      const vaccines = await this.findAllVaccinesByUserId(id);
+
+      let vaccines = null;
+      if(roleId === Number(Roles.vet)) {
+        vaccines = await this.findAllVaccinesByUserId(id);
+      }
+      else {
+        vaccines = await this.findAllVaccinesForOwnersPets(id);
+      }
 
       if(!vaccines) {
         if(roleId === Number(Roles.owner)) {
@@ -223,7 +238,7 @@ export class UserService {
       }));
     }
 
-    async getAvailableAppointmentDatesForOwner(vetId: number, roleId: number): Promise<Date[] | undefined> {
+    async getAvailableAppointmentDatesForOwner(vetId: number): Promise<Date[] | undefined> {
       const appointments = await this.findAllAppointmentsAvailableForOwnerByUserId(vetId);
       const appointmentsDates = appointments?.map(appointment => appointment.appointmentDate);
       const appointmentDatesFiltered = appointmentsDates?.filter((value, index) => appointmentsDates.indexOf(value) === index);
@@ -297,7 +312,7 @@ export class UserService {
     }
 
     async scheduleAppointmentAsVet(vetId: number, appointmentDate: Date, appointmentTime: string): Promise<AppointmentReturnType | undefined> {
-      const appointments = await this.findAllAppointmentsByUserId(vetId);
+      const appointments = await this.findAllAppointmentsByUserId(vetId, Number(Roles.vet));
       let dateAndTimeAlreadyTaken = false;
       
       appointments?.map(appointment => {
@@ -353,8 +368,15 @@ export class UserService {
       return {...appointment, vet: vet!};
     }
 
-    async findAllAppointmentsByUserId(userId: number): Promise<AppointmentReturnType[] | undefined> {
-      const appointments = await appointmentRepository.findAllByUserId(userId);
+    async findAllAppointmentsByUserId(userId: number, roleId: number): Promise<AppointmentReturnType[] | undefined> {
+      let appointments = null;
+
+      if(roleId === Number(Roles.vet)) {
+        appointments = await appointmentRepository.findAllByUserId(userId);
+      }
+      else {
+        appointments = await this.findAllAppointmentsForOwnersPets(userId);
+      }
 
       if(!appointments) {
           throw new HttpError("Não foi possível encontrar nenhuma consulta.", 404);
@@ -495,5 +517,57 @@ export class UserService {
     const pet = await petService.findById(petId);
     const owner = await this.findById(pet?.ownerId!);
     return {...pet!, owner: owner!};
+  }
+
+  async findAllAppointmentsForOwnersPets(ownerId: number): Promise<AppointmentReturnType[] | undefined> {
+    const owner = await this.findById(ownerId);
+    const pets = await petService.findAllByUserId(ownerId);
+  
+    let completeAppointmentsReturnObject: AppointmentReturnType[] = [];
+  
+    for (const pet of (pets || [])) {
+      const completePetObject = { ...pet, owner: owner! };
+      const appointments = await appointmentRepository.findAllByPetId(pet.id);
+  
+      for (const appointment of (appointments || [])) {
+        const vet = await this.findById(appointment.vetId);
+        const appointmentObj: AppointmentReturnType = { ...appointment, pet: completePetObject, vet: vet! };
+        completeAppointmentsReturnObject.push(appointmentObj);
+      }
+    }
+    return completeAppointmentsReturnObject;
+  }
+
+  async findAllExamRequestsForOwnersPets(ownerId: number): Promise<ExamRequestReturnType[] | undefined> {
+    const owner = await this.findById(ownerId);
+    const pets = await petService.findAllByUserId(ownerId);
+  
+    let completeExamRequestsReturnObject: ExamRequestReturnType[] = [];
+  
+    for (const pet of (pets || [])) {
+      const completePetObject = { ...pet, owner: owner! };
+      const examRequests = await examRequestRepository.findAllByPetId(pet.id);
+  
+      for (const examRequest of (examRequests || [])) {
+        const vet = await this.findById(examRequest.vetId);
+        const examRequestObj: ExamRequestReturnType = { ...examRequest, pet: completePetObject, vet: vet! };
+        completeExamRequestsReturnObject.push(examRequestObj);
+      }
+    }
+    return completeExamRequestsReturnObject;
+  }
+
+  async findAllVaccinesForOwnersPets(ownerId: number): Promise<VaccineReturnType[] | undefined> {
+    const pets = await petService.findAllByUserId(ownerId);
+  
+    let completeVaccineReturnObject: VaccineReturnType[] = [];
+  
+    for (const pet of (pets || [])) {
+      const vaccines = await this.findAllVaccinesByPetId(pet.id);
+      console.log("---------> " + JSON.stringify(vaccines));
+      completeVaccineReturnObject = completeVaccineReturnObject.concat(vaccines!);
+    }
+    console.log("VACCINES: " + completeVaccineReturnObject);
+    return completeVaccineReturnObject;
   }
 }

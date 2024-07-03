@@ -22,9 +22,9 @@ export class ExamRequestController {
             const userRoleId = req.user.roleId;
             const examRequestId = Number(req.params.id);
             
-            if(!userRoleId || userRoleId === Number(Roles.owner)) {
-                return next(new HttpError("Sem autorização para acessar.", 401));
-            }
+            // if(!userRoleId || userRoleId === Number(Roles.owner)) {
+            //     return next(new HttpError("Sem autorização para acessar.", 401));
+            // }
             
             const examRequest = await userService.findExamRequestByIdAndReturnFullObject(examRequestId);
             

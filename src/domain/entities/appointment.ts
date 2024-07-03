@@ -5,7 +5,7 @@ export class Appointment {
     appointmentTime!: string
     description?: string
     scheduled!: boolean
-    petId?: number
+    petId?: number | null
     vetId!: number
 
     constructor (appointment: Partial<Appointment>) {

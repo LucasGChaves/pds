@@ -13,7 +13,7 @@ export class ExamRequestRepository implements ExamRequestRepositoryInterface {
     }
 
     async updateExamRequest(id: number, updatedData: Partial<ExamRequest>): Promise<ExamRequest | undefined> {
-        const updatedExamRequest = await ExamRequestModel.query().where("id", id).patchAndFetch(updatedData);
+        const updatedExamRequest = await ExamRequestModel.query().patchAndFetchById(id, updatedData);
         if(!updatedExamRequest) {
             throw new HttpError("Pedido de exame não encontrado.", 500);
         }
@@ -35,7 +35,7 @@ export class ExamRequestRepository implements ExamRequestRepositoryInterface {
     }
 
     async findAllByUserId(userId: number): Promise<ExamRequest[] | undefined> {
-        const examRequests = await ExamRequestModel.query().where("userId", userId);
+        const examRequests = await ExamRequestModel.query().where("vetId", userId);
         return examRequests;
     }
 

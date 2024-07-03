@@ -10,7 +10,7 @@ export class AppointmentModel extends Model {
   appointmentTime!: string
   scheduled!: boolean
   description?: string
-  petId?: number
+  petId?: number | null
   vetId!: number
   
   // static relationMappings = {

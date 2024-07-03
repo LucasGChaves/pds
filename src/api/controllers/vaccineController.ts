@@ -22,9 +22,9 @@ export class VaccineController {
             const userRoleId = req.user.roleId;
             const vaccineId = Number(req.params.id);
 
-            if(!userRoleId || userRoleId === Number(Roles.owner)) {
-                return next(new HttpError("Sem autorização para acessar.", 401));
-            }
+            // if(!userRoleId || userRoleId === Number(Roles.owner)) {
+            //     return next(new HttpError("Sem autorização para acessar.", 401));
+            // }
 
 
             const vaccine = await userService.findVaccineByIdAndReturnFullObject(vaccineId);

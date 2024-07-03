@@ -13,7 +13,7 @@ export class VaccineRepository implements VaccineRepositoryInterface {
     }
 
     async updateVaccine(id: number, updatedData: Partial<Vaccine>): Promise<Vaccine | undefined> {
-        const updatedVaccine = await VaccineModel.query().where("id", id).patchAndFetch(updatedData);
+        const updatedVaccine = await VaccineModel.query().patchAndFetchById(id, updatedData);
         if(!updatedVaccine) {
             throw new HttpError("Vacina não encontrada.", 500);
         }
@@ -35,7 +35,7 @@ export class VaccineRepository implements VaccineRepositoryInterface {
     }
 
     async findAllByUserId(userId: number): Promise<Vaccine[] | undefined> {
-        const vaccines = await VaccineModel.query().where("userId", userId);
+        const vaccines = await VaccineModel.query().where("vetId", userId);
         return vaccines;
     }
 
