@@ -16,6 +16,8 @@ import { PHOTOS_PATH } from "../../utils/constants";
 import { IPet, IPetRegistrationFormData } from "../../model/pet";
 import PetRepository from "../../shared/repository/petRepository";
 import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import { useQueryClient } from "react-query";
+import { ReactQueryCache } from "../../enums/reactQueryCacheEnum";
 
 const PetRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState<IPetRegistrationFormData>();
@@ -60,6 +62,8 @@ const PetRegistration = ({ navigation }) => {
     });
   };
 
+  const queryClient = useQueryClient();
+
   const onSubmit = async () => {
     if (formData) {
       const { birthDate, breed, name, species } = formData;
@@ -88,6 +92,8 @@ const PetRegistration = ({ navigation }) => {
         if (image) {
           await savePhoto(pet.id.toString());
         }
+        queryClient.invalidateQueries(ReactQueryCache.PETS);
+        navigation.navigate("Pets");
       } catch (error) {
         setSnackbarParams({
           show: true,
@@ -97,10 +103,6 @@ const PetRegistration = ({ navigation }) => {
         setIsLoading(false);
       }
     }
-
-    //TODO: pegar id do pet e salvar
-    //caso de editar abaixo
-    navigation.navigate("Pets");
   };
 
   useEffect(() => {

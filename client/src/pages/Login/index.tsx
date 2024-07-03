@@ -1,5 +1,4 @@
 import { Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 import TextField from "../../shared/components/TextField";
 import { useState } from "react";
@@ -10,16 +9,19 @@ import { handleChangeformData } from "../../utils/functions";
 import { ILoginFormData } from "../../model/login";
 import AuthRepository from "../../shared/repository/AuthRepository";
 import { useSnackbarContext } from "../../shared/context/SnackbarContext";
+import { useAuthContext } from "../../shared/context/AuthContext";
+import { useQueryClient } from "react-query";
 
 const Login = ({ navigation }) => {
   const [formData, setFormData] = useState<ILoginFormData>();
   const [isLoading, setIsLoading] = useState(false);
 
   const { setSnackbarParams } = useSnackbarContext();
+  const { setIsSignedIn } = useAuthContext();
+
+  const queryClient = useQueryClient();
 
   const handleLogin = async () => {
-    navigation.navigate("TabNavigator");
-
     const { identifier, password } = formData;
     const authRepository = new AuthRepository();
     setIsLoading(true);
@@ -28,6 +30,8 @@ const Login = ({ navigation }) => {
         identifier: identifier,
         password: password,
       });
+      queryClient.invalidateQueries();
+      setIsSignedIn(true);
     } catch (error) {
       setSnackbarParams({
         show: true,

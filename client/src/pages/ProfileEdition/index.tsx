@@ -73,6 +73,7 @@ const ProfileEdition = ({ navigation }) => {
         if (image) {
           await savePhoto();
         }
+        navigation.navigate("MyProfile");
       } catch (error) {
         setSnackbarParams({
           show: true,

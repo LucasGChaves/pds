@@ -145,6 +145,20 @@ const AppointmentDetails = ({ navigation }) => {
               </ShowComponentByRole>
               <ShowComponentByRole role={userTypeEnum.OWNER}>
                 <Button
+                  mode="outlined"
+                  icon={({}) => (
+                    <Feather
+                      name="download"
+                      size={20}
+                      color={AppStyles.colors.primary}
+                    />
+                  )}
+                  onPress={handleAttachExamRequest}
+                  style={{ borderColor: AppStyles.colors.primary30 }}
+                >
+                  Baixar pedido de exame
+                </Button>
+                <Button
                   mode="contained"
                   icon={({}) => (
                     <Feather name="upload" size={20} color="white" />

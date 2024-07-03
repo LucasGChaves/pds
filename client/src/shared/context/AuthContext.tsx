@@ -8,6 +8,7 @@ interface AuthContextType {
   isUserOwner: boolean;
   isUserVet: boolean;
   isSignedIn: boolean;
+  setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextType>(null);
@@ -51,7 +52,9 @@ const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isUserOwner, isUserVet, isSignedIn }}>
+    <AuthContext.Provider
+      value={{ user, isUserOwner, isUserVet, isSignedIn, setIsSignedIn }}
+    >
       {children}
     </AuthContext.Provider>
   );

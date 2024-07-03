@@ -7,9 +7,16 @@ interface Props {
   isVisible: boolean;
   handleHide: () => void;
   handleOk: () => void;
+  isLoading?: boolean;
 }
 
-const CustomDialog = ({ handleOk, text, isVisible, handleHide }: Props) => {
+const CustomDialog = ({
+  handleOk,
+  text,
+  isVisible,
+  handleHide,
+  isLoading,
+}: Props) => {
   return (
     <View>
       <Portal>
@@ -19,7 +26,9 @@ const CustomDialog = ({ handleOk, text, isVisible, handleHide }: Props) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={handleHide}>Cancelar</Button>
-            <Button onPress={handleOk}>Sim</Button>
+            <Button onPress={handleOk} loading={isLoading}>
+              Sim
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

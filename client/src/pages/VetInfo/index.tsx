@@ -11,18 +11,36 @@ import { handleChangeformData } from "../../utils/functions";
 import AppStyles from "../../styles";
 import { PHOTOS_PATH } from "../../utils/constants";
 import { useVet } from "../../shared/hooks/useVet";
-
-interface ScheduleAppointmentFormData {
-  date: string;
-  time: string;
-}
+import { usePets } from "../../shared/hooks/usePets";
+import { useAuthContext } from "../../shared/context/AuthContext";
+import { ScheduleAppointmentFormData } from "../../model/appointment";
 
 const VetInfo = ({ navigation }) => {
   const [formData, setFormData] = useState<ScheduleAppointmentFormData>();
+  const { user } = useAuthContext();
 
   const route =
     useRoute<RouteProp<AppointmentScreensStackParamList, "VetInfo">>();
   const id = route.params.vetId;
+
+  const {
+    data: vetData,
+    isLoading: isLoadingVet,
+    error: vetError,
+  } = useVet(id);
+
+  const {
+    data: pets,
+    isLoading: isLoadingPets,
+    error: petsError,
+  } = usePets({ role: user.role.roleName });
+
+  const petsSelectValues: ItemProps[] = pets?.map(
+    (pet): ItemProps => ({
+      label: pet.name,
+      value: pet.id.toString(),
+    })
+  );
 
   const vet = MOCKED_USERS[0];
 
@@ -76,6 +94,14 @@ const VetInfo = ({ navigation }) => {
               handleChangeformData("time", value, formData, setFormData)
             }
             value={formData?.time}
+          />
+          <Select
+            data={petsSelectValues}
+            placeholder="Escolha o o pet que irá na consulta"
+            handleChangeValue={(value) =>
+              handleChangeformData("petId", value, formData, setFormData)
+            }
+            value={formData?.petId}
           />
         </SelectsContainer>
         <ButtonContainer>
